@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Real Estate</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header style="background:#1a237e;color:#fff;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(26,35,126,0.08);">
+    <div class="site-title" style="font-size:1.5rem;font-weight:700;letter-spacing:1px;">Real Estate Admin Panel</div>
+    <div class="header-actions" style="display:flex;align-items:center;gap:0.5rem;"></div>
+  </header>
+  <div class="admin-dashboard">
+    <aside class="sidebar">
+      <h2>Admin Panel</h2>
+      <nav>
+        <ul>
+          <li><a href="#" data-section="dashboard" class="active">📊 Dashboard</a></li>
+          <li><a href="#" data-section="developers">🏢 Developers</a></li>
+          <li><a href="#" data-section="locations">📍 Locations</a></li>
+          <li><a href="#" data-section="properties">🏠 Properties</a></li>
+          <li><a href="#" data-section="unit-types">🔢 Unit Types</a></li>
+          <li><a href="#" data-section="room-details">🛏️ Room Details</a></li>
+          <li><a href="#" data-section="unit-specifications">📏 Unit Specifications</a></li>
+          <li><a href="#" data-section="amenities">🎁 Amenities</a></li>
+          <li><a href="#" data-section="property-amenities">🏷️ Property Amenities</a></li>
+          <li><a href="#" data-section="challenges">⚠️ Challenges</a></li>
+          <li><a href="#" data-section="property-challenges">🐞 Property Challenges</a></li>
+          <li><a href="#" data-section="property-connectivity">🚌 Property Connectivity</a></li>
+          <li><a href="#" data-section="property-gallery">🖼️ Property Gallery</a></li>
+          <li><a href="#" data-section="property-documents">📄 Property Documents</a></li>
+          <li><a href="#" data-section="timeline">⏳ Timeline</a></li>
+          <li><a href="#" data-section="financial-details">💰 Financial Details</a></li>
+          <li><a href="#" data-section="market-analysis">📈 Market Analysis</a></li>
+          <li><a href="#" data-section="reviews">⭐ Reviews</a></li>
+          <li><a href="#" data-section="legal-details">⚖️ Legal Details</a></li>
+          <li><a href="#" data-section="investment-analysis">🥧 Investment Analysis</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <main class="main-content">
+      <!-- Dashboard section -->
+      <section id="dashboard" class="admin-section active"></section>
+      <!-- Section templates for each table -->
+      <section id="developers" class="admin-section"></section>
+      <section id="locations" class="admin-section"></section>
+      <section id="properties" class="admin-section"></section>
+      <section id="unit-types" class="admin-section"></section>
+      <section id="room-details" class="admin-section"></section>
+      <section id="unit-specifications" class="admin-section"></section>
+      <section id="amenities" class="admin-section"></section>
+      <section id="property-amenities" class="admin-section"></section>
+      <section id="challenges" class="admin-section"></section>
+      <section id="property-challenges" class="admin-section"></section>
+      <section id="property-connectivity" class="admin-section"></section>
+      <section id="property-gallery" class="admin-section"></section>
+      <section id="property-documents" class="admin-section"></section>
+      <section id="timeline" class="admin-section"></section>
+      <section id="financial-details" class="admin-section"></section>
+      <section id="market-analysis" class="admin-section"></section>
+      <section id="reviews" class="admin-section"></section>
+      <section id="legal-details" class="admin-section"></section>
+      <section id="investment-analysis" class="admin-section"></section>
+    </main>
+  </div>
+  <footer class="admin-footer">
+    <p>&copy; 2024 Real Estate Admin Panel. All rights reserved.</p>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="admin.js"></script>
+  <script>
+    // Session management
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if user is logged in
+      const isLoggedIn = localStorage.getItem('isLoggedIn');
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      
+      if (!isLoggedIn || !user.id) {
+        // Redirect to login if not authenticated
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      // Add Home Page and Logout buttons to header-actions
+      const headerActions = document.querySelector('.header-actions');
+      // Home Page button
+      const homeBtn = document.createElement('a');
+      homeBtn.href = '../public/home_page.html';
+      homeBtn.textContent = 'Home Page';
+      homeBtn.className = 'home-btn';
+      homeBtn.style.cssText = 'background:#fff;color:#1a237e;padding:0.5rem 1.2rem;border-radius:6px;font-weight:700;text-decoration:none;box-shadow:0 1px 4px rgba(26,35,126,0.08);transition:background 0.2s;margin-right:0.5rem;';
+      // Logout button
+      const logoutBtn = document.createElement('button');
+      logoutBtn.textContent = 'Logout';
+      logoutBtn.style.cssText = 'background:#ff4444;color:#fff;padding:0.5rem 1.2rem;border-radius:6px;font-weight:700;border:none;cursor:pointer;box-shadow:0 1px 4px rgba(255,68,68,0.3);transition:background 0.2s;';
+      logoutBtn.addEventListener('click', function() {
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('user');
+        window.location.href = 'login.html';
+      });
+      // Add user info
+      const userInfo = document.createElement('span');
+      userInfo.textContent = `Welcome, ${user.username}!`;
+      userInfo.style.cssText = 'color:#fff;margin-right:1rem;';
+      headerActions.appendChild(userInfo);
+      headerActions.appendChild(homeBtn);
+      headerActions.appendChild(logoutBtn);
+    });
+  </script>
+</body>
+</html> 

@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Comparison | Real Estate Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, #f6f8fc 60%, #e3f0ff 100%);
+      color: #222;
+      min-height: 100vh;
+    }
+    header {
+      background: linear-gradient(120deg, #1a237e 60%, #43a047 100%);
+      color: #fff;
+      padding: 1.7rem 2.7rem 1.3rem 2.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 6px 24px rgba(26,35,126,0.10);
+      position: relative;
+      z-index: 10;
+    }
+    .site-title {
+      font-size: 2.1rem;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      color: #fff;
+      text-shadow: 0 4px 16px rgba(26,35,126,0.13);
+    }
+    .hero-section {
+      background: linear-gradient(120deg, #1a237e 60%, #43a047 100%);
+      color: #fff;
+      padding: 4.2rem 0 2.7rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(26,35,126,0.10);
+    }
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(120deg, rgba(26,35,126,0.85) 60%, rgba(67,160,71,0.75) 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .hero-section h1 {
+      font-size: 2.8rem;
+      font-weight: 900;
+      margin-bottom: 0.7rem;
+      letter-spacing: 1.5px;
+      color: #fff;
+      text-shadow: 0 4px 24px rgba(26,35,126,0.18);
+      position: relative;
+      z-index: 2;
+    }
+    .hero-section p {
+      font-size: 1.25rem;
+      color: #e3f0ff;
+      margin-bottom: 2.2rem;
+      font-weight: 400;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-btn {
+      background: #ffd700;
+      color: #1a237e;
+      font-size: 1.18rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 999px;
+      padding: 1em 2.4em;
+      box-shadow: 0 4px 18px rgba(26,35,126,0.13);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.15s;
+      letter-spacing: 0.2px;
+      margin-top: 0.7em;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-btn:hover {
+      background: #ffe066;
+      color: #1a237e;
+      box-shadow: 0 8px 32px rgba(26,35,126,0.18);
+      transform: translateY(-2px) scale(1.04);
+    }
+    .wave-divider {
+      display: block;
+      width: 100%;
+      height: 60px;
+      margin-bottom: -1px;
+    }
+    .compare-section {
+      background: #fff;
+      margin: 0 auto 1.5rem auto;
+      max-width: 1200px;
+      border-radius: 18px;
+      box-shadow: 0 6px 32px rgba(24,40,72,0.13);
+      padding: 2.7rem 2.7rem 2.2rem 2.7rem;
+      position: relative;
+      top: -30px;
+      z-index: 2;
+    }
+    .compare-header {
+      text-align: center;
+      margin-bottom: 2.2rem;
+    }
+    .compare-header h2 {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #182848;
+      margin-bottom: 0.3rem;
+    }
+    .compare-header p {
+      color: #388e3c;
+      font-size: 1.13rem;
+      margin-bottom: 0.7rem;
+      font-weight: 500;
+    }
+    .compare-step {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7em;
+      margin-bottom: 1.2em;
+      font-size: 1.08rem;
+      color: #1976d2;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+    .compare-panel {
+      background: #f8fafc;
+      border-radius: 14px;
+      box-shadow: 0 2px 12px rgba(24,40,72,0.07);
+      padding: 1.5em 1.2em 1.2em 1.2em;
+      margin-bottom: 2.2em;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .compare-btn { display: none; }
+    .compare-selects {
+      display: flex;
+      gap: 1.2rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .compare-selects select {
+      flex: 1 1 200px;
+      padding: 0.8rem 1.5rem;
+      font-size: 1.08rem;
+      border-radius: 999px;
+      border: 1.5px solid #bdbdbd;
+      background: #fff;
+      transition: border 0.2s;
+      box-shadow: 0 1px 4px rgba(24,40,72,0.04);
+      min-width: 180px;
+      max-width: 260px;
+    }
+    .compare-selects select:focus {
+      border: 1.5px solid #43a047;
+      outline: none;
+    }
+    .compare-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2.2rem;
+      margin-bottom: 1.5rem;
+    }
+    .property-card {
+      background: linear-gradient(135deg, #fffbe6 60%, #f6f8fc 100%);
+      border-radius: 16px;
+      box-shadow: 0 4px 18px rgba(24,40,72,0.10);
+      min-width: 0;
+      padding: 1.7rem 1.2rem 1.2rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 1.5px solid #43a04722;
+      transition: box-shadow 0.2s, border 0.2s, transform 0.18s;
+    }
+    .property-card:hover {
+      box-shadow: 0 8px 32px rgba(24,40,72,0.18);
+      border: 1.5px solid #43a047;
+      transform: translateY(-4px) scale(1.025);
+    }
+    .property-card img {
+      width: 100%;
+      max-width: 260px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 12px;
+      background: #e0e0e0;
+      margin-bottom: 1.1rem;
+      box-shadow: 0 2px 8px rgba(24,40,72,0.07);
+    }
+    .property-card h3 {
+      margin: 0.2rem 0 0.5rem 0;
+      font-size: 1.28rem;
+      font-weight: 900;
+      color: #182848;
+    }
+    .property-card .dev {
+      font-size: 1rem;
+      color: #43a047;
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+    }
+    .property-card .location {
+      font-size: 0.98rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+    .property-card .price {
+      font-size: 1.1rem;
+      color: #1976d2;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .property-card .amenities {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 0.5rem;
+      justify-content: center;
+    }
+    .property-card .amenity {
+      background: #e8eaf6;
+      color: #3949ab;
+      border-radius: 999px;
+      padding: 0.2rem 0.9rem 0.2rem 0.7rem;
+      font-size: 0.92rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3em;
+    }
+    .property-card .amenity:before {
+      content: '✔️';
+      font-size: 0.95em;
+      margin-right: 0.3em;
+    }
+    .property-card .desc {
+      font-size: 0.97rem;
+      color: #444;
+      margin-top: 0.5rem;
+      text-align: center;
+    }
+    .table-section {
+      background: #fff;
+      margin: 2.5rem auto;
+      max-width: 1200px;
+      border-radius: 18px;
+      box-shadow: 0 6px 32px rgba(24,40,72,0.13);
+      padding: 2.7rem;
+      overflow-x: auto;
+      position: relative;
+      top: -30px;
+      z-index: 1;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 1rem;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(24,40,72,0.07);
+      overflow: hidden;
+    }
+    th, td {
+      padding: 1rem 0.7rem;
+      border-bottom: 1px solid #e0e0e0;
+      text-align: left;
+    }
+    th {
+      background: #e8eaf6;
+      color: #182848;
+      font-weight: 900;
+      letter-spacing: 0.2px;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    tr:nth-child(even) td {
+      background: #f6f8fc;
+    }
+    tr:hover td {
+      background: #fffbe6;
+    }
+    @media (max-width: 900px) {
+      .compare-cards {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      .compare-section, .table-section {
+        padding: 1rem;
+      }
+    }
+    @media (max-width: 600px) {
+      .property-card {
+        min-width: 90vw;
+        max-width: 100vw;
+      }
+      .compare-section, .table-section {
+        padding: 0.5rem;
+      }
+      header {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+    .compare-grid {
+      margin-top: 2rem;
+      overflow-x: auto;
+    }
+    .compare-table-wrap {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(24,40,72,0.13);
+      padding: 2.2rem 1.2rem 1.5rem 1.2rem;
+      margin: 2.5rem auto 0 auto;
+      max-width: 1200px;
+      overflow-x: auto;
+    }
+    .compare-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 1.04rem;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(24,40,72,0.07);
+      overflow: hidden;
+      margin: 0 auto;
+    }
+    .compare-table th, .compare-table td {
+      padding: 1.1rem 0.8rem;
+      border-bottom: 1px solid #e0e0e0;
+      text-align: center;
+      vertical-align: middle;
+    }
+    .compare-table th {
+      background: linear-gradient(90deg, #e8eaf6 80%, #f7fafd 100%);
+      color: #182848;
+      font-weight: 900;
+      font-size: 1.08rem;
+      letter-spacing: 0.2px;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      box-shadow: 0 2px 8px rgba(24,40,72,0.04);
+    }
+    .compare-table tr:nth-child(even) td {
+      background: #f6f8fc;
+    }
+    .compare-table tr:hover td {
+      background: #fffbe6;
+    }
+    .compare-table .highlight {
+      background: #fffde7;
+      color: #388e3c;
+      font-weight: 700;
+    }
+    .compare-table .property-col {
+      border-left: 3px solid #ffd700;
+      border-right: 3px solid #ffd700;
+    }
+    @media (max-width: 900px) {
+      .compare-table-wrap {
+        padding: 1rem 0.2rem 1rem 0.2rem;
+      }
+      .compare-table th, .compare-table td {
+        padding: 0.7rem 0.3rem;
+        font-size: 0.98rem;
+      }
+    }
+    .compare-columns {
+      display: flex;
+      gap: 2rem;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    .compare-col {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      padding: 1.5rem 1rem 1rem 1rem;
+      min-width: 320px;
+      max-width: 370px;
+      flex: 1 1 320px;
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .img-wrap {
+      width: 220px;
+      height: 140px;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      background: #e0e0e0;
+    }
+    .details-section {
+      width: 100%;
+      margin-bottom: 1.1rem;
+    }
+    .details-section h4 {
+      margin: 0 0 0.4rem 0;
+      font-size: 1.08rem;
+      color: #1a237e;
+      font-weight: 700;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 0.2rem;
+    }
+    .details-section table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.98rem;
+      table-layout: fixed;
+      word-break: break-word;
+    }
+    .details-section td {
+      padding: 0.32rem 0.2rem;
+      border-bottom: 1px solid #f0f0f0;
+      color: #333;
+      word-break: break-word;
+      max-width: 160px;
+      white-space: pre-line;
+    }
+    .details-section tr:last-child td {
+      border-bottom: none;
+    }
+    .no-prop {
+      opacity: 0.5;
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 1.1rem;
+    }
+    @media (max-width: 900px) {
+      .compare-columns {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      .compare-col {
+        min-width: 90vw;
+        max-width: 100vw;
+      }
+    }
+    .details-stack {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+    .compare-table-wrap {
+      margin-top: 2rem;
+      overflow-x: auto;
+    }
+    .section-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-top: 2rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 14px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+      background: #f9fafe;
+    }
+    .section-row {
+      display: flex;
+      gap: 2rem;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      border-bottom: 1.5px solid #e0e0e0;
+    }
+    .section-row:last-child {
+      border-bottom: none;
+    }
+    .section-cell {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      padding: 1.2rem 1rem 1rem 1rem;
+      min-width: 320px;
+      max-width: 370px;
+      flex: 1 1 320px;
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 1.5px solid #d1d5db;
+      transition: box-shadow 0.2s, border 0.2s;
+    }
+    .section-cell:hover {
+      box-shadow: 0 4px 18px rgba(26,35,126,0.13);
+      border: 1.5px solid #3949ab;
+    }
+    .images-row .section-cell {
+      padding-bottom: 0.5rem;
+      min-height: 160px;
+    }
+    @media (max-width: 900px) {
+      .section-row {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      .section-cell {
+        min-width: 90vw;
+        max-width: 100vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="site-title">Real Estate Property Comparison</div>
+    <a href="../admin/login.html" class="login-btn" style="background:#fff;color:#1a237e;padding:0.5rem 1.2rem;border-radius:6px;font-weight:700;text-decoration:none;box-shadow:0 1px 4px rgba(26,35,126,0.08);transition:background 0.2s;">Login</a>
+  </header>
+  <section class="hero-section">
+    <h1>Find & Compare the Best Properties</h1>
+    <p>Discover, compare, and analyze real estate projects with confidence. Your next investment or dream home is just a click away.</p>
+    <a href="#compare" class="hero-btn">Compare Now</a>
+    <svg class="wave-divider" viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M0,0 C480,60 960,0 1440,60 L1440,60 L0,60 Z"></path></svg>
+  </section>
+  <section id="compare" class="compare-section">
+      <div class="compare-header">
+        <h2>Compare Properties</h2>
+        <p>Select up to 3 properties to compare their key features and financial details.</p>
+      </div>
+      <div class="compare-step">Step 1: Select Properties</div>
+      <div class="compare-panel">
+        <div class="compare-selects">
+          <select id="compare1"></select>
+          <select id="compare2"></select>
+          <select id="compare3"></select>
+        </div>
+        <button class="compare-btn" id="compareBtn">Compare Selected</button>
+      </div>
+      <div class="compare-table-wrap" id="compareGrid"></div>
+    </section>
+  <script>
+    const API_URL = 'http://localhost:3001/api/properties/full';
+    const PLACEHOLDER_IMG = 'https://via.placeholder.com/220x140?text=No+Image';
+    let allProperties = [];
+
+    async function fetchProperties() {
+      try {
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error('Failed to fetch properties');
+        allProperties = await res.json();
+        populateSelects();
+        renderComparisonGrid();
+      } catch (e) {
+        document.getElementById('compareGrid').innerHTML = `<div style="color:red;">Error loading properties: ${e.message}</div>`;
+      }
+    }
+
+    function populateSelects() {
+      const selects = [document.getElementById('compare1'), document.getElementById('compare2'), document.getElementById('compare3')];
+      selects.forEach((sel, idx) => {
+        sel.innerHTML = '<option value="">Select property...</option>';
+        allProperties.forEach((p, i) => {
+          sel.innerHTML += `<option value="${p.id}"${i === idx ? ' selected' : ''}>${p.name}</option>`;
+        });
+      });
+      selects.forEach(sel => sel.onchange = renderComparisonGrid);
+    }
+
+    async function renderComparisonGrid() {
+      const ids = [
+        document.getElementById('compare1').value,
+        document.getElementById('compare2').value,
+        document.getElementById('compare3').value
+      ];
+      const selected = ids.map(id => allProperties.find(p => p && p.id == id));
+      // Fetch extra details for each property
+      const detailsPromises = selected.map(async (p) => {
+        if (!p) return null;
+        const pid = p.id;
+        // Helper to fetch by property_id (returns first match)
+        async function fetchByProp(endpoint) {
+          try {
+            const res = await fetch(`http://localhost:3001/api/${endpoint}`);
+            if (!res.ok) return null;
+            const arr = await res.json();
+            return arr.find(x => x.property_id == pid) || null;
+          } catch { return null; }
+        }
+        // Fetch all details in parallel
+        const [financial, legal, market, investment] = await Promise.all([
+          fetchByProp('financial_details'),
+          fetchByProp('legal_details'),
+          fetchByProp('market_analysis'),
+          fetchByProp('investment_analysis')
+        ]);
+        return { ...p, financial, legal, market, investment };
+      });
+      const fullDetails = await Promise.all(detailsPromises);
+      // Render as section-aligned grid: each row is a section/topic, each cell is that section for one property
+      function sectionCell(sectionHtml) {
+        return `<div class='section-cell'>${sectionHtml}</div>`;
+      }
+      let html = "<div class='section-grid'>";
+      // 1. Image row
+      html += "<div class='section-row images-row'>";
+      fullDetails.forEach((p, idx) => {
+        html += sectionCell(
+          p ? `<a href='property_detail.html?id=${p.id}' style='display:inline-block;'><img src='${p.mainImage && p.mainImage !== '/images/placeholder-property.jpg' ? p.mainImage : PLACEHOLDER_IMG}' alt='${p.name}' style='width:220px;height:140px;object-fit:cover;border-radius:8px;background:#e0e0e0;' onerror="this.src='${PLACEHOLDER_IMG}'"></a>` : `<div class='no-prop'>Select a property</div>`
+        );
+      });
+      html += "</div>";
+      // 2. Basic Info row
+      html += "<div class='section-row'>";
+      fullDetails.forEach(p => {
+        html += sectionCell(
+          p ? `<div class='details-section'><h4>Basic Info</h4><table>
+            <tr><td>Name</td><td>${p.name || '-'}</td></tr>
+            <tr><td>Type</td><td>${p.property_type || '-'}</td></tr>
+            <tr><td>Status</td><td>${p.status || '-'}</td></tr>
+            <tr><td>Price Range</td><td>₹${p.min_price?.toLocaleString() || '-'} - ₹${p.max_price?.toLocaleString() || '-'}</td></tr>
+            <tr><td>Possession</td><td>${p.possession_date || '-'}</td></tr>
+            <tr><td>Description</td><td>${p.description ? p.description.substring(0,120)+(p.description.length>120?'...':'') : '-'}</td></tr>
+          </table></div>` : `<div class='no-prop'>Select a property</div>`
+        );
+      });
+      html += "</div>";
+      // 3. Developer row
+      html += "<div class='section-row'>";
+      fullDetails.forEach(p => {
+        html += sectionCell(
+          p ? `<div class='details-section'><h4>Developer</h4><table>
+            <tr><td>Name</td><td>${p.developer?.name || '-'}</td></tr>
+            <tr><td>Website</td><td>${p.developer?.website_url ? `<a href='${p.developer.website_url}' target='_blank'>${p.developer.website_url}</a>` : '-'}</td></tr>
+          </table></div>` : `<div class='no-prop'>Select a property</div>`
+        );
+      });
+      html += "</div>";
+      // 4. Location row
+      html += "<div class='section-row'>";
+      fullDetails.forEach(p => {
+        html += sectionCell(
+          p ? `<div class='details-section'><h4>Location</h4><table>
+            <tr><td>Area</td><td>${p.location?.area_name || '-'}</td></tr>
+            <tr><td>City</td><td>${p.location?.city || '-'}</td></tr>
+            <tr><td>State</td><td>${p.location?.state || '-'}</td></tr>
+          </table></div>` : `<div class='no-prop'>Select a property</div>`
+        );
+      });
+      html += "</div>";
+      // 5. Amenities row
+      html += "<div class='section-row'>";
+      fullDetails.forEach(p => {
+        html += sectionCell(
+          p ? `<div class='details-section'><h4>Amenities</h4><div>${(p.amenities && p.amenities.length) ? p.amenities.map(a => a.name).join(', ') : '-'}</div></div>` : `<div class='no-prop'>Select a property</div>`
+        );
+      });
+      html += "</div>";
+      // 6. Financial row
+      html += "<div class='section-row'>";
+      fullDetails.forEach(p => {
+        html += sectionCell(
+          p && p.financial ? `<div class='details-section'><h4>Financial</h4><table>
+            <tr><td>Base Price/sqft</td><td>₹${p.financial.base_price_per_sqft || '-'}</td></tr>
+            <tr><td>Premium Charges/sqft</td><td>₹${p.financial.premium_charges_per_sqft || '-'}</td></tr>
+            <tr><td>Registration %</td><td>${p.financial.registration_percentage || '-'}</td></tr>
+            <tr><td>GST %</td><td>${p.financial.gst_percentage || '-'}</td></tr>
+            <tr><td>Maintenance/sqft</td><td>₹${p.financial.maintenance_per_sqft || '-'}</td></tr>
+            <tr><td>Parking Charges</td><td>₹${p.financial.parking_charges || '-'}</td></tr>
+            <tr><td>Loan Eligibility %</td><td>${p.financial.loan_eligibility_percentage || '-'}</td></tr>
+            <tr><td>Preferred Banks</td><td>${p.financial.preferred_banks || '-'}</td></tr>
+          </table></div>` : `<div class='no-prop'>Select a property</div>`
+        );
+      });
+      html += "</div>";
+      // 7. Legal row
+      html += "<div class='section-row'>";
+      fullDetails.forEach(p => {
+        html += sectionCell(
+          p && p.legal ? `<div class='details-section'><h4>Legal</h4><table>
+            <tr><td>RERA Reg.</td><td>${p.legal.rera_registration || '-'}</td></tr>
+            <tr><td>Commencement Cert.</td><td>${p.legal.commencement_certificate || '-'}</td></tr>
+            <tr><td>Occupancy Cert.</td><td>${p.legal.occupancy_certificate || '-'}</td></tr>
+            <tr><td>Approved Plan</td><td>${p.legal.approved_plan || '-'}</td></tr>
+            <tr><td>Deviation Status</td><td>${p.legal.deviation_status || '-'}</td></tr>
+            <tr><td>Litigation Status</td><td>${p.legal.litigation_status || '-'}</td></tr>
+            <tr><td>Title Verification</td><td>${p.legal.title_verification || '-'}</td></tr>
+            <tr><td>Bank Approvals</td><td>${p.legal.bank_approvals || '-'}</td></tr>
+            <tr><td>Insurance</td><td>${p.legal.insurance_coverage || '-'}</td></tr>
+            <tr><td>Compliance</td><td>${p.legal.compliance_status || '-'}</td></tr>
+            <tr><td>Legal Opinion</td><td>${p.legal.legal_opinion || '-'}</td></tr>
+          </table></div>` : `<div class='no-prop'>Select a property</div>`
+        );
+      });
+      html += "</div>";
+      // 8. Market row
+      html += "<div class='section-row'>";
+      fullDetails.forEach(p => {
+        html += sectionCell(
+          p && p.market ? `<div class='details-section'><h4>Market Analysis</h4><table>
+            <tr><td>Current Avg Price/sqft</td><td>₹${p.market.current_avg_price_per_sqft || '-'}</td></tr>
+            <tr><td>1yr Appreciation %</td><td>${p.market.price_appreciation_1year || '-'}</td></tr>
+            <tr><td>3yr Appreciation %</td><td>${p.market.price_appreciation_3year || '-'}</td></tr>
+            <tr><td>Inventory Months</td><td>${p.market.inventory_months || '-'}</td></tr>
+            <tr><td>Market Segment</td><td>${p.market.market_segment || '-'}</td></tr>
+            <tr><td>Buyer Profile</td><td>${p.market.buyer_profile || '-'}</td></tr>
+            <tr><td>Resale Potential</td><td>${p.market.resale_potential || '-'}</td></tr>
+            <tr><td>Rental Demand</td><td>${p.market.rental_demand || '-'}</td></tr>
+          </table></div>` : `<div class='no-prop'>Select a property</div>`
+        );
+      });
+      html += "</div>";
+      // 9. Investment row
+      html += "<div class='section-row'>";
+      fullDetails.forEach(p => {
+        html += sectionCell(
+          p && p.investment ? `<div class='details-section'><h4>Investment</h4><table>
+            <tr><td>Type</td><td>${p.investment.investment_type || '-'}</td></tr>
+            <tr><td>Entry Cost</td><td>₹${p.investment.entry_cost || '-'}</td></tr>
+            <tr><td>Annual Rental Income</td><td>₹${p.investment.annual_rental_income || '-'}</td></tr>
+            <tr><td>Annual Appreciation</td><td>${p.investment.annual_appreciation || '-'}</td></tr>
+            <tr><td>Maintenance Cost</td><td>₹${p.investment.maintenance_cost || '-'}</td></tr>
+            <tr><td>Total Returns (5yr)</td><td>${p.investment.total_returns_5year || '-'}</td></tr>
+            <tr><td>IRR %</td><td>${p.investment.irr_percentage || '-'}</td></tr>
+            <tr><td>Payback Period (yrs)</td><td>${p.investment.payback_period_years || '-'}</td></tr>
+            <tr><td>Risk Assessment</td><td>${p.investment.risk_assessment || '-'}</td></tr>
+            <tr><td>Liquidity Rating</td><td>${p.investment.liquidity_rating || '-'}</td></tr>
+            <tr><td>Tax Benefits</td><td>${p.investment.tax_benefits || '-'}</td></tr>
+            <tr><td>Investment Grade</td><td>${p.investment.investment_grade || '-'}</td></tr>
+          </table></div>` : `<div class='no-prop'>Select a property</div>`
+        );
+      });
+      html += "</div>";
+      html += "</div>";
+      document.getElementById('compareGrid').innerHTML = html;
+    }
+
+    window.onload = fetchProperties;
+  </script>
+</body>
+</html> 

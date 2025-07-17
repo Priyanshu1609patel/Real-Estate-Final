@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Real Estate Admin</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header style="background:#1a237e;color:#fff;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(26,35,126,0.08);">
+    <div class="site-title" style="font-size:1.5rem;font-weight:700;letter-spacing:1px;">Real Estate Admin Login</div>
+    <a href="../public/home_page.html" class="home-btn" style="background:#fff;color:#1a237e;padding:0.5rem 1.2rem;border-radius:6px;font-weight:700;text-decoration:none;box-shadow:0 1px 4px rgba(26,35,126,0.08);transition:background 0.2s;">Home Page</a>
+  </header>
+  <main class="auth-main">
+    <div class="auth-card">
+      <h2>Login</h2>
+      <form class="auth-form" id="login-form">
+        <label for="login-username">Username or Email</label>
+        <input type="text" id="login-username" name="login-username" required autocomplete="username">
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" name="login-password" required autocomplete="current-password">
+        <button type="submit">Login</button>
+      </form>
+      <p class="auth-switch">Don't have an account? <a href="register.html">Register</a></p>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('login-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      const username = formData.get('login-username');
+      const password = formData.get('login-password');
+      
+      // Basic validation
+      if (!username || !password) {
+        alert('Please fill in all fields!');
+        return;
+      }
+      
+      try {
+        const response = await fetch('http://localhost:3001/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: username,
+            password: password
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          // Store user data in localStorage for session management
+          localStorage.setItem('user', JSON.stringify(data.user));
+          localStorage.setItem('isLoggedIn', 'true');
+          
+          alert('Login successful! Welcome back.');
+          // Redirect to admin dashboard
+          window.location.href = 'index.html';
+        } else {
+          alert(data.error || 'Login failed!');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Login failed! Please check your connection and try again.');
+      }
+    });
+  </script>
+</body>
+</html> 
