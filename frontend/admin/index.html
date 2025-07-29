@@ -7,6 +7,41 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    .card-blue {
+      background: #e0f2fe;
+    }
+    .icon-blue {
+      background: #2563eb;
+      color: #fff;
+      border-radius: 50%;
+      padding: 18px;
+      font-size: 2.2rem;
+      box-shadow: 0 2px 8px rgba(37,99,235,0.10);
+    }
+    .card-green {
+      background: #d1fae5;
+    }
+    .icon-green {
+      background: #059669;
+      color: #fff;
+      border-radius: 50%;
+      padding: 18px;
+      font-size: 2.2rem;
+      box-shadow: 0 2px 8px rgba(16,185,129,0.10);
+    }
+    .card-yellow {
+      background: #fef9c3;
+    }
+    .icon-yellow {
+      background: #f59e0b;
+      color: #fff;
+      border-radius: 50%;
+      padding: 18px;
+      font-size: 2.2rem;
+      box-shadow: 0 2px 8px rgba(245,158,11,0.10);
+    }
+  </style>
 </head>
 <body>
   <!-- Header -->
@@ -68,18 +103,18 @@
           <p class="dashboard-subtitle">Manage all your real estate data, properties, and analytics in one place.</p>
         </div>
         <div class="dashboard-cards">
-          <div class="dashboard-card">
-            <div class="card-icon"><i class="fas fa-home"></i></div>
+          <div class="dashboard-card card-blue">
+            <div class="card-icon icon-blue"><i class="fas fa-home"></i></div>
             <div class="card-value" id="totalProperties">-</div>
             <div class="card-label">Total Properties</div>
           </div>
-          <div class="dashboard-card">
-            <div class="card-icon"><i class="fas fa-building"></i></div>
+          <div class="dashboard-card card-green">
+            <div class="card-icon icon-green"><i class="fas fa-building"></i></div>
             <div class="card-value" id="totalDevelopers">-</div>
             <div class="card-label">Developers</div>
           </div>
-          <div class="dashboard-card">
-            <div class="card-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div class="dashboard-card card-yellow">
+            <div class="card-icon icon-yellow"><i class="fas fa-map-marker-alt"></i></div>
             <div class="card-value" id="totalLocations">-</div>
             <div class="card-label">Locations</div>
           </div>
