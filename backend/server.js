@@ -8,18 +8,20 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Serve static files from the frontend/public directory
-app.use(express.static(path.join(__dirname, '../frontend/public')));
+
+// Serve static files from the backend/public directory (Dockerfile copies frontend/public here)
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Serve files from /public path as well
-app.use('/public', express.static(path.join(__dirname, '../frontend/public')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 // Serve admin files from the frontend/admin directory
 app.use('/admin', express.static(path.join(__dirname, '../frontend/admin')));
 
+
 // Serve the home page as the default route
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/public/index.html'));
+  res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
 // Helper function to convert string booleans and numbers
