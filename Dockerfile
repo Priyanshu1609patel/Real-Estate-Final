@@ -8,8 +8,12 @@ WORKDIR /app/backend
 COPY backend/package*.json ./
 RUN npm install
 
+
 # Copy backend source code
 COPY backend/. .
+
+# Copy frontend public files to backend's public directory
+COPY frontend/public ./public
 
 # Expose backend port
 EXPOSE 3001
