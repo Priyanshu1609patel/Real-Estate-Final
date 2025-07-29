@@ -659,7 +659,7 @@
   </main>
 
   <script>
-    const API_URL = 'http://localhost:3001/api/properties/full';
+    const API_URL = 'https://real-estate-app-20a2.onrender.com/api/properties/full';
     const PLACEHOLDER_IMG = 'https://via.placeholder.com/300x180?text=No+Image';
     let allProperties = [];
 
@@ -706,7 +706,7 @@
         
         async function fetchByProp(endpoint) {
           try {
-            const res = await fetch(`http://localhost:3001/api/${endpoint}`);
+            const res = await fetch(`https://real-estate-app-20a2.onrender.com/api/${endpoint}`);
             if (!res.ok) return null;
             const arr = await res.json();
             return arr.find(x => x.property_id == pid) || null;

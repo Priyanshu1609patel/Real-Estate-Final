@@ -1,23 +1,18 @@
 # Use Node.js 22
 FROM node:22
 
-# Set working directory
-WORKDIR /app
+# Set working directory for backend
+WORKDIR /app/backend
 
-# Copy backend package files
-COPY backend/package*.json ./backend/
+# Copy backend package files and install dependencies
+COPY backend/package*.json ./
+RUN npm install
 
-# Install backend dependencies
-RUN cd backend && npm install
-
-# Copy the whole project (backend + frontend)
-COPY . .
-
-# Ensure node_modules is in the right place
-RUN cd backend && npm install
+# Copy backend source code
+COPY backend/. .
 
 # Expose backend port
 EXPOSE 3001
 
 # Start backend server
-CMD ["node", "backend/server.js"]
+CMD ["npm", "start"]

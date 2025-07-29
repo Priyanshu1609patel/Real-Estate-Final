@@ -130,7 +130,7 @@
             formData.append('image', file);
 
             try {
-                const response = await fetch('http://localhost:3001/api/upload-image', {
+                const response = await fetch('https://real-estate-app-20a2.onrender.com/api/upload-image', {
                     method: 'POST',
                     body: formData
                 });
@@ -153,12 +153,12 @@
 
         async function loadImages() {
             try {
-                const response = await fetch('http://localhost:3001/api/images');
+                const response = await fetch('https://real-estate-app-20a2.onrender.com/api/images');
                 const images = await response.json();
                 
                 imageList.innerHTML = images.map(img => `
                     <div class="image-item">
-                        <img src="http://localhost:3001${img.url}" alt="${img.filename}">
+                        <img src="https://real-estate-app-20a2.onrender.com${img.url}" alt="${img.filename}">
                         <p>${img.filename}</p>
                     </div>
                 `).join('');

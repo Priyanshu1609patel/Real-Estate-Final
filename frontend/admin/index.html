@@ -173,10 +173,10 @@
       // Fetch dashboard stats (properties, developers, locations, reviews)
       try {
         const [props, devs, locs, reviews] = await Promise.all([
-          fetch('http://localhost:3001/api/properties').then(r => r.json()),
-          fetch('http://localhost:3001/api/developers').then(r => r.json()),
-          fetch('http://localhost:3001/api/locations').then(r => r.json()),
-          fetch('http://localhost:3001/api/reviews').then(r => r.json()),
+          fetch('https://real-estate-app-20a2.onrender.com/api/properties').then(r => r.json()),
+          fetch('https://real-estate-app-20a2.onrender.com/api/developers').then(r => r.json()),
+          fetch('https://real-estate-app-20a2.onrender.com/api/locations').then(r => r.json()),
+          fetch('https://real-estate-app-20a2.onrender.com/api/reviews').then(r => r.json()),
         ]);
         document.getElementById('totalProperties').textContent = props.length;
         document.getElementById('totalDevelopers').textContent = devs.length;

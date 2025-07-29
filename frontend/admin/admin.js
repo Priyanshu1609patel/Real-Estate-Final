@@ -57,12 +57,12 @@ function renderDashboard() {
 
   // Fetch stats
   Promise.all([
-    fetch('http://localhost:3001/api/properties').then(r => r.json()),
-    fetch('http://localhost:3001/api/developers').then(r => r.json()),
-    fetch('http://localhost:3001/api/locations').then(r => r.json()),
-    fetch('http://localhost:3001/api/reviews').then(r => r.json()),
-    fetch('http://localhost:3001/api/amenities').then(r => r.json()),
-    fetch('http://localhost:3001/api/challenges').then(r => r.json())
+    fetch('https://real-estate-app-20a2.onrender.com/api/properties').then(r => r.json()),
+    fetch('https://real-estate-app-20a2.onrender.com/api/developers').then(r => r.json()),
+    fetch('https://real-estate-app-20a2.onrender.com/api/locations').then(r => r.json()),
+    fetch('https://real-estate-app-20a2.onrender.com/api/reviews').then(r => r.json()),
+    fetch('https://real-estate-app-20a2.onrender.com/api/amenities').then(r => r.json()),
+    fetch('https://real-estate-app-20a2.onrender.com/api/challenges').then(r => r.json())
   ]).then(([properties, developers, locations, reviews, amenities, challenges]) => {
     // Cards
     const cards = [
@@ -740,7 +740,7 @@ const TABLES = [
   }
 ];
 
-const API_BASE = 'http://localhost:3001/api/';
+const API_BASE = 'https://real-estate-app-20a2.onrender.com/api/';
 
 function renderSection(table) {
   const section = document.getElementById(table.id);
