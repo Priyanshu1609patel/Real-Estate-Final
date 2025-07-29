@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Real Estate Admin</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <header style="background:linear-gradient(135deg, #1a237e 0%, #3949ab 100%);color:#fff;padding:1.2rem 2.5rem;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 20px rgba(26,35,126,0.15);">
+    <div class="site-title" style="font-size:1.6rem;font-weight:800;letter-spacing:1.2px;text-shadow:0 2px 4px rgba(0,0,0,0.1);">Real Estate Admin</div>
+    <a href="../public/home_page.html" class="home-btn" style="background:#fff;color:#1a237e;padding:0.7rem 1.5rem;border-radius:12px;font-weight:700;text-decoration:none;box-shadow:0 4px 12px rgba(26,35,126,0.12);transition:all 0.3s ease;display:flex;align-items:center;gap:8px;"><i class="fas fa-home" style="font-size:0.9rem;"></i>Home Page</a>
+  </header>
+  <main class="auth-main">
+    <div class="auth-card">
+      <h2>Welcome Back</h2>
+      <form class="auth-form" id="login-form">
+        <div>
+          <label for="login-username">Username or Email</label>
+          <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input type="text" id="login-username" name="login-username" required autocomplete="username" placeholder="Enter your username or email">
+          </div>
+        </div>
+        <div>
+          <label for="login-password">Password</label>
+          <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="login-password" name="login-password" required autocomplete="current-password" placeholder="Enter your password">
+          </div>
+        </div>
+        <button type="submit">Sign In <i class="fas fa-arrow-right" style="margin-left:8px;"></i></button>
+      </form>
+      <p class="auth-switch">Don't have an account? <a href="register.html">Register Now</a></p>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('login-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      const username = formData.get('login-username');
+      const password = formData.get('login-password');
+      
+      // Basic validation
+      if (!username || !password) {
+        alert('Please fill in all fields!');
+        return;
+      }
+      
+      try {
+        const response = await fetch('http://localhost:3001/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: username,
+            password: password
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          // Store user data in localStorage for session management
+          localStorage.setItem('user', JSON.stringify(data.user));
+          localStorage.setItem('isLoggedIn', 'true');
+          
+          alert('Login successful! Welcome back.');
+          // Redirect to admin dashboard
+          window.location.href = 'index.html';
+        } else {
+          alert(data.error || 'Login failed!');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Login failed! Please check your connection and try again.');
+      }
+    });
+  </script>
+</body>
+</html>

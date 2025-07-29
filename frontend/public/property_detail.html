@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Details | Real Estate</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary: #10b981;
+      --accent: #f59e0b;
+      --text-dark: #1f2937;
+      --text-light: #6b7280;
+      --bg-white: #ffffff;
+      --bg-gray: #f8fafc;
+      --border: #e5e7eb;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-gray);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: white;
+      text-decoration: none;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      height: 400px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .hero-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.6);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      color: white;
+      padding: 3rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .hero-title {
+      font-size: 3rem;
+      font-weight: 900;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .hero-location {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      opacity: 0.9;
+    }
+
+    .hero-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
+
+    /* Main Content */
+    .main-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+    }
+
+    .main-section {
+      background: var(--bg-white);
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+    }
+
+    .sidebar {
+      background: var(--bg-white);
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .info-card {
+      background: var(--bg-gray);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+    }
+
+    .info-label {
+      font-size: 0.875rem;
+      color: var(--text-light);
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .info-value {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 0.375rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .badge-success { background: #dcfce7; color: #166534; }
+    .badge-warning { background: #fef3c7; color: #92400e; }
+    .badge-danger { background: #fee2e2; color: #991b1b; }
+    .badge-info { background: #dbeafe; color: #1e40af; }
+
+    .amenities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+
+    .amenity-item {
+      background: var(--bg-gray);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+
+    .quick-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--bg-gray);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--text-light);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .map-container {
+      height: 300px;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 1024px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-title { font-size: 2rem; }
+      .main-content { padding: 1rem; }
+      .info-grid { grid-template-columns: 1fr; }
+      .quick-stats { grid-template-columns: 1fr; }
+      .action-buttons { flex-direction: column; }
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+      color: var(--text-light);
+    }
+
+    .error {
+      background: #fee2e2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      margin: 1rem 0;
+    }
+
+    /* Update .modal-close-btn CSS for inside modal box */
+    .modal-close-btn {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #888;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 10;
+      transition: color 0.2s, background 0.2s;
+      border-radius: 50%;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-close-btn:hover {
+      color: #fff;
+      background: #2563eb;
+    }
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <a href="home_page.html" class="logo">
+        <i class="fas fa-home"></i>
+        <span>Real Estate</span>
+      </a>
+      <div class="nav-actions">
+        <a href="../admin/login.html" class="btn btn-secondary">
+          <i class="fas fa-user"></i>
+          Admin
+        </a>
+        <a href="home_page.html" class="btn btn-primary">
+          <i class="fas fa-chart-line"></i>
+          Compare
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <img id="heroBg" class="hero-bg" src="" alt="">
+    <div class="hero-content">
+      <h1 id="heroTitle" class="hero-title">Loading...</h1>
+      <div id="heroLocation" class="hero-location">Loading...</div>
+      <div id="heroPrice" class="hero-price">Loading...</div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-grid">
+      <!-- Main Content -->
+      <div class="main-content-area">
+        <div id="propertyDetailContainer">
+          <div class="loading">
+            <i class="fas fa-spinner fa-spin"></i>
+            <span>Loading property details...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="quick-stats">
+          <div class="stat-card">
+            <div class="stat-value" id="pricePerSqft">-</div>
+            <div class="stat-label">Price/sqft</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="totalUnits">-</div>
+            <div class="stat-label">Total Units</div>
+          </div>
+        </div>
+
+        <div class="main-section">
+          <h3 class="section-title">
+            <i class="fas fa-info-circle"></i>
+            Quick Info
+          </h3>
+          <div id="quickInfo"></div>
+        </div>
+
+        <div class="action-buttons">
+          <button onclick="openInsightsModal()" class="btn btn-primary" style="flex: 1;">
+            <i class="fas fa-chart-bar"></i>
+            Property Insights
+          </button>
+          <a href="home_page.html" class="btn btn-secondary" style="flex: 1; text-align: center;">
+            <i class="fas fa-compare"></i>
+            Compare
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Review Section -->
+    <div id="reviewSection" class="main-section"></div>
+
+    <!-- Connectivity Section -->
+    <div id="connectivitySection" class="main-section"></div>
+  </main>
+
+  <!-- Modal -->
+  <div id="insightsModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;">
+    <div style="background:white;border-radius:1rem;max-width:600px;width:95vw;padding:2rem;box-shadow:var(--shadow-lg);max-height:90vh;overflow-y:auto;position:relative;">
+      <button class="modal-close-btn" onclick="document.getElementById('insightsModal').style.display='none'">&times;</button>
+      <div id="insightsModalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = 'http://localhost:3001/api/properties/full';
+    const PLACEHOLDER_IMG = 'https://via.placeholder.com/1200x400?text=Property+Image';
+
+    function getQueryParam(name) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
+
+    async function fetchPropertyById(id) {
+      try {
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error('Failed to fetch properties');
+        const all = await res.json();
+        return all.find(p => p.id == id);
+      } catch {
+        return null;
+      }
+    }
+
+    async function fetchByProp(endpoint, property_id) {
+      try {
+        const res = await fetch(`http://localhost:3001/api/${endpoint}`);
+        if (!res.ok) return null;
+        const arr = await res.json();
+        return arr.find(x => x.property_id == property_id) || null;
+      } catch { return null; }
+    }
+
+    let cachedProperty = null;
+    let cachedSpecs = null;
+
+    async function renderHeroSection(p) {
+      const img = p.mainImage && p.mainImage !== '/images/placeholder-property.jpg' ? p.mainImage : PLACEHOLDER_IMG;
+      document.getElementById('heroBg').src = img;
+      document.getElementById('heroTitle').textContent = p.name || 'Property';
+      document.getElementById('heroLocation').textContent = `${p.location?.area_name || ''}, ${p.location?.city || ''}, ${p.location?.state || ''}`;
+      document.getElementById('heroPrice').textContent = `₹${p.min_price?.toLocaleString() || '-'} - ₹${p.max_price?.toLocaleString() || '-'}`;
+    }
+
+    function renderQuickInfo(p) {
+      const html = `
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-label">Property Type</div>
+            <div class="info-value">${p.property_type || '-'}</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Status</div>
+            <div class="info-value">${p.status || '-'}</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Possession Date</div>
+            <div class="info-value">${p.possession_date || '-'}</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Land Area</div>
+            <div class="info-value">${p.land_area_acres || '-'} acres</div>
+          </div>
+        </div>
+      `;
+      document.getElementById('quickInfo').innerHTML = html;
+      
+      // Update stats
+      document.getElementById('pricePerSqft').textContent = `₹${p.price_per_sqft?.toLocaleString() || '-'}`;
+      document.getElementById('totalUnits').textContent = p.total_units || '-';
+    }
+
+    async function renderPropertyDetail() {
+      const id = getQueryParam('id');
+      if (!id) {
+        document.getElementById('propertyDetailContainer').innerHTML = '<div class="error">No property selected.</div>';
+        return;
+      }
+
+      const p = await fetchPropertyById(id);
+      if (!p) {
+        document.getElementById('propertyDetailContainer').innerHTML = '<div class="error">Property not found.</div>';
+        return;
+      }
+
+      await renderHeroSection(p);
+      renderQuickInfo(p);
+
+      const [financial, legal, market, investment] = await Promise.all([
+        fetchByProp('financial_details', p.id),
+        fetchByProp('legal_details', p.id),
+        fetchByProp('market_analysis', p.id),
+        fetchByProp('investment_analysis', p.id)
+      ]);
+
+      cachedProperty = p;
+      cachedSpecs = { financial, legal, market, investment };
+
+      let html = '';
+
+      // Description
+      html += `<div class="main-section">
+        <h3 class="section-title"><i class="fas fa-align-left"></i>Description</h3>
+        <p>${p.description || 'No description available.'}</p>
+      </div>`;
+
+      // Developer
+      html += `<div class="main-section">
+        <h3 class="section-title"><i class="fas fa-building"></i>Developer</h3>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-label">Name</div>
+            <div class="info-value">${p.developer?.name || '-'}</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Website</div>
+            <div class="info-value">${p.developer?.website_url ? `<a href="${p.developer.website_url}" target="_blank">Visit Website</a>` : '-'}</div>
+          </div>
+        </div>
+      </div>`;
+
+      // Amenities
+      html += `<div class="main-section">
+        <h3 class="section-title"><i class="fas fa-concierge-bell"></i>Amenities</h3>
+        <div class="amenities-grid">
+          ${(p.amenities && p.amenities.length) ? 
+            p.amenities.map(a => `<div class="amenity-item">${a.name}</div>`).join('') : 
+            '<div class="amenity-item">No amenities listed</div>'
+          }
+        </div>
+      </div>`;
+
+      // Financial
+      html += `<div class="main-section">
+        <h3 class="section-title"><i class="fas fa-chart-line"></i>Financial Details</h3>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-label">Base Price/sqft</div>
+            <div class="info-value">₹${financial?.base_price_per_sqft || '-'}</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Registration %</div>
+            <div class="info-value">${financial?.registration_percentage || '-'}%</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">GST %</div>
+            <div class="info-value">${financial?.gst_percentage || '-'}%</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Maintenance/sqft</div>
+            <div class="info-value">₹${financial?.maintenance_per_sqft || '-'}</div>
+          </div>
+        </div>
+      </div>`;
+
+      // Legal
+      html += `<div class="main-section">
+        <h3 class="section-title"><i class="fas fa-gavel"></i>Legal Information</h3>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-label">RERA Registration</div>
+            <div class="info-value"><span class="badge ${legal?.rera_registration ? 'badge-success' : 'badge-danger'}">${legal?.rera_registration || 'Not Available'}</span></div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Commencement Cert.</div>
+            <div class="info-value"><span class="badge ${legal?.commencement_certificate ? 'badge-success' : 'badge-warning'}">${legal?.commencement_certificate || 'Pending'}</span></div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Occupancy Cert.</div>
+            <div class="info-value"><span class="badge ${legal?.occupancy_certificate ? 'badge-success' : 'badge-warning'}">${legal?.occupancy_certificate || 'Pending'}</span></div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Litigation Status</div>
+            <div class="info-value"><span class="badge ${legal?.litigation_status === 'Clear' ? 'badge-success' : 'badge-danger'}">${legal?.litigation_status || 'Unknown'}</span></div>
+          </div>
+        </div>
+      </div>`;
+
+      // Market Analysis
+      html += `<div class="main-section">
+        <h3 class="section-title"><i class="fas fa-chart-bar"></i>Market Analysis</h3>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-label">Current Avg Price/sqft</div>
+            <div class="info-value">₹${market?.current_avg_price_per_sqft || '-'}</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">1yr Appreciation</div>
+            <div class="info-value">${market?.price_appreciation_1year || '-'}%</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Resale Potential</div>
+            <div class="info-value"><span class="badge badge-${market?.resale_potential === 'High' ? 'success' : market?.resale_potential === 'Medium' ? 'warning' : 'info'}">${market?.resale_potential || 'Unknown'}</span></div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Market Segment</div>
+            <div class="info-value">${market?.market_segment || '-'}</div>
+          </div>
+        </div>
+      </div>`;
+
+      // Investment Analysis
+      html += `<div class="main-section">
+        <h3 class="section-title"><i class="fas fa-coins"></i>Investment Analysis</h3>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-label">Investment Type</div>
+            <div class="info-value">${investment?.investment_type || '-'}</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Annual Appreciation</div>
+            <div class="info-value">${investment?.annual_appreciation || '-'}%</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Total Returns (5yr)</div>
+            <div class="info-value">${investment?.total_returns_5year || '-'}%</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Risk Assessment</div>
+            <div class="info-value"><span class="badge badge-${investment?.risk_assessment === 'Low' ? 'success' : investment?.risk_assessment === 'Medium' ? 'warning' : 'danger'}">${investment?.risk_assessment || 'Unknown'}</span></div>
+          </div>
+        </div>
+      </div>`;
+
+      document.getElementById('propertyDetailContainer').innerHTML = html;
+    }
+
+    // Review Section
+    function renderReviewSection() {
+      const html = `
+        <h3 class="section-title"><i class="fas fa-star"></i>Property Review</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+          <div class="stat-card">
+            <div class="stat-value">16.00</div>
+            <div class="stat-label">Land Area (Acres)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">45000</div>
+            <div class="stat-label">Clubhouse Area (sqft)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">1.56</div>
+            <div class="stat-label">Park Area (Acres)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">85%</div>
+            <div class="stat-label">Open Area</div>
+          </div>
+        </div>
+      `;
+      document.getElementById('reviewSection').innerHTML = html;
+    }
+
+    // Connectivity Section
+    function renderConnectivitySection() {
+      // Example coordinates (property, metro, airport)
+      const propertyCoords = [13.0702, 77.6245]; // Example: Lodha Mirabelle
+      const locations = [
+        { type: 'Metro', name: 'Nagarwara Metro Station', dist: '1.32 Km', time: '5 mins', coords: [13.0456, 77.6201] },
+        { type: 'Railway', name: 'Thanisandra Railway Station', dist: '2.45 Km', time: '7 mins', coords: [13.0601, 77.6278] },
+        { type: 'Metro', name: 'Kodigehalli Metro Station', dist: '7.06 Km', time: '13 mins', coords: [13.0802, 77.5921] },
+        { type: 'Railway', name: 'SMVT Bengaluru Railway', dist: '7.62 Km', time: '17 mins', coords: [13.0092, 77.6271] },
+        { type: 'Metro', name: 'Hebbal Metro Station', dist: '8.35 Km', time: '14 mins', coords: [13.0458, 77.5912] },
+        { type: 'Airport', name: 'Kempegowda International Airport', dist: '28.97 Km', time: '40 mins', coords: [13.1986, 77.7066] }
+      ];
+      let html = `<h3 class="section-title"><i class="fas fa-map-marker-alt"></i>Connectivity</h3>
+        <div class="map-container" id="map"></div>
+        <div style='display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:1.5rem;'>`;
+      locations.forEach(loc => {
+        html += `<div class='info-card' style='min-width:180px;flex:1 1 180px;'>
+          <div class='info-label'>${loc.name}</div>
+          <div class='info-value'>${loc.type}</div>
+          <div style='font-size:0.98rem;color:#666;margin-top:0.2rem;'>${loc.dist} | ${loc.time}</div>
+        </div>`;
+      });
+      html += `</div>`;
+      document.getElementById('connectivitySection').innerHTML = html;
+      // Initialize Leaflet map
+      setTimeout(() => {
+        const map = L.map('map').setView(propertyCoords, 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+        // Property marker
+        L.marker(propertyCoords).addTo(map).bindPopup('Lodha Mirabelle (Property)').openPopup();
+        // Other locations
+        locations.forEach(loc => {
+          L.marker(loc.coords).addTo(map).bindPopup(`${loc.name} (${loc.type})<br>${loc.dist}, ${loc.time}`);
+        });
+      }, 100);
+    }
+
+    // Modal functions
+    const towerDetails = [
+      { floorCount: '28 floors', unitCount: '116 units', unitsPerFloor: '4 units per floor', elevatorCount: '3 elevators', elevatorRatio: '39 units / elevator', typologies: '2BHK, 3BHK' },
+      { floorCount: '28 floors', unitCount: '120 units', unitsPerFloor: '4 units per floor', elevatorCount: '3 elevators', elevatorRatio: '40 units / elevator', typologies: '2BHK, 3BHK' },
+      { floorCount: '28 floors', unitCount: '110 units', unitsPerFloor: '4 units per floor', elevatorCount: '3 elevators', elevatorRatio: '37 units / elevator', typologies: '2BHK, 3BHK' },
+      { floorCount: '28 floors', unitCount: '115 units', unitsPerFloor: '4 units per floor', elevatorCount: '3 elevators', elevatorRatio: '38 units / elevator', typologies: '2BHK, 3BHK' },
+      { floorCount: '28 floors', unitCount: '118 units', unitsPerFloor: '4 units per floor', elevatorCount: '3 elevators', elevatorRatio: '39 units / elevator', typologies: '2BHK, 3BHK' }
+    ];
+    let currentTower = 0;
+    function openInsightsModal() {
+      document.getElementById('insightsModal').style.display = 'flex';
+      renderInsightsModalContent();
+    }
+    function renderInsightsModalContent() {
+      const p = cachedProperty;
+      let html = `<h3 style="margin-top:0;">Property Specifications</h3>`;
+      html += `<div style='margin-bottom:1.2rem;'><b>${p?.name || ''}</b></div>`;
+      html += `<div style='display:grid;grid-template-columns:1fr 1fr;gap:1.2rem 1.5rem;'>`;
+      html += `<div><b>Towers</b><br>${p?.towers || '2 Towers'}</div>`;
+      html += `<div><b>Floors</b><br>${p?.floors || '28 Floors'}</div>`;
+      html += `<div><b>Achieved F.A.R.</b><br>${p?.far || '2.62'}</div>`;
+      html += `<div><b>Land Type</b><br>${p?.land_type || 'Commercial'}</div>`;
+      html += `<div><b>Water Source</b><br>${p?.water_source || 'BWSSB'}</div>`;
+      html += `<div><b>Development Rights</b><br>${p?.development_rights || 'Joint Development'}</div>`;
+      html += `<div><b>Unit Count</b><br>${p?.unit_count || '1100'}</div>`;
+      html += `</div>`;
+      html += `<hr style='margin:1.5rem 0 1.2rem 0;border:0;border-top:1.5px solid #eee;'>`;
+      html += `<div style='margin-bottom:0.7rem;font-weight:600;'>An average unit in project</div>`;
+      html += `<div style='display:grid;grid-template-columns:1fr 1fr;gap:1.2rem 1.5rem;margin-bottom:1.2rem;'>`;
+      html += `<div><b>Master Bedroom Area</b><br>182.63 sqft<div style='color:#888;font-size:0.95em;'>Most master bedrooms span 182.63 sqft here, while the average in Thanisandra Road is 146 sqft.</div></div>`;
+      html += `<div><b>Efficiency</b><br>63.40 %<div style='color:#888;font-size:0.95em;'>Calculated as Carpet Area / Saleable Area, it measures the architectural efficiency of a floor plan. The average in Thanisandra Road is 66%.</div></div>`;
+      html += `<div><b>Balcony Area Ratio</b><br>7.70 %<div style='color:#888;font-size:0.95em;'>Calculated as Total Balcony Area / Carpet Area, it denotes the openness in a floor plan. The average in Thanisandra Road is 8%.</div></div>`;
+      html += `<div><b>Floor Height</b><br>3.05 meters<div style='color:#888;font-size:0.95em;'>The height from the floor to the ceiling here is 3.05m, while the average in Thanisandra Road is 3 meters.</div></div>`;
+      html += `<div><b>Common Walls</b><br>0 % common walls<div style='color:#888;font-size:0.95em;'>This indicates how many walls are shared between two or more units. Most units in Thanisandra Road have 0% common walls.</div></div>`;
+      html += `<div><b>Per sqft. of Carpet Area</b><br>₹ 23084.20<div style='color:#888;font-size:0.95em;'>Calculated as Total Price / Carpet Area, it is the cost per sqft of unit's area. The average in Thanisandra Road is ₹16348.</div></div>`;
+      html += `</div>`;
+      html += `<hr style='margin:1.5rem 0 1.2rem 0;border:0;border-top:1.5px solid #eee;'>`;
+      html += `<div style='margin-bottom:0.7rem;font-weight:600;'>Towers</div>`;
+      html += `<div style='display:flex;align-items:center;gap:1.2rem;margin-bottom:1.2rem;'>
+        <button onclick='changeTower(-1)' style='font-size:1.3rem;padding:0.3rem 0.7rem;border-radius:6px;border:1px solid #ccc;background:#f5f6fa;cursor:pointer;'>&lt;</button>
+        <span style='font-size:1.1rem;font-weight:600;'>${currentTower+1}</span>
+        <button onclick='changeTower(1)' style='font-size:1.3rem;padding:0.3rem 0.7rem;border-radius:6px;border:1px solid #ccc;background:#f5f6fa;cursor:pointer;'>&gt;</button>
+        <span style='color:#888;font-size:0.98em;'>This configuration is in 3 towers</span>
+      </div>`;
+      const t = towerDetails[currentTower];
+      html += `<div style='display:grid;grid-template-columns:1fr 1fr;gap:1.2rem 1.5rem;'>`;
+      html += `<div><b>Floor Count</b><br>${t.floorCount}</div>`;
+      html += `<div><b>Unit Count</b><br>${t.unitCount}</div>`;
+      html += `<div><b>Units Per Floor</b><br>${t.unitsPerFloor}</div>`;
+      html += `<div><b>Elevator Count</b><br>${t.elevatorCount}</div>`;
+      html += `<div><b>Elevator Ratio</b><br>${t.elevatorRatio}</div>`;
+      html += `<div><b>Typologies</b><br>${t.typologies}</div>`;
+      html += `</div>`;
+      document.getElementById('insightsModalContent').innerHTML = html;
+    }
+    function changeTower(dir) {
+      currentTower += dir;
+      if (currentTower < 0) currentTower = 0;
+      if (currentTower >= towerDetails.length) currentTower = towerDetails.length - 1;
+      renderInsightsModalContent();
+    }
+
+    window.onload = () => {
+      renderPropertyDetail();
+      renderReviewSection();
+      renderConnectivitySection();
+    };
+  </script>
+</body>
+</html> 

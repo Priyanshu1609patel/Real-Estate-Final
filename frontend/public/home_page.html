@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Comparison | Real Estate Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary-color: #10b981;
+      --accent-color: #f59e0b;
+      --text-primary: #1f2937;
+      --text-secondary: #6b7280;
+      --text-light: #9ca3af;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8fafc;
+      --bg-tertiary: #f1f5f9;
+      --border-color: #e5e7eb;
+      --border-light: #f3f4f6;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+      --radius-sm: 0.375rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+      --radius-2xl: 1.5rem;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: var(--text-primary);
+      background: var(--bg-secondary);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: white;
+      text-decoration: none;
+    }
+
+    .logo i {
+      font-size: 1.75rem;
+      color: var(--accent-color);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-lg);
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: none;
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+
+    .btn-primary {
+      background: var(--accent-color);
+      color: white;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:hover {
+      background: #d97706;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: 4rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+      opacity: 0.3;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+      line-height: 1.1;
+      background: linear-gradient(135deg, #ffffff 0%, #fbbf24 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      margin-bottom: 2.5rem;
+      opacity: 0.9;
+      font-weight: 400;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      margin-top: 3rem;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--accent-color);
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      opacity: 0.8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Main Content */
+    .main-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Compare Section */
+    .compare-section {
+      background: var(--bg-primary);
+      border-radius: var(--radius-2xl);
+      box-shadow: var(--shadow-xl);
+      padding: 3rem;
+      margin-bottom: 3rem;
+      border: 1px solid var(--border-light);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .section-subtitle {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .compare-controls {
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      margin-bottom: 3rem;
+      border: 1px solid var(--border-color);
+    }
+
+    .compare-step {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+
+    .compare-step i {
+      color: var(--accent-color);
+    }
+
+    .select-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .select-wrapper {
+      position: relative;
+    }
+
+    .select-wrapper i {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
+      z-index: 1;
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 1rem 1rem 1rem 3rem;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      background: var(--bg-primary);
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      transition: all 0.2s ease;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .form-select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .form-select:hover {
+      border-color: var(--primary-color);
+    }
+
+    /* Comparison Grid */
+    .comparison-grid {
+      background: var(--bg-primary);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border-color);
+    }
+
+    .comparison-section {
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .comparison-section:last-child {
+      border-bottom: none;
+    }
+
+    .section-header-row {
+      background: var(--bg-tertiary);
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .section-header-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .comparison-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      min-height: 200px;
+    }
+
+    .comparison-cell {
+      padding: 2rem;
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .comparison-cell:last-child {
+      border-right: none;
+    }
+
+    .comparison-cell.empty {
+      background: var(--bg-secondary);
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    .property-image {
+      width: 100%;
+      max-width: 300px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: var(--radius-lg);
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow-md);
+      transition: transform 0.2s ease;
+    }
+
+    .property-image:hover {
+      transform: scale(1.02);
+    }
+
+    .property-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .property-subtitle {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .property-price {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--secondary-color);
+      margin-bottom: 1rem;
+    }
+
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+
+    .info-table td {
+      padding: 0.5rem 0.25rem;
+      border-bottom: 1px solid var(--border-light);
+      text-align: left;
+    }
+
+    .info-table td:first-child {
+      font-weight: 600;
+      color: var(--text-secondary);
+      width: 40%;
+    }
+
+    .info-table td:last-child {
+      color: var(--text-primary);
+    }
+
+    .info-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-success {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .badge-warning {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .badge-info {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .badge-danger {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero-stats {
+        gap: 2rem;
+      }
+
+      .stat-number {
+        font-size: 2rem;
+      }
+
+      .comparison-row {
+        grid-template-columns: 1fr;
+      }
+
+      .comparison-cell {
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .comparison-cell:last-child {
+        border-bottom: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .hero {
+        padding: 3rem 1rem;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .hero-stats {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .main-content {
+        padding: 1rem;
+      }
+
+      .compare-section {
+        padding: 2rem 1rem;
+    }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .select-group {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Loading States */
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      color: var(--text-secondary);
+    }
+
+    .loading i {
+      animation: spin 1s linear infinite;
+      margin-right: 0.5rem;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Error States */
+    .error {
+      background: #fee2e2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+      padding: 1rem;
+      border-radius: var(--radius-lg);
+      margin: 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Animations */
+    .fade-in {
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .slide-in {
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(-20px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .property-image-clickable:hover {
+      box-shadow: 0 0 0 4px var(--accent-color, #f59e0b33);
+      border-radius: 1rem;
+      transition: box-shadow 0.2s;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <a href="#" class="logo">
+        <i class="fas fa-home"></i>
+        <span>Real Estate Comparison</span>
+      </a>
+      <div class="nav-actions">
+        <a href="../admin/login.html" class="btn btn-secondary">
+          <i class="fas fa-user"></i>
+          Admin Login
+        </a>
+        <a href="#compare" class="btn btn-primary">
+          <i class="fas fa-chart-line"></i>
+          Compare Properties
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Find Your Perfect Property</h1>
+      <p>Compare and analyze real estate projects with comprehensive data. Make informed decisions with our advanced property comparison tool.</p>
+      
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-number">500+</span>
+          <span class="stat-label">Properties</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">50+</span>
+          <span class="stat-label">Developers</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">25+</span>
+          <span class="stat-label">Cities</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Compare Section -->
+    <section id="compare" class="compare-section fade-in">
+      <div class="section-header">
+        <h2 class="section-title">Compare Properties</h2>
+        <p class="section-subtitle">Select up to 3 properties to compare their features, financial details, and market analysis side by side.</p>
+      </div>
+
+      <div class="compare-controls">
+        <div class="compare-step">
+          <i class="fas fa-mouse-pointer"></i>
+          <span>Step 1: Select Properties to Compare</span>
+        </div>
+        
+        <div class="select-group">
+          <div class="select-wrapper">
+            <i class="fas fa-building"></i>
+            <select id="compare1" class="form-select">
+              <option value="">Select first property...</option>
+            </select>
+          </div>
+          <div class="select-wrapper">
+            <i class="fas fa-building"></i>
+            <select id="compare2" class="form-select">
+              <option value="">Select second property...</option>
+            </select>
+          </div>
+          <div class="select-wrapper">
+            <i class="fas fa-building"></i>
+            <select id="compare3" class="form-select">
+              <option value="">Select third property...</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div id="compareGrid" class="comparison-grid">
+        <div class="loading">
+          <i class="fas fa-spinner"></i>
+          <span>Loading properties...</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const API_URL = 'http://localhost:3001/api/properties/full';
+    const PLACEHOLDER_IMG = 'https://via.placeholder.com/300x180?text=No+Image';
+    let allProperties = [];
+
+    async function fetchProperties() {
+      try {
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error('Failed to fetch properties');
+        allProperties = await res.json();
+        populateSelects();
+        renderComparisonGrid();
+      } catch (e) {
+        document.getElementById('compareGrid').innerHTML = `
+          <div class="error">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>Error loading properties: ${e.message}</span>
+          </div>
+        `;
+      }
+    }
+
+    function populateSelects() {
+      const selects = [document.getElementById('compare1'), document.getElementById('compare2'), document.getElementById('compare3')];
+      selects.forEach((sel, idx) => {
+        sel.innerHTML = '<option value="">Select property...</option>';
+        allProperties.forEach((p, i) => {
+          sel.innerHTML += `<option value="${p.id}"${i === idx ? ' selected' : ''}>${p.name}</option>`;
+        });
+      });
+      selects.forEach(sel => sel.onchange = renderComparisonGrid);
+    }
+
+    async function renderComparisonGrid() {
+      const ids = [
+        document.getElementById('compare1').value,
+        document.getElementById('compare2').value,
+        document.getElementById('compare3').value
+      ];
+      const selected = ids.map(id => allProperties.find(p => p && p.id == id));
+      
+      // Fetch extra details for each property
+      const detailsPromises = selected.map(async (p) => {
+        if (!p) return null;
+        const pid = p.id;
+        
+        async function fetchByProp(endpoint) {
+          try {
+            const res = await fetch(`http://localhost:3001/api/${endpoint}`);
+            if (!res.ok) return null;
+            const arr = await res.json();
+            return arr.find(x => x.property_id == pid) || null;
+          } catch { return null; }
+        }
+        
+        const [financial, legal, market, investment] = await Promise.all([
+          fetchByProp('financial_details'),
+          fetchByProp('legal_details'),
+          fetchByProp('market_analysis'),
+          fetchByProp('investment_analysis')
+        ]);
+        return { ...p, financial, legal, market, investment };
+      });
+      
+      const fullDetails = await Promise.all(detailsPromises);
+      
+      function renderSection(title, icon, content) {
+        return `
+          <div class="comparison-section">
+            <div class="section-header-row">
+              <div class="section-header-title">
+                <i class="${icon}"></i>
+                <span>${title}</span>
+              </div>
+            </div>
+            <div class="comparison-row">
+              ${fullDetails.map(p => `
+                <div class="comparison-cell ${!p ? 'empty' : ''}">
+                  ${p ? content(p) : '<div>Select a property</div>'}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      let html = '';
+      
+      // Images Section
+      html += renderSection('Property Images', 'fas fa-images', (p) => `
+        <div class="property-image-clickable" onclick="window.location.href='property_detail.html?id=${p.id}'" style="cursor:pointer;">
+          <img src="${p.mainImage && p.mainImage !== '/images/placeholder-property.jpg' ? p.mainImage : PLACEHOLDER_IMG}" 
+               alt="${p.name}" class="property-image" onerror="this.src='${PLACEHOLDER_IMG}'">
+          <div class="property-title">${p.name || '-'}</div>
+          <div class="property-subtitle">${p.property_type || '-'} • ${p.status || '-'}</div>
+        </div>
+      `);
+
+      // Basic Info Section
+      html += renderSection('Basic Information', 'fas fa-info-circle', (p) => `
+        <div class="property-title">${p.name || '-'}</div>
+        <div class="property-subtitle">${p.property_type || '-'} • ${p.status || '-'}</div>
+        <div class="property-price">₹${p.min_price?.toLocaleString() || '-'} - ₹${p.max_price?.toLocaleString() || '-'}</div>
+        <table class="info-table">
+          <tr><td>Possession Date</td><td>${p.possession_date || '-'}</td></tr>
+          <tr><td>Description</td><td>${p.description ? p.description.substring(0,100)+(p.description.length>100?'...':'') : '-'}</td></tr>
+        </table>
+      `);
+
+      // Developer Section
+      html += renderSection('Developer Details', 'fas fa-user-tie', (p) => `
+        <div class="property-title">${p.developer?.name || '-'}</div>
+        <table class="info-table">
+          <tr><td>Website</td><td>${p.developer?.website_url ? `<a href="${p.developer.website_url}" target="_blank">Visit Website</a>` : '-'}</td></tr>
+          <tr><td>Established</td><td>${p.developer?.established_year || '-'}</td></tr>
+          <tr><td>Projects</td><td>${p.developer?.completed_projects || '-'}</td></tr>
+        </table>
+      `);
+
+      // Location Section
+      html += renderSection('Location Details', 'fas fa-map-marker-alt', (p) => `
+        <div class="property-title">${p.location?.area_name || '-'}</div>
+        <table class="info-table">
+            <tr><td>City</td><td>${p.location?.city || '-'}</td></tr>
+            <tr><td>State</td><td>${p.location?.state || '-'}</td></tr>
+          <tr><td>Pincode</td><td>${p.location?.pincode || '-'}</td></tr>
+        </table>
+      `);
+
+      // Amenities Section
+      html += renderSection('Amenities', 'fas fa-concierge-bell', (p) => `
+        <div class="property-title">Available Amenities</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center;">
+          ${(p.amenities && p.amenities.length) ? 
+            p.amenities.map(a => `<span class="badge badge-success">${a.name}</span>`).join('') : 
+            '<span class="badge badge-info">No amenities listed</span>'
+          }
+        </div>
+      `);
+
+      // Financial Section
+      html += renderSection('Financial Details', 'fas fa-chart-line', (p) => `
+        <div class="property-title">Financial Information</div>
+        <table class="info-table">
+          <tr><td>Base Price/sqft</td><td>₹${p.financial?.base_price_per_sqft || '-'}</td></tr>
+          <tr><td>Premium Charges</td><td>₹${p.financial?.premium_charges_per_sqft || '-'}</td></tr>
+          <tr><td>Registration %</td><td>${p.financial?.registration_percentage || '-'}%</td></tr>
+          <tr><td>GST %</td><td>${p.financial?.gst_percentage || '-'}%</td></tr>
+          <tr><td>Maintenance/sqft</td><td>₹${p.financial?.maintenance_per_sqft || '-'}</td></tr>
+          <tr><td>Parking Charges</td><td>₹${p.financial?.parking_charges || '-'}</td></tr>
+        </table>
+      `);
+
+      // Legal Section
+      html += renderSection('Legal Information', 'fas fa-gavel', (p) => `
+        <div class="property-title">Legal Compliance</div>
+        <table class="info-table">
+          <tr><td>RERA Registration</td><td><span class="badge ${p.legal?.rera_registration ? 'badge-success' : 'badge-danger'}">${p.legal?.rera_registration || 'Not Available'}</span></td></tr>
+          <tr><td>Commencement Cert.</td><td><span class="badge ${p.legal?.commencement_certificate ? 'badge-success' : 'badge-warning'}">${p.legal?.commencement_certificate || 'Pending'}</span></td></tr>
+          <tr><td>Occupancy Cert.</td><td><span class="badge ${p.legal?.occupancy_certificate ? 'badge-success' : 'badge-warning'}">${p.legal?.occupancy_certificate || 'Pending'}</span></td></tr>
+          <tr><td>Approved Plan</td><td><span class="badge ${p.legal?.approved_plan ? 'badge-success' : 'badge-danger'}">${p.legal?.approved_plan || 'Not Available'}</span></td></tr>
+          <tr><td>Litigation Status</td><td><span class="badge ${p.legal?.litigation_status === 'Clear' ? 'badge-success' : 'badge-danger'}">${p.legal?.litigation_status || 'Unknown'}</span></td></tr>
+        </table>
+      `);
+
+      // Market Analysis Section
+      html += renderSection('Market Analysis', 'fas fa-chart-bar', (p) => `
+        <div class="property-title">Market Insights</div>
+        <table class="info-table">
+          <tr><td>Current Avg Price/sqft</td><td>₹${p.market?.current_avg_price_per_sqft || '-'}</td></tr>
+          <tr><td>1yr Appreciation</td><td>${p.market?.price_appreciation_1year || '-'}%</td></tr>
+          <tr><td>3yr Appreciation</td><td>${p.market?.price_appreciation_3year || '-'}%</td></tr>
+          <tr><td>Market Segment</td><td>${p.market?.market_segment || '-'}</td></tr>
+          <tr><td>Resale Potential</td><td><span class="badge badge-${p.market?.resale_potential === 'High' ? 'success' : p.market?.resale_potential === 'Medium' ? 'warning' : 'info'}">${p.market?.resale_potential || 'Unknown'}</span></td></tr>
+        </table>
+      `);
+
+      // Investment Analysis Section
+      html += renderSection('Investment Analysis', 'fas fa-coins', (p) => `
+        <div class="property-title">Investment Potential</div>
+        <table class="info-table">
+          <tr><td>Investment Type</td><td>${p.investment?.investment_type || '-'}</td></tr>
+          <tr><td>Entry Cost</td><td>₹${p.investment?.entry_cost || '-'}</td></tr>
+          <tr><td>Annual Rental Income</td><td>₹${p.investment?.annual_rental_income || '-'}</td></tr>
+          <tr><td>Annual Appreciation</td><td>${p.investment?.annual_appreciation || '-'}%</td></tr>
+          <tr><td>Total Returns (5yr)</td><td>${p.investment?.total_returns_5year || '-'}%</td></tr>
+          <tr><td>IRR %</td><td>${p.investment?.irr_percentage || '-'}%</td></tr>
+          <tr><td>Risk Assessment</td><td><span class="badge badge-${p.investment?.risk_assessment === 'Low' ? 'success' : p.investment?.risk_assessment === 'Medium' ? 'warning' : 'danger'}">${p.investment?.risk_assessment || 'Unknown'}</span></td></tr>
+        </table>
+      `);
+
+      document.getElementById('compareGrid').innerHTML = html;
+    }
+
+    window.onload = fetchProperties;
+  </script>
+</body>
+</html> 
