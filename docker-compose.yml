@@ -1,0 +1,40 @@
+version: "3.8"
+services:
+  backend:
+    build: .
+    container_name: real_estate_backend
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend:/app/backend
+      - ./frontend:/app/frontend
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: "root"
+      DB_NAME: real-estate-database   # <-- FIXED
+    networks:
+      - real_estate_net
+
+  db:
+    image: mysql:8
+    container_name: real_estate_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: real-estate-database   # <-- FIXED
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./Real-Estate.sql:/docker-entrypoint-initdb.d/Real-Estate.sql
+    networks:
+      - real_estate_net
+
+networks:
+  real_estate_net:
+
+volumes:
+  db_data:

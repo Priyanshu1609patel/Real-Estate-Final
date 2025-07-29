@@ -929,7 +929,7 @@ INSERT INTO investment_analysis (property_id, investment_type, entry_cost, annua
 (3, 'Affordable Premium', 4200000, 180000, 210000, 75000, 6800000, 10.5, 16, 'Medium', 'Medium', 'Section 80C, Section 24', 'B');
 
 -- Remaining unique indexes from your query (duplicates removed)
-CREATE INDEX idx_properties_location ON properties(location);
+CREATE INDEX idx_properties_location ON properties(location_id);
 CREATE INDEX idx_properties_price_range ON properties(price_range);
 CREATE INDEX idx_unit_types_property ON unit_types(property_id);
 CREATE INDEX idx_unit_types_price ON unit_types(price_per_sqft);

@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const db = require('./db');
 
 const app = express();
@@ -9,6 +10,12 @@ app.use(express.json());
 
 // Serve static files from the frontend/public directory
 app.use(express.static(path.join(__dirname, '../frontend/public')));
+
+// Serve files from /public path as well
+app.use('/public', express.static(path.join(__dirname, '../frontend/public')));
+
+// Serve admin files from the frontend/admin directory
+app.use('/admin', express.static(path.join(__dirname, '../frontend/admin')));
 
 // Serve the home page as the default route
 app.get('/', (req, res) => {

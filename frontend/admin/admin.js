@@ -155,7 +155,7 @@ function renderDashboard() {
             `).join('')}
           </tbody>
         </table>
-        </div>
+      </div>
       </div>
       <div style='flex:1 1 420px;min-width:320px;margin-left:0.1rem;'>
         <h4 style="margin-bottom:0.7em;font-size:1.13rem;color:#182848;font-weight:700;">Recent Reviews</h4>
@@ -857,27 +857,27 @@ function fetchAndRenderTableWithSearch(table) {
       let mainCol = table.columns.find(col => col.key === 'name') || table.columns.find(col => typeof allData[0]?.[col.key] === 'string');
       if (!mainCol) mainCol = table.columns[0];
       function renderRows(filtered) {
-        tbody.innerHTML = '';
+      tbody.innerHTML = '';
         if (!filtered.length) {
-          tbody.innerHTML = `<tr><td colspan="${table.columns.length + 1}">No data found.</td></tr>`;
-          return;
-        }
+        tbody.innerHTML = `<tr><td colspan="${table.columns.length + 1}">No data found.</td></tr>`;
+        return;
+      }
         filtered.forEach(row => {
-          const tr = document.createElement('tr');
-          tr.innerHTML = table.columns.map(col => `<td>${row[col.key] !== undefined && row[col.key] !== null ? row[col.key] : ''}</td>`).join('') +
-            `<td class="actions">
-              <button class="edit">Edit</button>
-              <button class="delete">Delete</button>
-            </td>`;
-          tr.querySelector('.edit').onclick = () => renderForm(table, row);
-          tr.querySelector('.delete').onclick = () => {
-            if (confirm('Delete this record?')) {
-              fetch(API_BASE + table.api + '/' + row.id, { method: 'DELETE' })
+        const tr = document.createElement('tr');
+        tr.innerHTML = table.columns.map(col => `<td>${row[col.key] !== undefined && row[col.key] !== null ? row[col.key] : ''}</td>`).join('') +
+          `<td class="actions">
+            <button class="edit">Edit</button>
+            <button class="delete">Delete</button>
+          </td>`;
+        tr.querySelector('.edit').onclick = () => renderForm(table, row);
+        tr.querySelector('.delete').onclick = () => {
+          if (confirm('Delete this record?')) {
+            fetch(API_BASE + table.api + '/' + row.id, { method: 'DELETE' })
                 .then(() => fetchAndRenderTableWithSearch(table));
-            }
-          };
-          tbody.appendChild(tr);
-        });
+          }
+        };
+        tbody.appendChild(tr);
+      });
       }
       renderRows(allData);
       searchInput.oninput = function() {
