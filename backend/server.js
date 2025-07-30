@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const { pool, query } = require('./db'); // Import pool and query from db.js
+const { pool, query, checkConnection } = require('./db'); // Import pool, query, and checkConnection from db.js
 
 const app = express();
 app.use(cors());

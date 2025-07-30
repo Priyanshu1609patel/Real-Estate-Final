@@ -31,3 +31,6 @@ module.exports = {
   query: pool.query,
   checkConnection
 };
+
+// Export the checkConnection function for server.js
+module.exports.checkConnection = checkConnection;
