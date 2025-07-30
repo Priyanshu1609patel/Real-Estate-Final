@@ -26,29 +26,10 @@ async function checkConnection(retries = 10, delay = 5000) {
   throw new Error('❌ Could not connect to PostgreSQL after several attempts');
 }
 
-async function setupIndexes() {
-  try {
-    console.log('Setting up database indexes...');
-    
-    // Create indexes for frequently joined columns
-    await pool.query('CREATE INDEX IF NOT EXISTS idx_properties_developer ON properties(developer_id)');
-    await pool.query('CREATE INDEX IF NOT EXISTS idx_properties_location ON properties(location_id)');
-    await pool.query('CREATE INDEX IF NOT EXISTS idx_property_amenities_property ON property_amenities(property_id)');
-    await pool.query('CREATE INDEX IF NOT EXISTS idx_property_amenities_amenity ON property_amenities(amenity_id)');
-    await pool.query('CREATE INDEX IF NOT EXISTS idx_property_gallery_property ON property_gallery(property_id)');
-    
-    console.log('Indexes created successfully');
-  } catch (err) {
-    console.error('Error setting up indexes:', err);
-    throw err;
-  }
-}
-
 module.exports = {
   pool,
   query: pool.query,
-  checkConnection,
-  setupIndexes
+  checkConnection
 };
 
 // Export the checkConnection function for server.js

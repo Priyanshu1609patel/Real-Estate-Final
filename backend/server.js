@@ -26,7 +26,6 @@ const PORT = process.env.PORT || 3001;
 async function startServer() {
   try {
     await checkConnection(); // ✅ Wait for PostgreSQL
-    await setupIndexes(); // Create necessary indexes for better query performance
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
     });
