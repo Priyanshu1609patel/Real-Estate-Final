@@ -600,15 +600,23 @@ app.post('/api/timeline', (req, res) => {
 });
 
 app.get('/api/timeline', (req, res) => {
-  db.query('SELECT * FROM timeline', (err, results) => {
-    if (err) return res.status(500).json({ error: err });
-    res.json(results);
+  console.log('Fetching timeline data...');
+  pool.query('SELECT * FROM timeline', (err, results) => {
+    if (err) {
+      console.error('Timeline query error:', err);
+      return res.status(500).json({ 
+        error: 'Failed to fetch timeline data',
+        details: err.message
+      });
+    }
+    console.log('Timeline data fetched:', results.rows.length);
+    res.json(results.rows);
   });
 });
 
 app.post('/api/financial_details', (req, res) => {
   const data = sanitizeData(req.body, schemas.financial_details);
-  db.query('INSERT INTO financial_details SET ?', data, (err, result) => {
+  pool.query('INSERT INTO financial_details (property_id, base_price_per_sqft) VALUES ($1, $2) RETURNING *', [data.property_id, data.base_price_per_sqft], (err, result) => {
     if (err) {
       console.error('DB Insert Error:', err);
       return res.status(500).json({ error: err });
@@ -618,15 +626,23 @@ app.post('/api/financial_details', (req, res) => {
 });
 
 app.get('/api/financial_details', (req, res) => {
-  db.query('SELECT * FROM financial_details', (err, results) => {
-    if (err) return res.status(500).json({ error: err });
-    res.json(results);
+  console.log('Fetching financial details...');
+  pool.query('SELECT * FROM financial_details', (err, results) => {
+    if (err) {
+      console.error('Financial details query error:', err);
+      return res.status(500).json({ 
+        error: 'Failed to fetch financial details',
+        details: err.message
+      });
+    }
+    console.log('Financial details fetched:', results.rows.length);
+    res.json(results.rows);
   });
 });
 
 app.post('/api/market_analysis', (req, res) => {
   const data = sanitizeData(req.body, schemas.market_analysis);
-  db.query('INSERT INTO market_analysis SET ?', data, (err, result) => {
+  pool.query('INSERT INTO market_analysis (property_id, current_avg_price_per_sqft, price_appreciation_1year, price_appreciation_3year, price_appreciation_5year, demand_supply_ratio, inventory_months, similar_properties_count, market_segment, buyer_profile, resale_potential, rental_demand) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *', [data.property_id, data.current_avg_price_per_sqft, data.price_appreciation_1year, data.price_appreciation_3year, data.price_appreciation_5year, data.demand_supply_ratio, data.inventory_months, data.similar_properties_count, data.market_segment, data.buyer_profile, data.resale_potential, data.rental_demand], (err, result) => {
     if (err) {
       console.error('DB Insert Error:', err);
       return res.status(500).json({ error: err });
@@ -636,15 +652,23 @@ app.post('/api/market_analysis', (req, res) => {
 });
 
 app.get('/api/market_analysis', (req, res) => {
-  db.query('SELECT * FROM market_analysis', (err, results) => {
-    if (err) return res.status(500).json({ error: err });
-    res.json(results);
+  console.log('Fetching market analysis...');
+  pool.query('SELECT * FROM market_analysis', (err, results) => {
+    if (err) {
+      console.error('Market analysis query error:', err);
+      return res.status(500).json({ 
+        error: 'Failed to fetch market analysis',
+        details: err.message
+      });
+    }
+    console.log('Market analysis fetched:', results.rows.length);
+    res.json(results.rows);
   });
 });
 
 app.post('/api/reviews', (req, res) => {
   const data = sanitizeData(req.body, schemas.reviews);
-  db.query('INSERT INTO reviews SET ?', data, (err, result) => {
+  pool.query('INSERT INTO reviews (property_id, rating, comment, created_at) VALUES ($1, $2, $3, CURRENT_TIMESTAMP) RETURNING *', [data.property_id, data.rating, data.comment], (err, result) => {
     if (err) {
       console.error('DB Insert Error:', err);
       return res.status(500).json({ error: err });
@@ -654,15 +678,23 @@ app.post('/api/reviews', (req, res) => {
 });
 
 app.get('/api/reviews', (req, res) => {
-  db.query('SELECT * FROM reviews', (err, results) => {
-    if (err) return res.status(500).json({ error: err });
-    res.json(results);
+  console.log('Fetching reviews...');
+  pool.query('SELECT * FROM reviews', (err, results) => {
+    if (err) {
+      console.error('Reviews query error:', err);
+      return res.status(500).json({ 
+        error: 'Failed to fetch reviews',
+        details: err.message
+      });
+    }
+    console.log('Reviews fetched:', results.rows.length);
+    res.json(results.rows);
   });
 });
 
 app.post('/api/legal_details', (req, res) => {
   const data = sanitizeData(req.body, schemas.legal_details);
-  db.query('INSERT INTO legal_details SET ?', data, (err, result) => {
+  pool.query('INSERT INTO legal_details (property_id, rera_registration, commencement_certificate, occupancy_certificate, approved_plan, deviation_status, litigation_status, title_verification, bank_approvals, insurance_coverage, compliance_status, legal_opinion) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *', [data.property_id, data.rera_registration, data.commencement_certificate, data.occupancy_certificate, data.approved_plan, data.deviation_status, data.litigation_status, data.title_verification, data.bank_approvals, data.insurance_coverage, data.compliance_status, data.legal_opinion], (err, result) => {
     if (err) {
       console.error('DB Insert Error:', err);
       return res.status(500).json({ error: err });
@@ -672,15 +704,23 @@ app.post('/api/legal_details', (req, res) => {
 });
 
 app.get('/api/legal_details', (req, res) => {
-  db.query('SELECT * FROM legal_details', (err, results) => {
-    if (err) return res.status(500).json({ error: err });
-    res.json(results);
+  console.log('Fetching legal details...');
+  pool.query('SELECT * FROM legal_details', (err, results) => {
+    if (err) {
+      console.error('Legal details query error:', err);
+      return res.status(500).json({ 
+        error: 'Failed to fetch legal details',
+        details: err.message
+      });
+    }
+    console.log('Legal details fetched:', results.rows.length);
+    res.json(results.rows);
   });
 });
 
 app.post('/api/investment_analysis', (req, res) => {
   const data = sanitizeData(req.body, schemas.investment_analysis);
-  db.query('INSERT INTO investment_analysis SET ?', data, (err, result) => {
+  pool.query('INSERT INTO investment_analysis (property_id, investment_type, entry_cost, annual_rental_income, annual_appreciation, maintenance_cost, total_returns_5year, irr_percentage, payback_period_years, risk_assessment, liquidity_rating, tax_benefits, investment_grade) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *', [data.property_id, data.investment_type, data.entry_cost, data.annual_rental_income, data.annual_appreciation, data.maintenance_cost, data.total_returns_5year, data.irr_percentage, data.payback_period_years, data.risk_assessment, data.liquidity_rating, data.tax_benefits, data.investment_grade], (err, result) => {
     if (err) {
       console.error('DB Insert Error:', err);
       return res.status(500).json({ error: err });
@@ -690,9 +730,17 @@ app.post('/api/investment_analysis', (req, res) => {
 });
 
 app.get('/api/investment_analysis', (req, res) => {
-  db.query('SELECT * FROM investment_analysis', (err, results) => {
-    if (err) return res.status(500).json({ error: err });
-    res.json(results);
+  console.log('Fetching investment analysis...');
+  pool.query('SELECT * FROM investment_analysis', (err, results) => {
+    if (err) {
+      console.error('Investment analysis query error:', err);
+      return res.status(500).json({ 
+        error: 'Failed to fetch investment analysis',
+        details: err.message
+      });
+    }
+    console.log('Investment analysis fetched:', results.rows.length);
+    res.json(results.rows);
   });
 });
 
