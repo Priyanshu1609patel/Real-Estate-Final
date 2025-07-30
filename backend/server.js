@@ -26,6 +26,7 @@ const PORT = process.env.PORT || 3001;
 async function startServer() {
   try {
     await checkConnection(); // ✅ Wait for PostgreSQL
+    await setupIndexes(); // Create necessary indexes for better query performance
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
     });
@@ -211,14 +212,25 @@ app.get('/api/users', (req, res) => {
 app.get('/api/properties/full', async (req, res) => {
   try {
     // Get all properties with developer and location info
+    console.log('Fetching properties...');
     const properties = await new Promise((resolve, reject) => {
       pool.query(`
-        SELECT p.*, d.name AS developer_name, d.website_url, l.area_name, l.city, l.state
+        SELECT 
+          p.*, 
+          d.name AS developer_name, 
+          d.website_url, 
+          l.area_name, 
+          l.city, 
+          l.state
         FROM properties p
         LEFT JOIN developers d ON p.developer_id = d.id
         LEFT JOIN locations l ON p.location_id = l.id
       `, (err, result) => {
-        if (err) return reject(err);
+        if (err) {
+          console.error('Properties query error:', err);
+          return reject(err);
+        }
+        console.log('Properties fetched:', result.rows.length);
         resolve(result.rows);
       });
     });
@@ -226,16 +238,25 @@ app.get('/api/properties/full', async (req, res) => {
     if (!properties.length) return res.json([]);
 
     // Get all amenities and galleries in parallel
+    console.log('Fetching amenities and galleries...');
     const [galleries, amenities] = await Promise.all([
       new Promise((resolve, reject) => {
         pool.query('SELECT * FROM property_gallery', (err, result) => {
-          if (err) return reject(err);
+          if (err) {
+            console.error('Gallery query error:', err);
+            return reject(err);
+          }
+          console.log('Galleries fetched:', result.rows.length);
           resolve(result.rows);
         });
       }),
       new Promise((resolve, reject) => {
         pool.query('SELECT pa.property_id, a.name, a.category FROM property_amenities pa LEFT JOIN amenities a ON pa.amenity_id = a.id WHERE pa.available = 1', (err, result) => {
-          if (err) return reject(err);
+          if (err) {
+            console.error('Amenities query error:', err);
+            return reject(err);
+          }
+          console.log('Amenities fetched:', result.rows.length);
           resolve(result.rows);
         });
       })
@@ -252,17 +273,21 @@ app.get('/api/properties/full', async (req, res) => {
     const galleryMap = {};
     galleries.forEach(g => {
       if (!galleryMap[g.property_id]) galleryMap[g.property_id] = [];
-      galleryMap[g.property_id].push(g);
+      galleryMap[g.property_id].push({
+        id: g.id,
+        image_url: g.image_url || `/images/placeholder-property.jpg`,
+        property_id: g.property_id
+      });
     });
 
     // Compose full property objects
     const fullProperties = properties.map(p => {
       const images = galleryMap[p.id] || [];
-      let mainImage = images.length ? images[0].image_url : null;
-      if (!mainImage) mainImage = `/images/placeholder-property.jpg`;
+      const mainImage = images.length ? images[0].image_url : `/images/placeholder-property.jpg`;
       return {
         ...p,
         mainImage,
+        images,
         amenities: amenitiesMap[p.id] || [],
         developer: {
           name: p.developer_name,
@@ -276,10 +301,14 @@ app.get('/api/properties/full', async (req, res) => {
       };
     });
 
+    console.log('Sending response with', fullProperties.length, 'properties');
     res.json(fullProperties);
   } catch (err) {
-    console.error('Error in properties/full:', err);
-    res.status(500).json({ error: 'Failed to fetch property details' });
+    console.error('Error in properties/full endpoint:', err);
+    res.status(500).json({ 
+      error: 'Failed to fetch property details',
+      details: err.message
+    });
   }
 });
 
