@@ -1,16 +1,19 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
-const pool = new Pool({
-  host: 'dpg-d24agbvgi27c73dd2u4g-a.singapore-postgres.render.com',
-  user: 'real_estate_user',
-  password: 'KexjQ06hwfyawgcOuQrcegm4XzcVskgg',
-  database: 'real_estate_db_m1j4',
-  port: 5432,
-  ssl: {
-    rejectUnauthorized: false
-  }
-});
+const pool = process.env.DATABASE_URL
+  ? new Pool({
+      connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false }
+    })
+  : new Pool({
+      host: process.env.DB_HOST || 'real_estate_db', // container name from docker-compose
+      user: process.env.DB_USER || 'root',
+      password: process.env.DB_PASSWORD || 'root',
+      database: process.env.DB_NAME || 'real-estate-database',
+      port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
+      ssl: false
+    });
 
 async function checkConnection(retries = 10, delay = 5000) {
   for (let i = 0; i < retries; i++) {
