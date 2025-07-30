@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const db = require('./db'); // Import checkConnection from db.js
+const { pool, query } = require('./db'); // Import pool and query from db.js
 
 const app = express();
 app.use(cors());
@@ -140,7 +140,9 @@ const schemas = {
 
 app.post('/api/developers', (req, res) => {
   const data = sanitizeData(req.body, schemas.developers);
-  db.query('INSERT INTO developers SET ?', data, (err, result) => {
+  const columns = Object.keys(data).map(key => `${key} = $${Object.keys(data).indexOf(key) + 1}`).join(', ');
+  const values = Object.values(data);
+  db.query(`INSERT INTO developers (${columns})`, values, (err, result) => {
     if (err) {
       console.error('DB Insert Error:', err);
       return res.status(500).json({ error: err });
@@ -151,8 +153,11 @@ app.post('/api/developers', (req, res) => {
 
 app.get('/api/developers', (req, res) => {
   db.query('SELECT * FROM developers', (err, results) => {
-    if (err) return res.status(500).json({ error: err });
-    res.json(results);
+    if (err) {
+      console.error('DB Query Error:', err);
+      return res.status(500).json({ error: err });
+    }
+    res.json(results.rows);
   });
 });
 
@@ -206,67 +211,81 @@ app.get('/api/users', (req, res) => {
 app.get('/api/properties/full', async (req, res) => {
   try {
     // Get all properties with developer and location info
-    db.query(`
-      SELECT p.*, d.name AS developer_name, d.website_url, l.area_name, l.city, l.state
-      FROM properties p
-      LEFT JOIN developers d ON p.developer_id = d.id
-      LEFT JOIN locations l ON p.location_id = l.id
-    `, async (err, properties) => {
-      if (err) return res.status(500).json({ error: err });
-      if (!properties.length) return res.json([]);
-
-      // Get all amenities, galleries, etc. in parallel
-      db.query('SELECT * FROM property_gallery', (err, galleries) => {
-        if (err) return res.status(500).json({ error: err });
-        db.query('SELECT pa.property_id, a.name, a.category FROM property_amenities pa LEFT JOIN amenities a ON pa.amenity_id = a.id WHERE pa.available = 1', (err, amenities) => {
-          if (err) return res.status(500).json({ error: err });
-
-          // Map amenities by property_id
-          const amenitiesMap = {};
-          amenities.forEach(a => {
-            if (!amenitiesMap[a.property_id]) amenitiesMap[a.property_id] = [];
-            amenitiesMap[a.property_id].push({ name: a.name, category: a.category });
-          });
-
-          // Map galleries by property_id (pick first image as main)
-          const galleryMap = {};
-          galleries.forEach(g => {
-            if (!galleryMap[g.property_id]) galleryMap[g.property_id] = [];
-            galleryMap[g.property_id].push(g);
-          });
-
-          // Compose full property objects
-          const fullProperties = properties.map(p => {
-            const images = galleryMap[p.id] || [];
-            let mainImage = images.length ? images[0].image_url : null;
-            if (!mainImage) mainImage = `/images/placeholder-property.jpg`;
-            return {
-              ...p,
-              mainImage,
-              amenities: amenitiesMap[p.id] || [],
-              developer: {
-                name: p.developer_name,
-                website_url: p.website_url
-              },
-              location: {
-                area_name: p.area_name,
-                city: p.city,
-                state: p.state
-              }
-            };
-          });
-
-          res.json(fullProperties);
-        });
+    const properties = await new Promise((resolve, reject) => {
+      pool.query(`
+        SELECT p.*, d.name AS developer_name, d.website_url, l.area_name, l.city, l.state
+        FROM properties p
+        LEFT JOIN developers d ON p.developer_id = d.id
+        LEFT JOIN locations l ON p.location_id = l.id
+      `, (err, result) => {
+        if (err) return reject(err);
+        resolve(result.rows);
       });
     });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
+
+    if (!properties.length) return res.json([]);
+
+    // Get all amenities and galleries in parallel
+    const [galleries, amenities] = await Promise.all([
+      new Promise((resolve, reject) => {
+        pool.query('SELECT * FROM property_gallery', (err, result) => {
+          if (err) return reject(err);
+          resolve(result.rows);
+        });
+      }),
+      new Promise((resolve, reject) => {
+        pool.query('SELECT pa.property_id, a.name, a.category FROM property_amenities pa LEFT JOIN amenities a ON pa.amenity_id = a.id WHERE pa.available = 1', (err, result) => {
+          if (err) return reject(err);
+          resolve(result.rows);
+        });
+      })
+    ]);
+
+    // Map amenities by property_id
+    const amenitiesMap = {};
+    amenities.forEach(a => {
+      if (!amenitiesMap[a.property_id]) amenitiesMap[a.property_id] = [];
+      amenitiesMap[a.property_id].push({ name: a.name, category: a.category });
+    });
+
+    // Map galleries by property_id (pick first image as main)
+    const galleryMap = {};
+    galleries.forEach(g => {
+      if (!galleryMap[g.property_id]) galleryMap[g.property_id] = [];
+      galleryMap[g.property_id].push(g);
+    });
+
+    // Compose full property objects
+    const fullProperties = properties.map(p => {
+      const images = galleryMap[p.id] || [];
+      let mainImage = images.length ? images[0].image_url : null;
+      if (!mainImage) mainImage = `/images/placeholder-property.jpg`;
+      return {
+        ...p,
+        mainImage,
+        amenities: amenitiesMap[p.id] || [],
+        developer: {
+          name: p.developer_name,
+          website_url: p.website_url
+        },
+        location: {
+          area_name: p.area_name,
+          city: p.city,
+          state: p.state
+        }
+      };
+    });
+
+    res.json(fullProperties);
+  } catch (err) {
+    console.error('Error in properties/full:', err);
+    res.status(500).json({ error: 'Failed to fetch property details' });
   }
 });
 
 app.post('/api/unit_types', (req, res) => {
   const data = sanitizeData(req.body, schemas.unit_types);
+  // ... (rest of the code remains the same)
   db.query('INSERT INTO unit_types SET ?', data, (err, result) => {
     if (err) {
       console.error('DB Insert Error:', err);
