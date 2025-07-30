@@ -1,27 +1,29 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
-const pool = process.env.DATABASE_URL
-  ? new Pool({
-      connectionString: process.env.DATABASE_URL,
-      ssl: { rejectUnauthorized: false }
-    })
-  : new Pool({
-      host: process.env.DB_HOST || 'localhost',
-      user: process.env.DB_USER || 'root',
-      password: process.env.DB_PASSWORD || 'root',
-      database: process.env.DB_NAME || 'real-estate-database',
-      port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
-      ssl: false
-    });
-
-pool.connect((err, client, release) => {
-  if (err) {
-    console.error('Database connection failed:', err);
-    throw err;
+const pool = new Pool({
+  host: 'dpg-d24agbvgi27c73dd2u4g-a.singapore-postgres.render.com',
+  user: 'real_estate_user',
+  password: 'KexjQ06hwfyawgcOuQrcegm4XzcVskgg',
+  database: 'real_estate_db_m1j4',
+  port: 5432,
+  ssl: {
+    rejectUnauthorized: false
   }
-  console.log('✅ Connected to PostgreSQL Database');
-  release();
 });
 
-module.exports = pool;
+async function checkConnection(retries = 10, delay = 5000) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const res = await pool.query('SELECT NOW()');
+      console.log('✅ Connected to PostgreSQL Database. Time:', res.rows[0].now);
+      return true;
+    } catch (err) {
+      console.error(`❌ DB not ready (attempt ${i + 1}/${retries})`, err.message);
+      await new Promise(res => setTimeout(res, delay));
+    }
+  }
+  throw new Error('❌ Could not connect to PostgreSQL after several attempts');
+}
+
+module.exports = { pool, checkConnection };
