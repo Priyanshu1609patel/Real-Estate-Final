@@ -1,12 +1,12 @@
 const { Pool } = require('pg');
 
 const pool = new Pool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || 'root',
+  database: process.env.DB_NAME || 'real-estate-database',
   port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
-  ssl: { rejectUnauthorized: false } // Required for Render.com
+  ssl: { rejectUnauthorized: false } // For cloud DBs like Render
 });
 
 pool.connect((err, client, release) => {
@@ -14,7 +14,7 @@ pool.connect((err, client, release) => {
     console.error('Database connection failed:', err);
     throw err;
   }
-  console.log('✅ Connected to PostgreSQL Database:', process.env.DB_NAME);
+  console.log('✅ Connected to PostgreSQL Database:', process.env.DB_NAME || 'real-estate-database');
   release();
 });
 
