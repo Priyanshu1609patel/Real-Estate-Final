@@ -215,12 +215,46 @@ app.get('/api/properties/full', async (req, res) => {
     const properties = await new Promise((resolve, reject) => {
       pool.query(`
         SELECT 
-          p.*, 
-          d.name AS developer_name, 
-          d.website_url, 
-          l.area_name, 
-          l.city, 
-          l.state
+          p.id,
+          p.name,
+          p.developer_id,
+          p.location_id,
+          p.property_type,
+          p.land_area_acres,
+          p.land_area_sqft,
+          p.total_units,
+          p.total_towers,
+          p.floors_per_tower,
+          p.open_area_percentage,
+          p.clubhouse_area_sqft,
+          p.clubhouse_factor,
+          p.park_area_acres,
+          p.unit_density_per_acre,
+          p.closest_metro_distance_km,
+          p.airport_distance_km,
+          p.approach_road_width_meters,
+          p.possession_date,
+          p.rera_approved,
+          p.rera_registration_number,
+          p.rera_approvals_count,
+          p.total_rera_approvals,
+          p.price_per_sqft,
+          p.min_price,
+          p.max_price,
+          p.min_unit_size_sqft,
+          p.max_unit_size_sqft,
+          p.status,
+          p.propsoch_id,
+          p.project_highlights,
+          p.description,
+          d.name AS developer_name,
+          d.website_url,
+          l.area_name,
+          l.city,
+          l.state,
+          l.pincode,
+          l.market_average_price_per_sqft,
+          l.market_average_clubhouse_factor
         FROM properties p
         LEFT JOIN developers d ON p.developer_id = d.id
         LEFT JOIN locations l ON p.location_id = l.id
@@ -230,6 +264,14 @@ app.get('/api/properties/full', async (req, res) => {
           return reject(err);
         }
         console.log('Properties fetched:', result.rows.length);
+        result.rows.forEach((p, index) => {
+          console.log(`Property ${index + 1}:`, {
+            id: p.id,
+            name: p.name,
+            developer: p.developer_name,
+            location: p.area_name
+          });
+        });
         resolve(result.rows);
       });
     });
@@ -246,6 +288,13 @@ app.get('/api/properties/full', async (req, res) => {
             return reject(err);
           }
           console.log('Galleries fetched:', result.rows.length);
+          result.rows.forEach((g, index) => {
+            console.log(`Gallery ${index + 1}:`, {
+              id: g.id,
+              property_id: g.property_id,
+              image_url: g.image_url
+            });
+          });
           resolve(result.rows);
         });
       }),
@@ -256,6 +305,13 @@ app.get('/api/properties/full', async (req, res) => {
             return reject(err);
           }
           console.log('Amenities fetched:', result.rows.length);
+          result.rows.forEach((a, index) => {
+            console.log(`Amenity ${index + 1}:`, {
+              property_id: a.property_id,
+              name: a.name,
+              category: a.category
+            });
+          });
           resolve(result.rows);
         });
       })
@@ -283,11 +339,45 @@ app.get('/api/properties/full', async (req, res) => {
     const fullProperties = properties.map(p => {
       const images = galleryMap[p.id] || [];
       const mainImage = images.length ? images[0].image_url : `/images/placeholder-property.jpg`;
+      console.log('Processing property:', {
+        id: p.id,
+        name: p.name,
+        imagesCount: images.length,
+        amenitiesCount: amenitiesMap[p.id] ? amenitiesMap[p.id].length : 0
+      });
       return {
-        ...p,
-        mainImage,
-        images,
-        amenities: amenitiesMap[p.id] || [],
+        id: p.id,
+        name: p.name,
+        developer_id: p.developer_id,
+        location_id: p.location_id,
+        property_type: p.property_type,
+        land_area_acres: p.land_area_acres,
+        land_area_sqft: p.land_area_sqft,
+        total_units: p.total_units,
+        total_towers: p.total_towers,
+        floors_per_tower: p.floors_per_tower,
+        open_area_percentage: p.open_area_percentage,
+        clubhouse_area_sqft: p.clubhouse_area_sqft,
+        clubhouse_factor: p.clubhouse_factor,
+        park_area_acres: p.park_area_acres,
+        unit_density_per_acre: p.unit_density_per_acre,
+        closest_metro_distance_km: p.closest_metro_distance_km,
+        airport_distance_km: p.airport_distance_km,
+        approach_road_width_meters: p.approach_road_width_meters,
+        possession_date: p.possession_date,
+        rera_approved: p.rera_approved,
+        rera_registration_number: p.rera_registration_number,
+        rera_approvals_count: p.rera_approvals_count,
+        total_rera_approvals: p.total_rera_approvals,
+        price_per_sqft: p.price_per_sqft,
+        min_price: p.min_price,
+        max_price: p.max_price,
+        min_unit_size_sqft: p.min_unit_size_sqft,
+        max_unit_size_sqft: p.max_unit_size_sqft,
+        status: p.status,
+        propsoch_id: p.propsoch_id,
+        project_highlights: p.project_highlights,
+        description: p.description,
         developer: {
           name: p.developer_name,
           website_url: p.website_url
@@ -295,8 +385,14 @@ app.get('/api/properties/full', async (req, res) => {
         location: {
           area_name: p.area_name,
           city: p.city,
-          state: p.state
-        }
+          state: p.state,
+          pincode: p.pincode,
+          market_average_price_per_sqft: p.market_average_price_per_sqft,
+          market_average_clubhouse_factor: p.market_average_clubhouse_factor
+        },
+        mainImage,
+        images,
+        amenities: amenitiesMap[p.id] || []
       };
     });
 
