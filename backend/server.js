@@ -250,7 +250,7 @@ app.get('/api/properties/full', async (req, res) => {
         });
       }),
       new Promise((resolve, reject) => {
-        pool.query('SELECT pa.property_id, a.name, a.category FROM property_amenities pa LEFT JOIN amenities a ON pa.amenity_id = a.id WHERE pa.available = 1', (err, result) => {
+        pool.query('SELECT pa.property_id, a.name, a.category FROM property_amenities pa LEFT JOIN amenities a ON pa.amenity_id = a.id WHERE pa.available = true', (err, result) => {
           if (err) {
             console.error('Amenities query error:', err);
             return reject(err);
