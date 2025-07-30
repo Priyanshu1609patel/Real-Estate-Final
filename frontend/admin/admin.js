@@ -57,12 +57,12 @@ function renderDashboard() {
 
   // Fetch stats
   Promise.all([
-    fetch('https://real-estate-app-20a2.onrender.com/api/properties').then(r => r.json()),
-    fetch('https://real-estate-app-20a2.onrender.com/api/developers').then(r => r.json()),
-    fetch('https://real-estate-app-20a2.onrender.com/api/locations').then(r => r.json()),
-    fetch('https://real-estate-app-20a2.onrender.com/api/reviews').then(r => r.json()),
-    fetch('https://real-estate-app-20a2.onrender.com/api/amenities').then(r => r.json()),
-    fetch('https://real-estate-app-20a2.onrender.com/api/challenges').then(r => r.json())
+    fetch(API_BASE + 'properties').then(r => r.json()),
+    fetch(API_BASE + 'developers').then(r => r.json()),
+    fetch(API_BASE + 'locations').then(r => r.json()),
+    fetch(API_BASE + 'reviews').then(r => r.json()),
+    fetch(API_BASE + 'amenities').then(r => r.json()),
+    fetch(API_BASE + 'challenges').then(r => r.json())
   ]).then(([properties, developers, locations, reviews, amenities, challenges]) => {
     // Cards
     const cards = [
