@@ -1097,7 +1097,7 @@ INSERT INTO `timeline` (`id`, `property_id`, `phase`, `start_date`, `end_date`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `unit_specifications`
+-- Table structure for table `unit_specifications`  
 --
 
 CREATE TABLE `unit_specifications` (

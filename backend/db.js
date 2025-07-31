@@ -2,11 +2,11 @@ const { Pool } = require('pg');
 require('dotenv').config();
 
 const pool = new Pool({
-  host: 'dpg-d24agbvgi27c73dd2u4g-a.singapore-postgres.render.com',
-  user: 'real_estate_user',
-  password: 'KexjQ06hwfyawgcOuQrcegm4XzcVskgg',
-  database: 'real_estate_db_m1j4',
-  port: 5432,
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: parseInt(process.env.DB_PORT || '5432'),
   ssl: {
     rejectUnauthorized: false
   }
