@@ -47,8 +47,8 @@ app.get('/', (req, res) => {
 });
 
 // Use the port provided by the environment or default to 10000 for local development
-const PORT = process.env.PORT || 10000;
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key_here';
+const PORT = process.env.PORT || 10001;
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Authentication Middleware
 const authenticateToken = (req, res, next) => {
