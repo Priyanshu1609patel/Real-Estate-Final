@@ -37,86 +37,100 @@
   </main>
 
   <script>
-    document.getElementById('login-form').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      
-      const formData = new FormData(this);
-      const username = formData.get('login-username');
-      const password = formData.get('login-password');
-      
-      if (!username || !password) {
-        alert('Please fill in all fields!');
-        return;
-      }
-      
-      try {
-        // Show loading state
-        const submitBtn = e.target.querySelector('button[type="submit"]');
-        const originalBtnText = submitBtn.innerHTML;
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+    document.addEventListener('DOMContentLoaded', function() {
+      const loginForm = document.getElementById('login-form');
+      let submitBtn;
+      let originalBtnText;
+
+      loginForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
         
-        // Try both production and local endpoints
-        const endpoints = [
-          'https://real-estate-app-20a2.onrender.com/api/login',
-          'http://localhost:3001/api/login'
-        ];
+        const formData = new FormData(this);
+        const username = formData.get('login-username');
+        const password = formData.get('login-password');
         
-        let lastError = null;
+        if (!username || !password) {
+          alert('Please fill in all fields!');
+          return;
+        }
         
-        for (const endpoint of endpoints) {
-          try {
-            const response = await fetch(endpoint, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                username: username,
-                password: password
-              }),
-              credentials: 'include'  // Important for cookies/sessions if using them
-            });
-            
-            const data = await response.json().catch(() => ({}));
-            
-            if (response.ok) {
-              // Store user data in localStorage for session management
-              if (data.user) {
-                localStorage.setItem('user', JSON.stringify(data.user));
-                localStorage.setItem('isLoggedIn', 'true');
-                
-                if (data.token) {
-                  localStorage.setItem('token', data.token);
+        try {
+          // Show loading state
+          submitBtn = e.target.querySelector('button[type="submit"]');
+          originalBtnText = submitBtn.innerHTML;
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+          
+          // Try both production and local endpoints
+          const endpoints = [
+            'https://real-estate-app-20a2.onrender.com/api/login',
+            'https://real-estate-app-20a2.onrender.com/api/auth/login',
+            'http://localhost:3001/api/login'
+          ];
+          
+          let lastError = null;
+          let lastResponse = null;
+          
+          for (const endpoint of endpoints) {
+            try {
+              console.log('Trying endpoint:', endpoint);
+              const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  username: username,
+                  password: password,
+                  email: username // Try with email as well
+                })
+              });
+              
+              lastResponse = response;
+              const data = await response.json().catch(() => ({}));
+              
+              if (response.ok) {
+                // Store user data in localStorage for session management
+                if (data.user || data.message === 'Login successful') {
+                  localStorage.setItem('user', JSON.stringify(data.user || { username }));
+                  localStorage.setItem('isLoggedIn', 'true');
+                  
+                  if (data.token) {
+                    localStorage.setItem('token', data.token);
+                  }
+                  
+                  console.log('Login successful, redirecting...');
+                  window.location.href = 'index.html';
+                  return;
                 }
-                
-                console.log('Login successful, redirecting...');
-                window.location.href = 'index.html';
-                return;
+              } else {
+                lastError = data.error || response.statusText || 'Login failed';
+                console.error('Login error from', endpoint, ':', lastError, 'Status:', response.status);
               }
-            } else {
-              lastError = data.error || 'Login failed';
-              console.error('Login error from', endpoint, ':', lastError);
+            } catch (err) {
+              console.error('Error with endpoint', endpoint, ':', err);
+              lastError = 'Connection error. Please try again.';
             }
-          } catch (err) {
-            console.error('Error with endpoint', endpoint, ':', err);
-            lastError = 'Connection error. Please try again.';
+          }
+          
+          // If we get here, all endpoints failed
+          const errorMessage = lastResponse ? 
+            `Login failed: ${lastError || 'Invalid response from server'}` : 
+            'Failed to connect to the server. Please check your internet connection.';
+          
+          throw new Error(errorMessage);
+          
+        } catch (error) {
+          console.error('Login error:', error);
+          alert(error.message || 'Login failed! Please check your credentials and try again.');
+        } finally {
+          // Reset button state
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnText || 'Sign In <i class="fas fa-arrow-right" style="margin-left:8px;"></i>';
           }
         }
-        
-        // If we get here, all endpoints failed
-        throw new Error(lastError || 'Failed to connect to the server');
-        
-      } catch (error) {
-        console.error('Login error:', error);
-        alert(error.message || 'Login failed! Please check your credentials and try again.');
-      } finally {
-        // Reset button state
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = originalBtnText || 'Sign In <i class="fas fa-arrow-right" style="margin-left:8px;"></i>';
-        }
-      }
+      });
     });
   </script>
 </body>

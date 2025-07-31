@@ -1,9 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const { pool, query, checkConnection } = require('./db'); // Import pool, query, and checkConnection from db.js
+
+// Import route handlers
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 
