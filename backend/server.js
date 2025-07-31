@@ -1401,7 +1401,6 @@ app.delete('/api/investment_analysis/:id', (req, res) => {
   });
 });
 
-const userRoutes = require('./routes/userRoutes');
-app.use('/api', userRoutes);
+
 
 app.listen(3001, () => console.log('Server running on 3001')); 
