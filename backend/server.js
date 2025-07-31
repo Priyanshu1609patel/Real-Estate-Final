@@ -45,8 +45,56 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/public/index.html'));
 });
 
-const PORT = process.env.PORT || 3001;
+// Use the port provided by the environment or default to 10000 for local development
+const PORT = process.env.PORT || 10000;
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key_here';
+
+// Authentication Middleware
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  
+  if (!token) return res.sendStatus(401);
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+};
+
+// Properties endpoints
+app.get('/api/properties', authenticateToken, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM properties ORDER BY id');
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error fetching properties:', error);
+    res.status(500).json({ error: 'Error fetching properties' });
+  }
+});
+
+// Locations endpoints
+app.get('/api/locations', authenticateToken, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM locations ORDER BY id');
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error fetching locations:', error);
+    res.status(500).json({ error: 'Error fetching locations' });
+  }
+});
+
+// Developers endpoints
+app.get('/api/developers', authenticateToken, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM developers ORDER BY id');
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error fetching developers:', error);
+    res.status(500).json({ error: 'Error fetching developers' });
+  }
+});
 
 // Login endpoint
 app.post('/api/login', async (req, res) => {
@@ -206,20 +254,6 @@ function sanitizeData(data, schema) {
   }
   return sanitized;
 }
-
-// Authentication Middleware
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-  
-  if (!token) return res.sendStatus(401);
-
-  jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    next();
-  });
-};
 
 // Login endpoint
 app.post('/api/login', async (req, res) => {

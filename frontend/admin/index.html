@@ -151,9 +151,13 @@
     <p>&copy; 2024 Real Estate Admin Panel. All rights reserved.</p>
   </footer>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="admin.js"></script>
-  <script>
-    // Session management and dashboard stats
+  <!-- Load config first -->
+  <script type="module">
+    // Import configuration and admin module
+    import { API_BASE } from './js/config.js';
+    import { renderDashboard } from './js/admin-new.js';
+    
+    // Session management
     document.addEventListener('DOMContentLoaded', async function() {
       // Check if user is logged in
       const isLoggedIn = localStorage.getItem('isLoggedIn');
@@ -162,28 +166,29 @@
         window.location.href = 'login.html';
         return;
       }
-      // Show welcome
+      
+      // Show welcome message
       document.getElementById('adminWelcome').innerHTML = `<i class='fas fa-user-circle'></i> Welcome, <strong>${user.username}</strong>!`;
-      // Logout
+      
+      // Setup logout
       document.getElementById('logout-btn').onclick = function() {
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('user');
+        localStorage.removeItem('token');
         window.location.href = 'login.html';
       };
-      // Fetch dashboard stats (properties, developers, locations, reviews)
+      
+      // Initialize the dashboard
       try {
-        const [props, devs, locs, reviews] = await Promise.all([
-          fetch('https://real-estate-app-20a2.onrender.com/api/properties').then(r => r.json()),
-          fetch('https://real-estate-app-20a2.onrender.com/api/developers').then(r => r.json()),
-          fetch('https://real-estate-app-20a2.onrender.com/api/locations').then(r => r.json()),
-          fetch('https://real-estate-app-20a2.onrender.com/api/reviews').then(r => r.json()),
-        ]);
-        document.getElementById('totalProperties').textContent = props.length;
-        document.getElementById('totalDevelopers').textContent = devs.length;
-        document.getElementById('totalLocations').textContent = locs.length;
-        document.getElementById('totalReviews').textContent = reviews.length;
-      } catch {}
+        await renderDashboard();
+      } catch (error) {
+        console.error('Error initializing dashboard:', error);
+        alert('Failed to initialize dashboard. Please check console for details.');
+      }
     });
+    
+    // Make API_BASE available globally for legacy code
+    window.API_BASE = API_BASE;
   </script>
 </body>
 </html>
