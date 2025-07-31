@@ -6,7 +6,21 @@ const jwt = require('jsonwebtoken');
 const { pool, query, checkConnection } = require('./db'); // Import pool, query, and checkConnection from db.js
 
 const app = express();
-app.use(cors());
+
+// Configure CORS
+const corsOptions = {
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'https://real-estate-app-20a2.onrender.com',
+    'https://real-estate-app-20a2.onrender.com/'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Serve static files from the frontend/public directory
@@ -26,12 +40,134 @@ app.get('/', (req, res) => {
 const PORT = process.env.PORT || 3001;
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key_here';
 
+// Login endpoint
+app.post('/api/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    
+    // Validate input
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password are required' });
+    }
+
+    // Find user by username or email
+    const result = await pool.query(
+      'SELECT * FROM users WHERE username = $1 OR email = $1',
+      [username]
+    );
+
+    const user = result.rows[0];
+    
+    // Check if user exists
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+
+    // Verify password
+    const validPassword = await bcrypt.compare(password, user.password_hash);
+    if (!validPassword) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+
+    // Create and sign JWT token
+    const token = jwt.sign(
+      { 
+        id: user.id, 
+        username: user.username, 
+        email: user.email 
+      }, 
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    // Return user data (excluding password) and token
+    const { password_hash, ...userWithoutPassword } = user;
+    res.json({
+      user: userWithoutPassword,
+      token
+    });
+
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ error: 'Internal server error during login' });
+  }
+});
+
+// Register endpoint
+app.post('/api/register', async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+    
+    // Validate input
+    if (!username || !email || !password) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    // Check if username or email already exists
+    const existingUser = await pool.query(
+      'SELECT * FROM users WHERE username = $1 OR email = $2',
+      [username, email]
+    );
+
+    if (existingUser.rows.length > 0) {
+      return res.status(400).json({ error: 'Username or email already exists' });
+    }
+
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const password_hash = await bcrypt.hash(password, salt);
+
+    // Create new user
+    const result = await pool.query(
+      'INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3) RETURNING id, username, email, created_at',
+      [username, email, password_hash]
+    );
+
+    const newUser = result.rows[0];
+    
+    // Generate token
+    const token = jwt.sign(
+      { 
+        id: newUser.id, 
+        username: newUser.username, 
+        email: newUser.email 
+      }, 
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    res.status(201).json({
+      user: newUser,
+      token
+    });
+
+  } catch (error) {
+    console.error('Registration error:', error);
+    res.status(500).json({ error: 'Internal server error during registration' });
+  }
+});
+
 async function startServer() {
   try {
+    console.log('🔌 Attempting to connect to the database...');
     await checkConnection(); // ✅ Wait for PostgreSQL
-    app.listen(PORT, () => {
+    console.log('✅ Database connection established!');
+    
+    const server = app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
+      console.log(`🌐 Test the database connection: http://localhost:${PORT}/api/test-db`);
     });
+    
+    // Handle server errors
+    server.on('error', (error) => {
+      if (error.code === 'EADDRINUSE') {
+        console.error(`❌ Port ${PORT} is already in use`);
+      } else {
+        console.error('❌ Server error:', error);
+      }
+      process.exit(1);
+    });
+    
   } catch (err) {
     console.error('❌ Could not start server:', err.message);
     process.exit(1);
@@ -181,6 +317,25 @@ app.post('/api/register', async (req, res) => {
   } catch (error) {
     console.error('Registration error:', error);
     res.status(500).json({ error: 'Internal server error during registration' });
+  }
+});
+
+// Test database connection endpoint
+app.get('/api/test-db', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT NOW()');
+    res.json({
+      success: true,
+      message: 'Database connection successful!',
+      timestamp: result.rows[0].now
+    });
+  } catch (error) {
+    console.error('Database connection test failed:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Database connection failed',
+      error: error.message
+    });
   }
 });
 
