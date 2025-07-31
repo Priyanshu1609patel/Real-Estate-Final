@@ -1,14 +1,19 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
+// Use the full hostname directly from environment variables
+const dbHost = process.env.DB_HOST;
+
 const pool = new Pool({
-  host: process.env.DB_HOST,
+  host: dbHost,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   port: parseInt(process.env.DB_PORT || '5432'),
   ssl: {
-    rejectUnauthorized: false
+    rejectUnauthorized: false,
+    // Additional SSL options for Render
+    sslmode: 'require'
   }
 });
 
