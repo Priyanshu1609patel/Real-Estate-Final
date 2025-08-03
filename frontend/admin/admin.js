@@ -2,36 +2,57 @@
 function renderDashboard() {
   const dashboard = document.getElementById('dashboard');
   dashboard.innerHTML = `
-    <h1 style="font-size:2.2rem;font-weight:800;margin-bottom:1.5rem;letter-spacing:1px;color:#1a237e;">Dashboard</h1>
-    <div id="dashboard-cards" style="display:flex;gap:2rem;flex-wrap:wrap;margin-bottom:2rem;"></div>
-    <div style="display:flex;flex-wrap:wrap;gap:2rem;justify-content:center;">
-      <div style="flex:1 1 320px;max-width:420px;background:#fff;padding:1.5rem 1rem;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
-        <h3 style='margin-top:0;'>Properties by Status</h3>
-        <canvas id="dashboard-status-chart" width="180" height="180"></canvas>
+    <div style="position:relative;z-index:1;">
+      <h1 style="font-size:2.2rem;font-weight:800;margin-bottom:2.5rem;letter-spacing:0.5px;color:var(--primary-color);position:relative;display:inline-block;">
+        <span style="position:relative;z-index:1;">Dashboard Overview</span>
+        <span style="position:absolute;bottom:-5px;left:0;width:60%;height:8px;background:rgba(245,158,11,0.2);z-index:0;border-radius:var(--radius-md);"></span>
+      </h1>
+      <div id="dashboard-cards" style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:3rem;position:relative;"></div>
+      <div style="display:flex;flex-wrap:wrap;gap:2rem;justify-content:center;margin-bottom:3rem;">
+        <div style="flex:1 1 320px;max-width:420px;background:var(--bg-primary);padding:2rem 1.5rem;border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);transition:all 0.3s ease;position:relative;overflow:hidden;border:1px solid var(--border-light);">
+          <div style="position:absolute;top:-30px;right:-30px;width:150px;height:150px;background:rgba(37,99,235,0.05);border-radius:50%;"></div>
+          <h3 style='margin-top:0;color:var(--text-primary);font-size:1.2rem;font-weight:700;margin-bottom:1.5rem;display:flex;align-items:center;gap:0.7rem;'>
+            <i class="fas fa-chart-pie" style="color:var(--primary-color);background:rgba(37,99,235,0.1);padding:0.7rem;border-radius:50%;"></i>
+            Properties by Status
+          </h3>
+          <canvas id="dashboard-status-chart" width="180" height="180"></canvas>
+        </div>
+        <div style="flex:1 1 320px;max-width:420px;background:var(--bg-primary);padding:2rem 1.5rem;border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);transition:all 0.3s ease;position:relative;overflow:hidden;border:1px solid var(--border-light);">
+          <div style="position:absolute;top:-30px;right:-30px;width:150px;height:150px;background:rgba(16,185,129,0.05);border-radius:50%;"></div>
+          <h3 style='margin-top:0;color:var(--text-primary);font-size:1.2rem;font-weight:700;margin-bottom:1.5rem;display:flex;align-items:center;gap:0.7rem;'>
+            <i class="fas fa-map-marker-alt" style="color:var(--secondary-color);background:rgba(16,185,129,0.1);padding:0.7rem 0.9rem;border-radius:50%;"></i>
+            Top 5 Locations by Properties
+          </h3>
+          <canvas id="dashboard-location-chart"></canvas>
+        </div>
+        <div style="flex:1 1 320px;max-width:420px;background:var(--bg-primary);padding:2rem 1.5rem;border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);transition:all 0.3s ease;position:relative;overflow:hidden;border:1px solid var(--border-light);">
+          <div style="position:absolute;top:-30px;right:-30px;width:150px;height:150px;background:rgba(245,158,11,0.05);border-radius:50%;"></div>
+          <h3 style='margin-top:0;color:var(--text-primary);font-size:1.2rem;font-weight:700;margin-bottom:1.5rem;display:flex;align-items:center;gap:0.7rem;'>
+            <i class="fas fa-th-large" style="color:var(--accent-color);background:rgba(245,158,11,0.1);padding:0.7rem;border-radius:50%;"></i>
+            Amenities by Category
+          </h3>
+          <canvas id="dashboard-amenity-chart"></canvas>
+        </div>
       </div>
-      <div style="flex:1 1 320px;max-width:420px;background:#fff;padding:1.5rem 1rem;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
-        <h3 style='margin-top:0;'>Top 5 Locations by Properties</h3>
-        <canvas id="dashboard-location-chart"></canvas>
+      <div style="margin-top:2rem;">
+        <h2 style='color:var(--text-primary);font-size:1.5rem;font-weight:700;margin-bottom:1.5rem;display:flex;align-items:center;gap:0.7rem;position:relative;'>
+          <i class="fas fa-history" style="font-size:1.1rem;color:var(--primary-color);background:rgba(37,99,235,0.1);padding:0.7rem;border-radius:50%;"></i>
+          Recent Activity
+          <span style="position:absolute;bottom:-5px;left:0;width:40px;height:3px;background:var(--primary-color);border-radius:var(--radius-sm);"></span>
+        </h2>
+        <div id="dashboard-recent" style="display:flex;gap:2rem;flex-wrap:wrap;"></div>
       </div>
-      <div style="flex:1 1 320px;max-width:420px;background:#fff;padding:1.5rem 1rem;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
-        <h3 style='margin-top:0;'>Amenities by Category</h3>
-        <canvas id="dashboard-amenity-chart"></canvas>
-      </div>
-    </div>
-    <div style="margin-top:2.5rem;">
-      <h2 style='color:#1a237e;font-size:1.5rem;font-weight:700;'>Recent Activity</h2>
-      <div id="dashboard-recent" style="display:flex;gap:2rem;flex-wrap:wrap;"></div>
     </div>
   `;
 
   // Icon map for cards
   const iconMap = [
-    { icon: 'fa-building', bg: 'linear-gradient(135deg,#1976d2 60%,#64b5f6 100%)', color: '#fff' },
-    { icon: 'fa-user-tie', bg: 'linear-gradient(135deg,#43a047 60%,#a5d6a7 100%)', color: '#fff' },
-    { icon: 'fa-map-marker-alt', bg: 'linear-gradient(135deg,#fbc02d 60%,#fff176 100%)', color: '#fff' },
-    { icon: 'fa-star', bg: 'linear-gradient(135deg,#e53935 60%,#ffb74d 100%)', color: '#fff' },
-    { icon: 'fa-cubes', bg: 'linear-gradient(135deg,#8e24aa 60%,#ce93d8 100%)', color: '#fff' },
-    { icon: 'fa-exclamation-triangle', bg: 'linear-gradient(135deg,#00838f 60%,#4dd0e1 100%)', color: '#fff' }
+    { icon: 'fa-building', bg: 'linear-gradient(135deg, #ef4444 60%, #fca5a5 100%)', color: 'white' },
+    { icon: 'fa-user-tie', bg: 'linear-gradient(135deg, #8b5cf6 60%, #ddd6fe 100%)', color: 'white' },
+    { icon: 'fa-map-marker-alt', bg: 'linear-gradient(135deg, #0ea5e9 60%, #bae6fd 100%)', color: 'white' },
+    { icon: 'fa-star', bg: 'linear-gradient(135deg, #ef4444 60%, #fca5a5 100%)', color: 'white' },
+    { icon: 'fa-cubes', bg: 'linear-gradient(135deg, #8b5cf6 60%, #ddd6fe 100%)', color: 'white' },
+    { icon: 'fa-exclamation-triangle', bg: 'linear-gradient(135deg, #0ea5e9 60%, #bae6fd 100%)', color: 'white' }
   ];
 
   // Fetch stats
@@ -45,21 +66,24 @@ function renderDashboard() {
   ]).then(([properties, developers, locations, reviews, amenities, challenges]) => {
     // Cards
     const cards = [
-      { label: 'Total Properties', value: properties.length, color: '#1976d2' },
-      { label: 'Total Developers', value: developers.length, color: '#43a047' },
-      { label: 'Total Locations', value: locations.length, color: '#fbc02d' },
-      { label: 'Total Reviews', value: reviews.length, color: '#e53935' },
-      { label: 'Total Amenities', value: amenities.length, color: '#8e24aa' },
-      { label: 'Total Challenges', value: challenges.length, color: '#00838f' }
+      { label: 'Total Properties', value: properties.length, color: '#ef4444' },
+      { label: 'Total Developers', value: developers.length, color: '#8b5cf6' },
+      { label: 'Total Locations', value: locations.length, color: '#0ea5e9' },
+      { label: 'Total Reviews', value: reviews.length, color: '#ef4444' },
+      { label: 'Total Amenities', value: amenities.length, color: '#8b5cf6' },
+      { label: 'Total Challenges', value: challenges.length, color: '#0ea5e9' }
     ];
     document.getElementById('dashboard-cards').innerHTML = cards.map((card, i) => `
-      <div style="background:#fff;padding:2rem 2.5rem;border-radius:18px;box-shadow:0 4px 24px rgba(25,118,210,0.10);min-width:180px;text-align:center;flex:1 1 180px;position:relative;overflow:hidden;transition:box-shadow 0.2s;cursor:pointer;">
-        <div style="position:absolute;top:-30px;right:-30px;width:80px;height:80px;z-index:0;opacity:0.13;background:${iconMap[i].bg};border-radius:50%;"></div>
-        <div style="display:flex;justify-content:center;align-items:center;margin-bottom:0.7rem;z-index:1;position:relative;">
-          <span class="fa-solid ${iconMap[i].icon}" style="font-size:2.5rem;background:${iconMap[i].bg};color:${iconMap[i].color};padding:0.7rem 0.9rem;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.08);"></span>
+      <div style="background:var(--bg-primary);padding:2rem 2rem;border-radius:var(--radius-lg);box-shadow:var(--shadow-md);min-width:180px;text-align:center;flex:1 1 180px;position:relative;overflow:hidden;transition:all 0.3s ease;cursor:pointer;transform:translateY(0);border:1px solid var(--border-light);" 
+        onmouseover="this.style.transform='translateY(-5px)';this.style.boxShadow=var(--shadow-xl);"
+        onmouseout="this.style.transform='translateY(0)';this.style.boxShadow=var(--shadow-md);">
+        <div style="position:absolute;top:-30px;right:-30px;width:150px;height:150px;z-index:0;opacity:0.07;background:${iconMap[i].bg};border-radius:50%;"></div>
+        <div style="position:absolute;bottom:-50px;left:-50px;width:120px;height:120px;z-index:0;opacity:0.05;background:${iconMap[i].bg};border-radius:50%;"></div>
+        <div style="display:flex;justify-content:center;align-items:center;margin-bottom:1.2rem;z-index:1;position:relative;">
+          <span class="fa-solid ${iconMap[i].icon}" style="font-size:1.8rem;background:${iconMap[i].bg};color:${iconMap[i].color};padding:1rem;border-radius:50%;box-shadow:var(--shadow-md);transition:all 0.3s ease;"></span>
         </div>
         <div style="font-size:2.2rem;font-weight:800;color:${card.color};margin-bottom:0.5rem;z-index:1;position:relative;">${card.value}</div>
-        <div style="font-size:1.1rem;color:#222;font-weight:600;z-index:1;position:relative;">${card.label}</div>
+        <div style="font-size:0.95rem;color:var(--text-secondary);font-weight:600;z-index:1;position:relative;letter-spacing:0.5px;">${card.label}</div>
       </div>
     `).join('');
 
@@ -136,46 +160,67 @@ function renderDashboard() {
     const recentProps = properties.slice(-5).reverse();
     const recentRevs = reviews.slice(-5).reverse();
     document.getElementById('dashboard-recent').innerHTML = `
-      <div style='flex:1 1 420px;min-width:320px;margin-right:0.1rem;'>
-        <h4 style="margin-bottom:0.7em;font-size:1.13rem;color:#182848;font-weight:700;">Recent Properties</h4>
-        <div style="overflow-x:auto;">
-        <table style="width:100%;border-collapse:collapse;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(24,40,72,0.07);overflow:hidden;">
-          <thead>
-            <tr style="background:#e8eaf6;color:#182848;font-weight:700;">
-              <th style="padding:0.7em 0.5em;text-align:left;">Name</th>
-              <th style="padding:0.7em 0.5em;text-align:left;">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${recentProps.map(p => `
-              <tr>
-                <td style="padding:0.6em 0.5em;border-bottom:1px solid #e0e0e0;">${p.name || 'Property #' + p.id}</td>
-                <td style="padding:0.6em 0.5em;border-bottom:1px solid #e0e0e0;">${p.status || 'Unknown'}</td>
+      <div style='flex:1 1 420px;min-width:320px;margin-right:0.5rem;'>
+        <div style="background:#fff;border-radius:16px;box-shadow:0 8px 30px rgba(26,35,126,0.08);padding:1.5rem;position:relative;overflow:hidden;transition:all 0.3s ease;">
+          <div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(25,118,210,0.05);border-radius:50%;"></div>
+          <h4 style="margin-top:0;margin-bottom:1.2em;font-size:1.2rem;color:#1a237e;font-weight:700;display:flex;align-items:center;gap:0.7rem;">
+            <i class="fas fa-building" style="color:#1976d2;background:rgba(25,118,210,0.1);padding:0.6rem;border-radius:50%;font-size:0.9rem;"></i>
+            Recent Properties
+          </h4>
+          <div style="overflow-x:auto;">
+          <table style="width:100%;border-collapse:separate;border-spacing:0;background:#fff;border-radius:12px;overflow:hidden;">
+            <thead>
+              <tr style="background:linear-gradient(180deg, #e8eaf6 0%, #c5cae9 100%);color:#1a237e;font-weight:700;">
+                <th style="padding:1rem 1.2rem;text-align:left;font-size:0.85rem;letter-spacing:0.5px;text-transform:uppercase;">Name</th>
+                <th style="padding:1rem 1.2rem;text-align:left;font-size:0.85rem;letter-spacing:0.5px;text-transform:uppercase;">Status</th>
               </tr>
-            `).join('')}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              ${recentProps.map((p, idx) => `
+                <tr style="transition:all 0.2s ease;" onmouseover="this.style.background='rgba(255,179,0,0.08)';this.style.transform='translateY(-1px)';" onmouseout="this.style.background='${idx % 2 === 0 ? 'transparent' : 'rgba(232,234,246,0.2)'}';this.style.transform='translateY(0)';">
+                  <td style="padding:0.9rem 1.2rem;border-bottom:1px solid #e0e0e0;">${p.name || 'Property #' + p.id}</td>
+                  <td style="padding:0.9rem 1.2rem;border-bottom:1px solid #e0e0e0;">
+                    <span style="display:inline-block;padding:0.4rem 0.8rem;border-radius:20px;font-size:0.85rem;font-weight:600;background:${p.status === 'Active' ? 'rgba(67,160,71,0.1)' : p.status === 'Pending' ? 'rgba(251,192,45,0.1)' : 'rgba(229,57,53,0.1)'};color:${p.status === 'Active' ? '#43a047' : p.status === 'Pending' ? '#fbc02d' : '#e53935'};">
+                      ${p.status || 'Unknown'}
+                    </span>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+        </div>
       </div>
-      </div>
-      <div style='flex:1 1 420px;min-width:320px;margin-left:0.1rem;'>
-        <h4 style="margin-bottom:0.7em;font-size:1.13rem;color:#182848;font-weight:700;">Recent Reviews</h4>
-        <div style="overflow-x:auto;">
-        <table style="width:100%;border-collapse:collapse;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(24,40,72,0.07);overflow:hidden;">
-          <thead>
-            <tr style="background:#e8eaf6;color:#182848;font-weight:700;">
-              <th style="padding:0.7em 0.5em;text-align:left;">Reviewer</th>
-              <th style="padding:0.7em 0.5em;text-align:left;">Review</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${recentRevs.map(r => `
-              <tr>
-                <td style="padding:0.6em 0.5em;border-bottom:1px solid #e0e0e0;">${r.reviewer_name}</td>
-                <td style="padding:0.6em 0.5em;border-bottom:1px solid #e0e0e0;">${r.review_text.slice(0,60)}${r.review_text.length>60?'...':''}</td>
+      <div style='flex:1 1 420px;min-width:320px;margin-left:0.5rem;'>
+        <div style="background:#fff;border-radius:16px;box-shadow:0 8px 30px rgba(26,35,126,0.08);padding:1.5rem;position:relative;overflow:hidden;transition:all 0.3s ease;">
+          <div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(229,57,53,0.05);border-radius:50%;"></div>
+          <h4 style="margin-top:0;margin-bottom:1.2em;font-size:1.2rem;color:#1a237e;font-weight:700;display:flex;align-items:center;gap:0.7rem;">
+            <i class="fas fa-star" style="color:#e53935;background:rgba(229,57,53,0.1);padding:0.6rem;border-radius:50%;font-size:0.9rem;"></i>
+            Recent Reviews
+          </h4>
+          <div style="overflow-x:auto;">
+          <table style="width:100%;border-collapse:separate;border-spacing:0;background:#fff;border-radius:12px;overflow:hidden;">
+            <thead>
+              <tr style="background:linear-gradient(180deg, #e8eaf6 0%, #c5cae9 100%);color:#1a237e;font-weight:700;">
+                <th style="padding:1rem 1.2rem;text-align:left;font-size:0.85rem;letter-spacing:0.5px;text-transform:uppercase;">Reviewer</th>
+                <th style="padding:1rem 1.2rem;text-align:left;font-size:0.85rem;letter-spacing:0.5px;text-transform:uppercase;">Review</th>
               </tr>
-            `).join('')}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              ${recentRevs.map((r, idx) => `
+                <tr style="transition:all 0.2s ease;" onmouseover="this.style.background='rgba(255,179,0,0.08)';this.style.transform='translateY(-1px)';" onmouseout="this.style.background='${idx % 2 === 0 ? 'transparent' : 'rgba(232,234,246,0.2)'}';this.style.transform='translateY(0)';">
+                  <td style="padding:0.9rem 1.2rem;border-bottom:1px solid #e0e0e0;">
+                    <div style="display:flex;align-items:center;gap:0.5rem;">
+                      <i class="fas fa-user-circle" style="color:#3949ab;font-size:1.2rem;"></i>
+                      ${r.reviewer_name}
+                    </div>
+                  </td>
+                  <td style="padding:0.9rem 1.2rem;border-bottom:1px solid #e0e0e0;">${r.review_text.slice(0,60)}${r.review_text.length>60?'...':''}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+          </div>
         </div>
       </div>
     `;
@@ -920,4 +965,4 @@ function fetchAndRenderTableWithSearch(table) {
 }
 
 // Render all sections
-TABLES.forEach(renderSection); 
+TABLES.forEach(renderSection);

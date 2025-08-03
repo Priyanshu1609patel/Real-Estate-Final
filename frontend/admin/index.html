@@ -3,66 +3,76 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard - Real Estate</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <title>Real Estate Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="admin-header">
-    <div class="site-title">Real Estate Admin Panel</div>
-    <div class="header-actions"></div>
+    <div class="site-title"><i class="fas fa-building"></i>Real Estate Admin</div>
+    <div class="header-actions">
+      <div class="admin-welcome"><i class="fas fa-user"></i>Welcome admin!</div>
+      <a href="../public/home_page.html" class="btn btn-secondary"><i class="fas fa-home"></i> Home Page</a>
+      <a href="#" class="btn btn-primary" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+    <svg class="header-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+      <path fill="var(--primary)" fill-opacity="0.2" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,149.3C960,160,1056,160,1152,138.7C1248,117,1344,75,1392,53.3L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+    </svg>
   </header>
   <div class="admin-dashboard">
     <aside class="sidebar">
       <h2>Admin Panel</h2>
       <nav>
         <ul>
-          <li><a href="#" data-section="dashboard" class="active">📊 Dashboard</a></li>
-          <li><a href="#" data-section="developers">🏢 Developers</a></li>
-          <li><a href="#" data-section="locations">📍 Locations</a></li>
-          <li><a href="#" data-section="properties">🏠 Properties</a></li>
-          <li><a href="#" data-section="unit-types">🔢 Unit Types</a></li>
-          <li><a href="#" data-section="room-details">🛏️ Room Details</a></li>
-          <li><a href="#" data-section="unit-specifications">📏 Unit Specifications</a></li>
-          <li><a href="#" data-section="amenities">🎁 Amenities</a></li>
-          <li><a href="#" data-section="property-amenities">🏷️ Property Amenities</a></li>
-          <li><a href="#" data-section="challenges">⚠️ Challenges</a></li>
-          <li><a href="#" data-section="property-challenges">🐞 Property Challenges</a></li>
-          <li><a href="#" data-section="property-connectivity">🚌 Property Connectivity</a></li>
-          <li><a href="#" data-section="property-gallery">🖼️ Property Gallery</a></li>
-          <li><a href="#" data-section="property-documents">📄 Property Documents</a></li>
-          <li><a href="#" data-section="timeline">⏳ Timeline</a></li>
-          <li><a href="#" data-section="financial-details">💰 Financial Details</a></li>
-          <li><a href="#" data-section="market-analysis">📈 Market Analysis</a></li>
-          <li><a href="#" data-section="reviews">⭐ Reviews</a></li>
-          <li><a href="#" data-section="legal-details">⚖️ Legal Details</a></li>
-          <li><a href="#" data-section="investment-analysis">🥧 Investment Analysis</a></li>
+          <li><a href="#" data-section="dashboard" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+          <li><a href="#" data-section="developers"><i class="fas fa-building"></i> Developers</a></li>
+          <li><a href="#" data-section="locations"><i class="fas fa-map-marker-alt"></i> Locations</a></li>
+          <li><a href="#" data-section="properties"><i class="fas fa-home"></i> Properties</a></li>
+          <li><a href="#" data-section="unit-types"><i class="fas fa-th-large"></i> Unit Types</a></li>
+          <li><a href="#" data-section="room-details"><i class="fas fa-bed"></i> Room Details</a></li>
+          <li><a href="#" data-section="unit-specifications"><i class="fas fa-ruler-combined"></i> Unit Specs</a></li>
+          <li><a href="#" data-section="amenities"><i class="fas fa-swimming-pool"></i> Amenities</a></li>
+          <li><a href="#" data-section="property-amenities"><i class="fas fa-list-alt"></i> Property Amenities</a></li>
+          <li><a href="#" data-section="challenges"><i class="fas fa-exclamation-triangle"></i> Challenges</a></li>
+          <li><a href="#" data-section="property-challenges"><i class="fas fa-bug"></i> Property Challenges</a></li>
+          <li><a href="#" data-section="property-connectivity"><i class="fas fa-bus"></i> Property Connectivity</a></li>
+          <li><a href="#" data-section="property-gallery"><i class="fas fa-images"></i> Property Gallery</a></li>
+          <li><a href="#" data-section="property-documents"><i class="fas fa-file-alt"></i> Property Documents</a></li>
+          <li><a href="#" data-section="timeline"><i class="fas fa-history"></i> Timeline</a></li>
+          <li><a href="#" data-section="financial-details"><i class="fas fa-money-bill-wave"></i> Financial Details</a></li>
+          <li><a href="#" data-section="market-analysis"><i class="fas fa-chart-bar"></i> Market Analysis</a></li>
+          <li><a href="#" data-section="reviews"><i class="fas fa-star"></i> Reviews</a></li>
+          <li><a href="#" data-section="legal-details"><i class="fas fa-gavel"></i> Legal Details</a></li>
+          <li><a href="#" data-section="investment-analysis"><i class="fas fa-chart-pie"></i> Investment Analysis</a></li>
         </ul>
       </nav>
     </aside>
     <main class="main-content">
       <!-- Dashboard section -->
-      <section id="dashboard" class="admin-section active"></section>
+      <section id="dashboard" class="admin-section active">
+        <div class="section-header"><h1>Dashboard</h1></div>
+      </section>
       <!-- Section templates for each table -->
-      <section id="developers" class="admin-section"></section>
-      <section id="locations" class="admin-section"></section>
-      <section id="properties" class="admin-section"></section>
-      <section id="unit-types" class="admin-section"></section>
-      <section id="room-details" class="admin-section"></section>
-      <section id="unit-specifications" class="admin-section"></section>
-      <section id="amenities" class="admin-section"></section>
-      <section id="property-amenities" class="admin-section"></section>
-      <section id="challenges" class="admin-section"></section>
-      <section id="property-challenges" class="admin-section"></section>
-      <section id="property-connectivity" class="admin-section"></section>
-      <section id="property-gallery" class="admin-section"></section>
-      <section id="property-documents" class="admin-section"></section>
-      <section id="timeline" class="admin-section"></section>
-      <section id="financial-details" class="admin-section"></section>
-      <section id="market-analysis" class="admin-section"></section>
-      <section id="reviews" class="admin-section"></section>
-      <section id="legal-details" class="admin-section"></section>
-      <section id="investment-analysis" class="admin-section"></section>
+      <section id="developers" class="admin-section"><div class="section-header"><h1>Developers</h1></div></section>
+      <section id="locations" class="admin-section"><div class="section-header"><h1>Locations</h1></div></section>
+      <section id="properties" class="admin-section"><div class="section-header"><h1>Properties</h1></div></section>
+      <section id="unit-types" class="admin-section"><div class="section-header"><h1>Unit Types</h1></div></section>
+      <section id="room-details" class="admin-section"><div class="section-header"><h1>Room Details</h1></div></section>
+      <section id="unit-specifications" class="admin-section"><div class="section-header"><h1>Unit Specs</h1></div></section>
+      <section id="amenities" class="admin-section"><div class="section-header"><h1>Amenities</h1></div></section>
+      <section id="property-amenities" class="admin-section"><div class="section-header"><h1>Property Amenities</h1></div></section>
+      <section id="challenges" class="admin-section"><div class="section-header"><h1>Challenges</h1></div></section>
+      <section id="property-challenges" class="admin-section"><div class="section-header"><h1>Property Challenges</h1></div></section>
+      <section id="property-connectivity" class="admin-section"><div class="section-header"><h1>Property Connectivity</h1></div></section>
+      <section id="property-gallery" class="admin-section"><div class="section-header"><h1>Property Gallery</h1></div></section>
+      <section id="property-documents" class="admin-section"><div class="section-header"><h1>Property Documents</h1></div></section>
+      <section id="timeline" class="admin-section"><div class="section-header"><h1>Timeline</h1></div></section>
+      <section id="financial-details" class="admin-section"><div class="section-header"><h1>Financial Details</h1></div></section>
+      <section id="market-analysis" class="admin-section"><div class="section-header"><h1>Market Analysis</h1></div></section>
+      <section id="reviews" class="admin-section"><div class="section-header"><h1>Reviews</h1></div></section>
+      <section id="legal-details" class="admin-section"><div class="section-header"><h1>Legal Details</h1></div></section>
+      <section id="investment-analysis" class="admin-section"><div class="section-header"><h1>Investment Analysis</h1></div></section>
     </main>
   </div>
   <footer class="admin-footer">
@@ -70,7 +80,7 @@
   </footer>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="admin.js"></script>
-  <script>
+  <script type="text/javascript">
     // Session management
     document.addEventListener('DOMContentLoaded', function() {
       // Check if user is logged in
@@ -83,31 +93,16 @@
         return;
       }
       
-      // Add Home Page and Logout buttons to header-actions
-      const headerActions = document.querySelector('.header-actions');
-      // Home Page button
-      const homeBtn = document.createElement('a');
-      homeBtn.href = '../public/home_page.html';
-      homeBtn.textContent = 'Home Page';
-      homeBtn.className = 'home-btn';
-      homeBtn.style.cssText = 'background:#fff;color:#1a237e;padding:0.5rem 1.2rem;border-radius:6px;font-weight:700;text-decoration:none;box-shadow:0 1px 4px rgba(26,35,126,0.08);transition:background 0.2s;margin-right:0.5rem;';
-      // Logout button
-      const logoutBtn = document.createElement('button');
-      logoutBtn.textContent = 'Logout';
-      logoutBtn.style.cssText = 'background:#ff4444;color:#fff;padding:0.5rem 1.2rem;border-radius:6px;font-weight:700;border:none;cursor:pointer;box-shadow:0 1px 4px rgba(255,68,68,0.3);transition:background 0.2s;';
-      logoutBtn.addEventListener('click', function() {
+      // Implement logout functionality
+      document.getElementById('logoutBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        // Clear user data from localStorage
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('user');
+        // Redirect to login page
         window.location.href = 'login.html';
       });
-      // Add user info
-      const userInfo = document.createElement('span');
-      userInfo.textContent = `Welcome, ${user.username}!`;
-      userInfo.style.cssText = 'color:#fff;margin-right:1rem;';
-      headerActions.appendChild(userInfo);
-      headerActions.appendChild(homeBtn);
-      headerActions.appendChild(logoutBtn);
     });
   </script>
 </body>
-</html> 
+</html>

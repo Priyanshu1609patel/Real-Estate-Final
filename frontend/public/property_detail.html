@@ -4,215 +4,435 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Property Details | Real Estate</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Roboto', Arial, sans-serif;
-      margin: 0;
-      background: #f7f8fa;
-      color: #222;
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary: #10b981;
+      --accent: #f59e0b;
+      --text-dark: #1f2937;
+      --text-light: #6b7280;
+      --bg-white: #ffffff;
+      --bg-gray: #f8fafc;
+      --border: #e5e7eb;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1);
     }
-    header {
-      background: #1a237e;
-      color: #fff;
-      padding: 1.2rem 2rem 1rem 2rem;
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-gray);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
       display: flex;
       align-items: center;
-      box-shadow: 0 2px 8px rgba(26,35,126,0.08);
+      justify-content: space-between;
     }
-    .site-title {
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
       font-size: 1.5rem;
-      font-weight: 700;
-      letter-spacing: 1px;
+      font-weight: 800;
+      color: white;
+      text-decoration: none;
     }
-    .main-container {
-      max-width: 1200px;
-      margin: 2rem auto;
-      background: #fff;
-      border-radius: 14px;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
-      padding: 2rem 2rem 2.5rem 2rem;
-    }
-    .property-header {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
-      align-items: flex-start;
-      margin-bottom: 2rem;
-    }
-    .property-image {
-      width: 380px;
-      height: 260px;
-      border-radius: 12px;
-      object-fit: cover;
-      background: #e0e0e0;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-    }
-    .property-info {
-      flex: 1 1 320px;
-      min-width: 280px;
-    }
-    .property-title {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #1a237e;
-      margin-bottom: 0.5rem;
-    }
-    .property-location {
-      font-size: 1.1rem;
-      color: #444;
-      margin-bottom: 0.7rem;
-    }
-    .property-price {
-      font-size: 1.3rem;
-      color: #388e3c;
-      font-weight: 700;
-      margin-bottom: 1rem;
-    }
-    .property-desc {
-      font-size: 1.05rem;
-      color: #333;
-      margin-bottom: 1.2rem;
-    }
-    .section {
-      margin-bottom: 2.2rem;
-    }
-    .section-title {
-      font-size: 1.25rem;
-      color: #1a237e;
-      font-weight: 700;
-      margin-bottom: 0.7rem;
-      border-bottom: 2px solid #e0e0e0;
-      padding-bottom: 0.2rem;
-    }
-    .section-content {
-      background: #f5f6fa;
-      border-radius: 10px;
-      padding: 1.2rem 1rem 1rem 1rem;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
-    }
-    .section-content table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 1rem;
-      table-layout: fixed;
-      word-break: break-word;
-    }
-    .section-content td {
-      padding: 0.5rem 0.3rem;
-      border-bottom: 1px solid #e0e0e0;
-      color: #333;
-      word-break: break-word;
-      max-width: 180px;
-      white-space: pre-line;
-    }
-    .section-content tr:last-child td {
-      border-bottom: none;
-    }
-    .amenities-list {
-      display: flex;
-      flex-wrap: wrap;
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
       gap: 0.5rem;
-      margin-top: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
     }
-    .amenity {
-      background: #e8eaf6;
-      color: #3949ab;
-      border-radius: 5px;
-      padding: 0.25rem 0.7rem;
-      font-size: 0.95rem;
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
     }
-    /* Hero Section Styles */
-    #heroSection {
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    /* Hero Section */
+    .hero {
       position: relative;
-      width: 100vw;
-      left: 50%;
-      right: 50%;
-      margin-left: -50vw;
-      margin-right: -50vw;
-      min-height: 320px;
-      max-height: 420px;
+      height: 400px;
       overflow: hidden;
-      background: #222;
       display: flex;
       align-items: flex-end;
-      justify-content: flex-start;
     }
-    .hero-image-bg {
+
+    .hero-bg {
       position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
-      filter: brightness(0.65);
-      z-index: 1;
+      filter: brightness(0.6);
     }
-    .hero-overlay {
+
+    .hero-content {
       position: relative;
       z-index: 2;
-      padding: 2.5rem 2.5rem 2.5rem 3.5rem;
-      color: #fff;
-      max-width: 700px;
+      color: white;
+      padding: 3rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
     }
+
     .hero-title {
-      font-size: 2.5rem;
-      font-weight: 700;
+      font-size: 3rem;
+      font-weight: 900;
       margin-bottom: 0.5rem;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
+
     .hero-location {
-      font-size: 1.2rem;
-      margin-bottom: 0.7rem;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.18);
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      opacity: 0.9;
     }
+
     .hero-price {
       font-size: 1.5rem;
       font-weight: 700;
-      color: #69f06b;
-      margin-bottom: 1.2rem;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.18);
+      color: var(--accent);
+      text-shadow: 0 1px 4px rgba(0,0,0,0.3);
     }
-    @media (max-width: 900px) {
-      #heroSection {
-        min-height: 200px;
-        max-height: 260px;
-      }
-      .hero-title { font-size: 1.5rem; }
-      .hero-overlay { padding: 1.2rem 1.2rem 1.2rem 1.5rem; }
+
+    /* Main Content */
+    .main-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
     }
-    @media (max-width: 600px) {
-      #heroSection {
-        min-height: 120px;
-        max-height: 160px;
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+    }
+
+    .main-section {
+      background: var(--bg-white);
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+    }
+
+    .sidebar {
+      background: var(--bg-white);
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .info-card {
+      background: var(--bg-gray);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+    }
+
+    .info-label {
+      font-size: 0.875rem;
+      color: var(--text-light);
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .info-value {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 0.375rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .badge-success { background: #dcfce7; color: #166534; }
+    .badge-warning { background: #fef3c7; color: #92400e; }
+    .badge-danger { background: #fee2e2; color: #991b1b; }
+    .badge-info { background: #dbeafe; color: #1e40af; }
+
+    .amenities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+
+    .amenity-item {
+      background: var(--bg-gray);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+
+    .quick-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--bg-gray);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--text-light);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .map-container {
+      height: 300px;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 1024px) {
+      .content-grid {
+        grid-template-columns: 1fr;
       }
-      .hero-title { font-size: 1.1rem; }
-      .hero-overlay { padding: 0.7rem 0.7rem 0.7rem 0.7rem; }
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-title { font-size: 2rem; }
+      .main-content { padding: 1rem; }
+      .info-grid { grid-template-columns: 1fr; }
+      .quick-stats { grid-template-columns: 1fr; }
+      .action-buttons { flex-direction: column; }
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+      color: var(--text-light);
+    }
+
+    .error {
+      background: #fee2e2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      margin: 1rem 0;
+    }
+
+    /* Update .modal-close-btn CSS for inside modal box */
+    .modal-close-btn {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #888;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 10;
+      transition: color 0.2s, background 0.2s;
+      border-radius: 50%;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-close-btn:hover {
+      color: #fff;
+      background: #2563eb;
     }
   </style>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
-  <main>
-    <div id="heroSection"></div>
-    <div class="main-container">
-      <div id="propertyDetailContainer"></div>
-      <div id="reviewSection" style="margin-top:2.5rem;"></div>
-      <div id="connectivitySection" style="margin-top:2.5rem;"></div>
-    </div>
-    <!-- Modal for Property Insights -->
-    <div id="insightsModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.35);z-index:1000;align-items:center;justify-content:center;">
-      <div id="insightsModalBox" style="background:#fff;border-radius:16px;max-width:540px;width:95vw;padding:2rem 1.5rem;box-shadow:0 8px 32px rgba(0,0,0,0.18);position:relative;max-height:90vh;overflow-y:auto;display:flex;flex-direction:column;">
-        <button onclick="document.getElementById('insightsModal').style.display='none'" style="position:absolute;top:1rem;right:1rem;font-size:1.3rem;background:none;border:none;cursor:pointer;">&times;</button>
-        <div id="insightsModalContent"></div>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <a href="home_page.html" class="logo">
+        <i class="fas fa-home"></i>
+        <span>Real Estate</span>
+      </a>
+      <div class="nav-actions">
+        <a href="../admin/login.html" class="btn btn-secondary">
+          <i class="fas fa-user"></i>
+          Admin
+        </a>
+        <a href="home_page.html" class="btn btn-primary">
+          <i class="fas fa-chart-line"></i>
+          Compare
+        </a>
       </div>
     </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <img id="heroBg" class="hero-bg" src="" alt="">
+    <div class="hero-content">
+      <h1 id="heroTitle" class="hero-title">Loading...</h1>
+      <div id="heroLocation" class="hero-location">Loading...</div>
+      <div id="heroPrice" class="hero-price">Loading...</div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-grid">
+      <!-- Main Content -->
+      <div class="main-content-area">
+        <div id="propertyDetailContainer">
+          <div class="loading">
+            <i class="fas fa-spinner fa-spin"></i>
+            <span>Loading property details...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="quick-stats">
+          <div class="stat-card">
+            <div class="stat-value" id="pricePerSqft">-</div>
+            <div class="stat-label">Price/sqft</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="totalUnits">-</div>
+            <div class="stat-label">Total Units</div>
+          </div>
+        </div>
+
+        <div class="main-section">
+          <h3 class="section-title">
+            <i class="fas fa-info-circle"></i>
+            Quick Info
+          </h3>
+          <div id="quickInfo"></div>
+        </div>
+
+        <div class="action-buttons">
+          <button onclick="openInsightsModal()" class="btn btn-primary" style="flex: 1;">
+            <i class="fas fa-chart-bar"></i>
+            Property Insights
+          </button>
+          <a href="home_page.html" class="btn btn-secondary" style="flex: 1; text-align: center;">
+            <i class="fas fa-compare"></i>
+            Compare
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Review Section -->
+    <div id="reviewSection" class="main-section"></div>
+
+    <!-- Connectivity Section -->
+    <div id="connectivitySection" class="main-section"></div>
   </main>
+
+  <!-- Modal -->
+  <div id="insightsModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;">
+    <div style="background:white;border-radius:1rem;max-width:600px;width:95vw;padding:2rem;box-shadow:var(--shadow-lg);max-height:90vh;overflow-y:auto;position:relative;">
+      <button class="modal-close-btn" onclick="document.getElementById('insightsModal').style.display='none'">&times;</button>
+      <div id="insightsModalContent"></div>
+    </div>
+  </div>
+
   <script>
     const API_URL = 'http://localhost:3001/api/properties/full';
-    const PLACEHOLDER_IMG = 'https://via.placeholder.com/380x260?text=No+Image';
+    const PLACEHOLDER_IMG = 'https://via.placeholder.com/1200x400?text=Property+Image';
+
     function getQueryParam(name) {
       const url = new URL(window.location.href);
       return url.searchParams.get(name);
     }
+
     async function fetchPropertyById(id) {
       try {
         const res = await fetch(API_URL);
@@ -223,6 +443,7 @@
         return null;
       }
     }
+
     async function fetchByProp(endpoint, property_id) {
       try {
         const res = await fetch(`http://localhost:3001/api/${endpoint}`);
@@ -231,143 +452,267 @@
         return arr.find(x => x.property_id == property_id) || null;
       } catch { return null; }
     }
+
     let cachedProperty = null;
     let cachedSpecs = null;
+
     async function renderHeroSection(p) {
-      const hero = document.getElementById('heroSection');
       const img = p.mainImage && p.mainImage !== '/images/placeholder-property.jpg' ? p.mainImage : PLACEHOLDER_IMG;
-      hero.innerHTML = `
-        <img class="hero-image-bg" src="${img}" alt="${p.name}">
-        <div class="hero-overlay">
-          <div class="hero-title">${p.name || '-'}</div>
-          <div class="hero-location">${p.location?.area_name || '-'}, ${p.location?.city || '-'}, ${p.location?.state || '-'}</div>
-          <div class="hero-price">₹${p.min_price?.toLocaleString() || '-'} - ₹${p.max_price?.toLocaleString() || '-'}</div>
+      document.getElementById('heroBg').src = img;
+      document.getElementById('heroTitle').textContent = p.name || 'Property';
+      document.getElementById('heroLocation').textContent = `${p.location?.area_name || ''}, ${p.location?.city || ''}, ${p.location?.state || ''}`;
+      document.getElementById('heroPrice').textContent = `₹${p.min_price?.toLocaleString() || '-'} - ₹${p.max_price?.toLocaleString() || '-'}`;
+    }
+
+    function renderQuickInfo(p) {
+      const html = `
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-label">Property Type</div>
+            <div class="info-value">${p.property_type || '-'}</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Status</div>
+            <div class="info-value">${p.status || '-'}</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Possession Date</div>
+            <div class="info-value">${p.possession_date || '-'}</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Land Area</div>
+            <div class="info-value">${p.land_area_acres || '-'} acres</div>
+          </div>
         </div>
       `;
+      document.getElementById('quickInfo').innerHTML = html;
+      
+      // Update stats
+      document.getElementById('pricePerSqft').textContent = `₹${p.price_per_sqft?.toLocaleString() || '-'}`;
+      document.getElementById('totalUnits').textContent = p.total_units || '-';
     }
+
     async function renderPropertyDetail() {
       const id = getQueryParam('id');
       if (!id) {
-        document.getElementById('propertyDetailContainer').innerHTML = '<div style="color:red;">No property selected.</div>';
+        document.getElementById('propertyDetailContainer').innerHTML = '<div class="error">No property selected.</div>';
         return;
       }
+
       const p = await fetchPropertyById(id);
       if (!p) {
-        document.getElementById('propertyDetailContainer').innerHTML = '<div style="color:red;">Property not found.</div>';
+        document.getElementById('propertyDetailContainer').innerHTML = '<div class="error">Property not found.</div>';
         return;
       }
+
       await renderHeroSection(p);
-      // Fetch extra details
+      renderQuickInfo(p);
+
       const [financial, legal, market, investment] = await Promise.all([
         fetchByProp('financial_details', p.id),
         fetchByProp('legal_details', p.id),
         fetchByProp('market_analysis', p.id),
         fetchByProp('investment_analysis', p.id)
       ]);
+
       cachedProperty = p;
       cachedSpecs = { financial, legal, market, investment };
-      // Render
+
       let html = '';
-      // Description Section
-      html += `<div class='section'><div class='section-title'>Description</div><div class='section-content'>${p.description || '-'}</div></div>`;
+
+      // Description
+      html += `<div class="main-section">
+        <h3 class="section-title"><i class="fas fa-align-left"></i>Description</h3>
+        <p>${p.description || 'No description available.'}</p>
+      </div>`;
+
       // Developer
-      html += `<div class='section'><div class='section-title'>Developer</div><div class='section-content'><table>
-        <tr><td>Name</td><td>${p.developer?.name || '-'}</td></tr>
-        <tr><td>Website</td><td>${p.developer?.website_url ? `<a href='${p.developer.website_url}' target='_blank'>${p.developer.website_url}</a>` : '-'}</td></tr>
-      </table></div></div>`;
-      // Amenities
-      html += `<div class='section'><div class='section-title'>Amenities</div><div class='section-content'><div class='amenities-list'>${(p.amenities && p.amenities.length) ? p.amenities.map(a => `<span class='amenity'>${a.name}</span>`).join('') : '-'}</div></div></div>`;
-      // Financial
-      html += `<div class='section'><div class='section-title'>Financial Details</div><div class='section-content'><table>
-        <tr><td>Base Price/sqft</td><td>₹${financial?.base_price_per_sqft || '-'}</td></tr>
-        <tr><td>Premium Charges/sqft</td><td>₹${financial?.premium_charges_per_sqft || '-'}</td></tr>
-        <tr><td>Registration %</td><td>${financial?.registration_percentage || '-'}</td></tr>
-        <tr><td>GST %</td><td>${financial?.gst_percentage || '-'}</td></tr>
-        <tr><td>Maintenance/sqft</td><td>₹${financial?.maintenance_per_sqft || '-'}</td></tr>
-        <tr><td>Parking Charges</td><td>₹${financial?.parking_charges || '-'}</td></tr>
-        <tr><td>Loan Eligibility %</td><td>${financial?.loan_eligibility_percentage || '-'}</td></tr>
-        <tr><td>Preferred Banks</td><td>${financial?.preferred_banks || '-'}</td></tr>
-      </table></div></div>`;
-      // Legal
-      html += `<div class='section'><div class='section-title'>Legal Details</div><div class='section-content'><table>
-        <tr><td>RERA Reg.</td><td>${legal?.rera_registration || '-'}</td></tr>
-        <tr><td>Commencement Cert.</td><td>${legal?.commencement_certificate || '-'}</td></tr>
-        <tr><td>Occupancy Cert.</td><td>${legal?.occupancy_certificate || '-'}</td></tr>
-        <tr><td>Approved Plan</td><td>${legal?.approved_plan || '-'}</td></tr>
-        <tr><td>Deviation Status</td><td>${legal?.deviation_status || '-'}</td></tr>
-        <tr><td>Litigation Status</td><td>${legal?.litigation_status || '-'}</td></tr>
-        <tr><td>Title Verification</td><td>${legal?.title_verification || '-'}</td></tr>
-        <tr><td>Bank Approvals</td><td>${legal?.bank_approvals || '-'}</td></tr>
-        <tr><td>Insurance</td><td>${legal?.insurance_coverage || '-'}</td></tr>
-        <tr><td>Compliance</td><td>${legal?.compliance_status || '-'}</td></tr>
-        <tr><td>Legal Opinion</td><td>${legal?.legal_opinion || '-'}</td></tr>
-      </table></div></div>`;
-      // Market
-      html += `<div class='section'><div class='section-title'>Market Analysis</div><div class='section-content'><table>
-        <tr><td>Current Avg Price/sqft</td><td>₹${market?.current_avg_price_per_sqft || '-'}</td></tr>
-        <tr><td>1yr Appreciation %</td><td>${market?.price_appreciation_1year || '-'}</td></tr>
-        <tr><td>3yr Appreciation %</td><td>${market?.price_appreciation_3year || '-'}</td></tr>
-        <tr><td>Inventory Months</td><td>${market?.inventory_months || '-'}</td></tr>
-        <tr><td>Market Segment</td><td>${market?.market_segment || '-'}</td></tr>
-        <tr><td>Buyer Profile</td><td>${market?.buyer_profile || '-'}</td></tr>
-        <tr><td>Resale Potential</td><td>${market?.resale_potential || '-'}</td></tr>
-        <tr><td>Rental Demand</td><td>${market?.rental_demand || '-'}</td></tr>
-      </table></div></div>`;
-      // Investment
-      html += `<div class='section'><div class='section-title'>Investment Analysis</div><div class='section-content'><table>
-        <tr><td>Type</td><td>${investment?.investment_type || '-'}</td></tr>
-        <tr><td>Entry Cost</td><td>₹${investment?.entry_cost || '-'}</td></tr>
-        <tr><td>Annual Rental Income</td><td>₹${investment?.annual_rental_income || '-'}</td></tr>
-        <tr><td>Annual Appreciation</td><td>${investment?.annual_appreciation || '-'}</td></tr>
-        <tr><td>Maintenance Cost</td><td>₹${investment?.maintenance_cost || '-'}</td></tr>
-        <tr><td>Total Returns (5yr)</td><td>${investment?.total_returns_5year || '-'}</td></tr>
-        <tr><td>IRR %</td><td>${investment?.irr_percentage || '-'}</td></tr>
-        <tr><td>Payback Period (yrs)</td><td>${investment?.payback_period_years || '-'}</td></tr>
-        <tr><td>Risk Assessment</td><td>${investment?.risk_assessment || '-'}</td></tr>
-        <tr><td>Liquidity Rating</td><td>${investment?.liquidity_rating || '-'}</td></tr>
-        <tr><td>Tax Benefits</td><td>${investment?.tax_benefits || '-'}</td></tr>
-        <tr><td>Investment Grade</td><td>${investment?.investment_grade || '-'}</td></tr>
-      </table></div></div>`;
-      document.getElementById('propertyDetailContainer').innerHTML = html;
-    }
-    // --- Review Section Data (example, replace with real data as available) ---
-    const reviewMetrics = [
-      { label: 'Land Area', value: '16.00 Acres', avg: '11.99 acres', icon: '😊' },
-      { label: 'Clubhouse Area', value: '45000 sqft', avg: '20724 sqft', icon: '😊' },
-      { label: 'Park Area', value: '1.56 Acres', avg: '0.68 Acres', icon: '😊' },
-      { label: 'Open Area', value: '85%', avg: '71%', icon: '😊' },
-      { label: 'Units', value: '1100', avg: '831 units', icon: '😐' },
-      { label: 'Price Per Sq.Ft.', value: '₹14634', avg: '10666', icon: '☹️' },
-      { label: 'Clubhouse Factor', value: '41 sqft / unit', avg: '46 sqft / unit', icon: '😐' },
-      { label: 'Closest Metro', value: '1.32 kms', avg: '7.04 kms', icon: '😊' },
-      { label: 'Approach Road', value: '25 meters', avg: '19 meters', icon: '😊' },
-      { label: 'Unit Density', value: '69 units/acre', avg: '79 units/acre', icon: '😊' },
-    ];
-    function renderReviewSection() {
-      let html = `<div style='display:flex;flex-wrap:wrap;gap:2rem 0;'>
-        <div style='flex:1 1 320px;min-width:260px;'>
-          <h2 style='font-size:2rem;font-weight:700;color:#222;margin-bottom:0.5rem;'>Review</h2>
-          <div style='font-size:1.1rem;color:#888;margin-bottom:1.5rem;'>Comparing with the average of all properties in Thanisandra Road</div>
-          <div style='display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem 0.5rem;'>`;
-      reviewMetrics.forEach((m, i) => {
-        html += `<div style='display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.7rem 0.2rem;'>
-          <span style='font-size:1.5rem;'>${m.icon}</span>
-          <span style='font-size:1.35rem;font-weight:700;color:#222;margin:0.2rem 0;'>${m.value}</span>
-          <span style='font-size:1rem;color:#888;'>${m.label}</span>
-          <span style='font-size:0.95rem;color:#aaa;'>Avg is: ${m.avg}</span>
-        </div>`;
-      });
-      html += `</div>
-          <div style='margin-top:2rem;display:flex;gap:1rem;'>
-            <button onclick='openInsightsModal()' style='background:#222;color:#fff;font-weight:600;padding:0.7rem 1.2rem;border-radius:7px;border:none;cursor:pointer;font-size:1rem;'>See Property Insights</button>
-            <button onclick="window.location.href='home_page.html'" style='background:#fff;color:#222;font-weight:600;padding:0.7rem 1.2rem;border-radius:7px;border:1.5px solid #222;cursor:pointer;font-size:1rem;'>Compare With Peers</button>
+      html += `<div class="main-section">
+        <h3 class="section-title"><i class="fas fa-building"></i>Developer</h3>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-label">Name</div>
+            <div class="info-value">${p.developer?.name || '-'}</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Website</div>
+            <div class="info-value">${p.developer?.website_url ? `<a href="${p.developer.website_url}" target="_blank">Visit Website</a>` : '-'}</div>
           </div>
         </div>
-      </div>
-      <div style='margin-top:1.5rem;font-size:1.08rem;color:#444;max-width:700px;'>Placed <b>28.97km</b> away from the Kempegowda International Airport, <b>Lodha Mirabelle</b> is a fine example of thoughtful architectural design by <b>Lodha Developers</b>. Nestled close to the developing IT and manufacturing corridor in North Bengaluru, <b>Lodha Mirabelle</b> is a tasteful blend of function and aesthetics.</div>`;
+      </div>`;
+
+      // Amenities
+      html += `<div class="main-section">
+        <h3 class="section-title"><i class="fas fa-concierge-bell"></i>Amenities</h3>
+        <div class="amenities-grid">
+          ${(p.amenities && p.amenities.length) ? 
+            p.amenities.map(a => `<div class="amenity-item">${a.name}</div>`).join('') : 
+            '<div class="amenity-item">No amenities listed</div>'
+          }
+        </div>
+      </div>`;
+
+      // Financial
+      html += `<div class="main-section">
+        <h3 class="section-title"><i class="fas fa-chart-line"></i>Financial Details</h3>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-label">Base Price/sqft</div>
+            <div class="info-value">₹${financial?.base_price_per_sqft || '-'}</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Registration %</div>
+            <div class="info-value">${financial?.registration_percentage || '-'}%</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">GST %</div>
+            <div class="info-value">${financial?.gst_percentage || '-'}%</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Maintenance/sqft</div>
+            <div class="info-value">₹${financial?.maintenance_per_sqft || '-'}</div>
+          </div>
+        </div>
+      </div>`;
+
+      // Legal
+      html += `<div class="main-section">
+        <h3 class="section-title"><i class="fas fa-gavel"></i>Legal Information</h3>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-label">RERA Registration</div>
+            <div class="info-value"><span class="badge ${legal?.rera_registration ? 'badge-success' : 'badge-danger'}">${legal?.rera_registration || 'Not Available'}</span></div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Commencement Cert.</div>
+            <div class="info-value"><span class="badge ${legal?.commencement_certificate ? 'badge-success' : 'badge-warning'}">${legal?.commencement_certificate || 'Pending'}</span></div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Occupancy Cert.</div>
+            <div class="info-value"><span class="badge ${legal?.occupancy_certificate ? 'badge-success' : 'badge-warning'}">${legal?.occupancy_certificate || 'Pending'}</span></div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Litigation Status</div>
+            <div class="info-value"><span class="badge ${legal?.litigation_status === 'Clear' ? 'badge-success' : 'badge-danger'}">${legal?.litigation_status || 'Unknown'}</span></div>
+          </div>
+        </div>
+      </div>`;
+
+      // Market Analysis
+      html += `<div class="main-section">
+        <h3 class="section-title"><i class="fas fa-chart-bar"></i>Market Analysis</h3>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-label">Current Avg Price/sqft</div>
+            <div class="info-value">₹${market?.current_avg_price_per_sqft || '-'}</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">1yr Appreciation</div>
+            <div class="info-value">${market?.price_appreciation_1year || '-'}%</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Resale Potential</div>
+            <div class="info-value"><span class="badge badge-${market?.resale_potential === 'High' ? 'success' : market?.resale_potential === 'Medium' ? 'warning' : 'info'}">${market?.resale_potential || 'Unknown'}</span></div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Market Segment</div>
+            <div class="info-value">${market?.market_segment || '-'}</div>
+          </div>
+        </div>
+      </div>`;
+
+      // Investment Analysis
+      html += `<div class="main-section">
+        <h3 class="section-title"><i class="fas fa-coins"></i>Investment Analysis</h3>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-label">Investment Type</div>
+            <div class="info-value">${investment?.investment_type || '-'}</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Annual Appreciation</div>
+            <div class="info-value">${investment?.annual_appreciation || '-'}%</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Total Returns (5yr)</div>
+            <div class="info-value">${investment?.total_returns_5year || '-'}%</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Risk Assessment</div>
+            <div class="info-value"><span class="badge badge-${investment?.risk_assessment === 'Low' ? 'success' : investment?.risk_assessment === 'Medium' ? 'warning' : 'danger'}">${investment?.risk_assessment || 'Unknown'}</span></div>
+          </div>
+        </div>
+      </div>`;
+
+      document.getElementById('propertyDetailContainer').innerHTML = html;
+    }
+
+    // Review Section
+    function renderReviewSection() {
+      const html = `
+        <h3 class="section-title"><i class="fas fa-star"></i>Property Review</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+          <div class="stat-card">
+            <div class="stat-value">16.00</div>
+            <div class="stat-label">Land Area (Acres)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">45000</div>
+            <div class="stat-label">Clubhouse Area (sqft)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">1.56</div>
+            <div class="stat-label">Park Area (Acres)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">85%</div>
+            <div class="stat-label">Open Area</div>
+          </div>
+        </div>
+      `;
       document.getElementById('reviewSection').innerHTML = html;
     }
-    // Mock tower data for slider
+
+    // Connectivity Section
+    function renderConnectivitySection() {
+      // Example coordinates (property, metro, airport)
+      const propertyCoords = [13.0702, 77.6245]; // Example: Lodha Mirabelle
+      const locations = [
+        { type: 'Metro', name: 'Nagarwara Metro Station', dist: '1.32 Km', time: '5 mins', coords: [13.0456, 77.6201] },
+        { type: 'Railway', name: 'Thanisandra Railway Station', dist: '2.45 Km', time: '7 mins', coords: [13.0601, 77.6278] },
+        { type: 'Metro', name: 'Kodigehalli Metro Station', dist: '7.06 Km', time: '13 mins', coords: [13.0802, 77.5921] },
+        { type: 'Railway', name: 'SMVT Bengaluru Railway', dist: '7.62 Km', time: '17 mins', coords: [13.0092, 77.6271] },
+        { type: 'Metro', name: 'Hebbal Metro Station', dist: '8.35 Km', time: '14 mins', coords: [13.0458, 77.5912] },
+        { type: 'Airport', name: 'Kempegowda International Airport', dist: '28.97 Km', time: '40 mins', coords: [13.1986, 77.7066] }
+      ];
+      let html = `<h3 class="section-title"><i class="fas fa-map-marker-alt"></i>Connectivity</h3>
+        <div class="map-container" id="map"></div>
+        <div style='display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:1.5rem;'>`;
+      locations.forEach(loc => {
+        html += `<div class='info-card' style='min-width:180px;flex:1 1 180px;'>
+          <div class='info-label'>${loc.name}</div>
+          <div class='info-value'>${loc.type}</div>
+          <div style='font-size:0.98rem;color:#666;margin-top:0.2rem;'>${loc.dist} | ${loc.time}</div>
+        </div>`;
+      });
+      html += `</div>`;
+      document.getElementById('connectivitySection').innerHTML = html;
+      // Initialize Leaflet map
+      setTimeout(() => {
+        const map = L.map('map').setView(propertyCoords, 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+        // Property marker
+        L.marker(propertyCoords).addTo(map).bindPopup('Lodha Mirabelle (Property)').openPopup();
+        // Other locations
+        locations.forEach(loc => {
+          L.marker(loc.coords).addTo(map).bindPopup(`${loc.name} (${loc.type})<br>${loc.dist}, ${loc.time}`);
+        });
+      }, 100);
+    }
+
+    // Modal functions
     const towerDetails = [
       { floorCount: '28 floors', unitCount: '116 units', unitsPerFloor: '4 units per floor', elevatorCount: '3 elevators', elevatorRatio: '39 units / elevator', typologies: '2BHK, 3BHK' },
       { floorCount: '28 floors', unitCount: '120 units', unitsPerFloor: '4 units per floor', elevatorCount: '3 elevators', elevatorRatio: '40 units / elevator', typologies: '2BHK, 3BHK' },
@@ -376,14 +721,13 @@
       { floorCount: '28 floors', unitCount: '118 units', unitsPerFloor: '4 units per floor', elevatorCount: '3 elevators', elevatorRatio: '39 units / elevator', typologies: '2BHK, 3BHK' }
     ];
     let currentTower = 0;
-    async function openInsightsModal() {
+    function openInsightsModal() {
       document.getElementById('insightsModal').style.display = 'flex';
       renderInsightsModalContent();
     }
     function renderInsightsModalContent() {
       const p = cachedProperty;
-      const s = cachedSpecs;
-      let html = `<h2 style="margin-top:0;">Specifications</h2>`;
+      let html = `<h3 style="margin-top:0;">Property Specifications</h3>`;
       html += `<div style='margin-bottom:1.2rem;'><b>${p?.name || ''}</b></div>`;
       html += `<div style='display:grid;grid-template-columns:1fr 1fr;gap:1.2rem 1.5rem;'>`;
       html += `<div><b>Towers</b><br>${p?.towers || '2 Towers'}</div>`;
@@ -429,44 +773,7 @@
       if (currentTower >= towerDetails.length) currentTower = towerDetails.length - 1;
       renderInsightsModalContent();
     }
-    function renderConnectivitySection() {
-      // Example coordinates (property, metro, airport)
-      const propertyCoords = [13.0702, 77.6245]; // Example: Lodha Mirabelle
-      const locations = [
-        { type: 'Metro', name: 'Nagarwara Metro Station', dist: '1.32 Km', time: '5 mins', coords: [13.0456, 77.6201] },
-        { type: 'Railway', name: 'Thanisandra Railway Station', dist: '2.45 Km', time: '7 mins', coords: [13.0601, 77.6278] },
-        { type: 'Metro', name: 'Kodigehalli Metro Station', dist: '7.06 Km', time: '13 mins', coords: [13.0802, 77.5921] },
-        { type: 'Railway', name: 'SMVT Bengaluru Railway', dist: '7.62 Km', time: '17 mins', coords: [13.0092, 77.6271] },
-        { type: 'Metro', name: 'Hebbal Metro Station', dist: '8.35 Km', time: '14 mins', coords: [13.0458, 77.5912] },
-        { type: 'Airport', name: 'Kempegowda International Airport', dist: '28.97 Km', time: '40 mins', coords: [13.1986, 77.7066] }
-      ];
-      let html = `<div style='margin-bottom:1.2rem;'><h2 style='font-size:1.5rem;font-weight:700;color:#222;margin-bottom:0.5rem;'>Connectivity</h2>
-        <div style='font-size:1.1rem;color:#888;margin-bottom:1.2rem;'>Lodha Mirabelle</div>
-        <div id='map' style='height:320px;width:100%;max-width:700px;border-radius:10px;overflow:hidden;margin-bottom:1.5rem;'></div>
-        <div style='display:flex;gap:1.5rem;flex-wrap:wrap;'>`;
-      locations.forEach(loc => {
-        html += `<div style='background:#fff;border-radius:8px;box-shadow:0 1px 6px rgba(0,0,0,0.06);padding:1rem 1.2rem;min-width:180px;flex:1 1 180px;'>
-          <div style='font-size:1.1rem;font-weight:600;color:#1a237e;'>${loc.name}</div>
-          <div style='font-size:1rem;color:#444;'>${loc.type}</div>
-          <div style='font-size:0.98rem;color:#666;margin-top:0.2rem;'>${loc.dist} | ${loc.time}</div>
-        </div>`;
-      });
-      html += `</div></div>`;
-      document.getElementById('connectivitySection').innerHTML = html;
-      // Initialize Leaflet map
-      setTimeout(() => {
-        const map = L.map('map').setView(propertyCoords, 13);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
-        // Property marker
-        L.marker(propertyCoords).addTo(map).bindPopup('Lodha Mirabelle (Property)').openPopup();
-        // Other locations
-        locations.forEach(loc => {
-          L.marker(loc.coords).addTo(map).bindPopup(`${loc.name} (${loc.type})<br>${loc.dist}, ${loc.time}`);
-        });
-      }, 100);
-    }
+
     window.onload = () => {
       renderPropertyDetail();
       renderReviewSection();
