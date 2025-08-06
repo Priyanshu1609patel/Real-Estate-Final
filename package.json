@@ -1,6 +1,24 @@
 {
+  "name": "real-estate-app",
+  "version": "1.0.0",
+  "description": "Real Estate Application",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "build": "echo 'No build step required'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
     "bcryptjs": "^3.0.2",
-    "mysql2": "^3.14.2"
-  }
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mysql2": "^3.6.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "private": true
 }

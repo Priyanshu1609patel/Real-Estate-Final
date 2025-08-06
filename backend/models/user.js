@@ -1,14 +1,9 @@
 const db = require('../db');
-const bcrypt = require('bcryptjs');
 
 const User = {
-  create: async (data, callback) => {
-    try {
-      const hash = await bcrypt.hash(data.password, 10);
-      db.query('INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)', [data.username, data.email, hash], callback);
-    } catch (err) {
-      callback(err);
-    }
+  create: (data, callback) => {
+    // Store password as plain text (for demo only)
+    db.query('INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)', [data.username, data.email, data.password], callback);
   },
   findByUsernameOrEmail: (identifier, callback) => {
     db.query('SELECT * FROM users WHERE username = ? OR email = ?', [identifier, identifier], (err, results) => {
@@ -18,4 +13,4 @@ const User = {
   }
 };
 
-module.exports = User; 
+module.exports = User;

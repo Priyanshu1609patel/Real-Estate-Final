@@ -1,0 +1,29 @@
+[phases.setup]
+cmds = [
+  "npm install"
+]
+
+[phases.build]
+cmds = [
+  "echo 'No build step needed for static frontend'"
+]
+
+[phases.install]
+cmds = [
+  "npm install --production"
+]
+
+[start]
+cmd = "node backend/server.js"
+
+[build.environment]
+NODE_ENV = "production"
+PORT = "3001"
+NPM_CONFIG_PRODUCTION = "false"
+
+[build.args]
+NODE_VERSION = "18"
+
+[build.nodejs]
+install_scripts = true
+install_dev_deps = true

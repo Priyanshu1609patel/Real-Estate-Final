@@ -1,8 +1,11 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
-const db = require('./db');
+
+// Use the railway database configuration if available, otherwise fall back to local db
+const db = require('./db-railway');
 
 const app = express();
 app.use(cors());
