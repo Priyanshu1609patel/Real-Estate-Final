@@ -30,15 +30,15 @@ const getDbConfig = () => {
       }
     }
 
-    // Use Railway's internal network settings
+    // Use Railway's environment variables
     const config = {
-      host: 'mysql.railway.internal', // Internal Railway hostname
-      port: 3306,
-      user: 'root',
-      password: 'QvxdQQFIHjrBwnolUOpgVCVRHoxCkwbb',
-      database: 'railway',
-      // No SSL needed for internal network
-      ssl: false,
+      host: process.env.MYSQLHOST || 'mysql.railway.internal',
+      port: parseInt(process.env.MYSQLPORT || '3306', 10),
+      user: process.env.MYSQLUSER || 'root',
+      password: process.env.MYSQLPASSWORD || '',
+      database: process.env.MYSQLDATABASE || 'railway',
+      // Enable SSL for secure connection
+      ssl: process.env.MYSQL_SSL === 'true' ? { rejectUnauthorized: false } : false,
       connectTimeout: 60000, // Increased timeout to 60 seconds
       waitForConnections: true,
       connectionLimit: 10,
