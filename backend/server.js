@@ -20,6 +20,17 @@ app.use('/public', express.static(path.join(__dirname, '../frontend/public')));
 // Serve admin files from the frontend/admin directory
 app.use('/admin', express.static(path.join(__dirname, '../frontend/admin')));
 
+// Get all properties
+app.get('/api/properties', async (req, res) => {
+  try {
+    const [properties] = await db.query('SELECT * FROM properties');
+    res.json(properties);
+  } catch (error) {
+    console.error('Error fetching properties:', error);
+    res.status(500).json({ error: 'Failed to fetch properties' });
+  }
+});
+
 // Health check endpoint
 app.get('/health', async (req, res) => {
   try {
