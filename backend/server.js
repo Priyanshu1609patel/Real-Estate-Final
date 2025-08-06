@@ -20,6 +20,21 @@ app.use('/public', express.static(path.join(__dirname, '../frontend/public')));
 // Serve admin files from the frontend/admin directory
 app.use('/admin', express.static(path.join(__dirname, '../frontend/admin')));
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+  db.query('SELECT 1 as test', (err, results) => {
+    if (err) {
+      console.error('Database health check failed:', err);
+      return res.status(500).json({ status: 'error', database: 'unhealthy', error: err.message });
+    }
+    res.json({ 
+      status: 'ok', 
+      database: 'connected',
+      timestamp: new Date().toISOString()
+    });
+  });
+});
+
 // Serve the home page as the default route
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/public/index.html'));
