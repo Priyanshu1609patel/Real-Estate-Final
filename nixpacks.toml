@@ -1,3 +1,6 @@
+# Nixpacks configuration for Railway deployment
+# This file is used by Railway to build and run the application
+
 [phases.setup]
 cmds = [
   "npm install"
@@ -5,7 +8,7 @@ cmds = [
 
 [phases.build]
 cmds = [
-  "echo 'No build step needed for static frontend'"
+  "npm run build"
 ]
 
 [phases.install]
@@ -14,10 +17,12 @@ cmds = [
 ]
 
 [start]
-cmd = "node backend/server.js"
+# Use the start.sh script which handles dependency installation
+cmd = "sh start.sh"
 
 [build.environment]
 NODE_ENV = "production"
+NPM_CONFIG_PRODUCTION = "false"  # Ensures devDependencies are installed during build
 PORT = "3001"
 NPM_CONFIG_PRODUCTION = "false"
 

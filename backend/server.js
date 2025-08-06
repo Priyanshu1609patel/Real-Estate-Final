@@ -21,18 +21,24 @@ app.use('/public', express.static(path.join(__dirname, '../frontend/public')));
 app.use('/admin', express.static(path.join(__dirname, '../frontend/admin')));
 
 // Health check endpoint
-app.get('/health', (req, res) => {
-  db.query('SELECT 1 as test', (err, results) => {
-    if (err) {
-      console.error('Database health check failed:', err);
-      return res.status(500).json({ status: 'error', database: 'unhealthy', error: err.message });
-    }
+app.get('/health', async (req, res) => {
+  try {
+    const [results] = await db.query('SELECT 1 as test');
     res.json({ 
       status: 'ok', 
       database: 'connected',
+      timestamp: new Date().toISOString(),
+      dbStatus: results[0].test === 1 ? 'ok' : 'unexpected_result'
+    });
+  } catch (error) {
+    console.error('Database health check failed:', error);
+    res.status(500).json({ 
+      status: 'error', 
+      database: 'unhealthy', 
+      error: error.message,
       timestamp: new Date().toISOString()
     });
-  });
+  }
 });
 
 // Serve the home page as the default route
@@ -208,62 +214,62 @@ app.get('/api/users', (req, res) => {
 app.get('/api/properties/full', async (req, res) => {
   try {
     // Get all properties with developer and location info
-    db.query(`
+    const [properties] = await db.query(`
       SELECT p.*, d.name AS developer_name, d.website_url, l.area_name, l.city, l.state
       FROM properties p
       LEFT JOIN developers d ON p.developer_id = d.id
       LEFT JOIN locations l ON p.location_id = l.id
-    `, async (err, properties) => {
-      if (err) return res.status(500).json({ error: err });
-      if (!properties.length) return res.json([]);
+    `);
 
-      // Get all amenities, galleries, etc. in parallel
-      db.query('SELECT * FROM property_gallery', (err, galleries) => {
-        if (err) return res.status(500).json({ error: err });
-        db.query('SELECT pa.property_id, a.name, a.category FROM property_amenities pa LEFT JOIN amenities a ON pa.amenity_id = a.id WHERE pa.available = 1', (err, amenities) => {
-          if (err) return res.status(500).json({ error: err });
+    if (!properties.length) return res.json([]);
 
-          // Map amenities by property_id
-          const amenitiesMap = {};
-          amenities.forEach(a => {
-            if (!amenitiesMap[a.property_id]) amenitiesMap[a.property_id] = [];
-            amenitiesMap[a.property_id].push({ name: a.name, category: a.category });
-          });
+    // Get all amenities and galleries in parallel
+    const [galleries] = await db.query('SELECT * FROM property_gallery');
+    const [amenities] = await db.query('SELECT pa.property_id, a.name, a.category FROM property_amenities pa LEFT JOIN amenities a ON pa.amenity_id = a.id WHERE pa.available = 1');
 
-          // Map galleries by property_id (pick first image as main)
-          const galleryMap = {};
-          galleries.forEach(g => {
-            if (!galleryMap[g.property_id]) galleryMap[g.property_id] = [];
-            galleryMap[g.property_id].push(g);
-          });
-
-          // Compose full property objects
-          const fullProperties = properties.map(p => {
-            const images = galleryMap[p.id] || [];
-            let mainImage = images.length ? images[0].image_url : null;
-            if (!mainImage) mainImage = `/images/placeholder-property.jpg`;
-            return {
-              ...p,
-              mainImage,
-              amenities: amenitiesMap[p.id] || [],
-              developer: {
-                name: p.developer_name,
-                website_url: p.website_url
-              },
-              location: {
-                area_name: p.area_name,
-                city: p.city,
-                state: p.state
-              }
-            };
-          });
-
-          res.json(fullProperties);
-        });
-      });
+    // Map amenities by property_id
+    const amenitiesMap = {};
+    amenities.forEach(a => {
+      if (!amenitiesMap[a.property_id]) amenitiesMap[a.property_id] = [];
+      amenitiesMap[a.property_id].push({ name: a.name, category: a.category });
     });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
+
+    // Map galleries by property_id (pick first image as main)
+    const galleryMap = {};
+    galleries.forEach(g => {
+      if (!galleryMap[g.property_id]) galleryMap[g.property_id] = [];
+      galleryMap[g.property_id].push(g);
+    });
+
+    // Compose full property objects
+    const fullProperties = properties.map(p => {
+      const images = galleryMap[p.id] || [];
+      let mainImage = images.length ? images[0].image_url : null;
+      if (!mainImage) mainImage = `/images/placeholder-property.jpg`;
+      
+      return {
+        ...p,
+        mainImage,
+        amenities: amenitiesMap[p.id] || [],
+        developer: {
+          name: p.developer_name,
+          website_url: p.website_url
+        },
+        location: {
+          area_name: p.area_name,
+          city: p.city,
+          state: p.state
+        }
+      };
+    });
+
+    res.json(fullProperties);
+  } catch (error) {
+    console.error('Error in /api/properties/full:', error);
+    res.status(500).json({ 
+      error: 'Failed to fetch property details',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 });
 
@@ -893,4 +899,10 @@ app.delete('/api/investment_analysis/:id', (req, res) => {
 const userRoutes = require('./routes/userRoutes');
 app.use('/api', userRoutes);
 
-app.listen(3001, () => console.log('Server running on 3001')); 
+const PORT = process.env.PORT || 3001;
+const HOST = '0.0.0.0';
+
+app.listen(PORT, HOST, () => {
+  console.log(`Server running on http://${HOST}:${PORT}`);
+  console.log('Environment:', process.env.NODE_ENV || 'development');
+});
