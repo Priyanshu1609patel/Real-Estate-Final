@@ -9,19 +9,29 @@ const getDbConfig = () => {
                    process.env.RAILWAY_SERVICE_NAME !== undefined;
 
   if (isRailway) {
-    // Railway environment
-    return {
-      host: process.env.MYSQLHOST || 'containers-us-west-123.railway.app',
-      port: process.env.MYSQLPORT || 6605,
-      user: process.env.MYSQLUSER || 'root',
-      password: process.env.MYSQLPASSWORD || 'root',
-      database: process.env.MYSQLDATABASE || 'real-estate-database',
-      ssl: { rejectUnauthorized: false },
-      connectTimeout: 10000,
+    // Railway environment - use environment variables without defaults
+    console.log('Using Railway database configuration');
+    const config = {
+      host: process.env.MYSQLHOST,
+      port: parseInt(process.env.MYSQLPORT || '3306', 10),
+      user: process.env.MYSQLUSER,
+      password: process.env.MYSQLPASSWORD,
+      database: process.env.MYSQLDATABASE,
+      ssl: process.env.MYSQL_SSL === 'true' ? { rejectUnauthorized: false } : undefined,
+      connectTimeout: 30000, // Increased timeout to 30 seconds
       waitForConnections: true,
       connectionLimit: 10,
-      queueLimit: 0
+      queueLimit: 0,
+      debug: process.env.NODE_ENV === 'development'
     };
+    
+    console.log('Database connection config:', {
+      ...config,
+      password: config.password ? '***' : 'undefined',
+      ssl: config.ssl ? 'enabled' : 'disabled'
+    });
+    
+    return config;
   }
 
   // Local development environment
