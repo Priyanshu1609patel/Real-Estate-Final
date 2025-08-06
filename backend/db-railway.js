@@ -30,15 +30,17 @@ const getDbConfig = () => {
       }
     }
 
-    // Use Railway's internal hostname and provided credentials
+    // Use Railway's public hostname with SSL
     const config = {
-      host: 'mysql.railway.internal', // Railway's internal hostname
-      port: 3306,
+      host: 'containers-us-west-123.railway.app', // Public hostname from Railway
+      port: 6605, // Common Railway MySQL port
       user: 'root',
       password: 'QvxdQQFIHjrBwnolUOpgVCVRHoxCkwbb',
       database: 'railway',
-      // Disable SSL for internal Railway network
-      ssl: false,
+      // Enable SSL for public connection
+      ssl: {
+        rejectUnauthorized: false
+      },
       connectTimeout: 60000, // Increased timeout to 60 seconds
       waitForConnections: true,
       connectionLimit: 10,
