@@ -1,111 +1,68 @@
 const mysql = require('mysql2/promise');
 
-/**
- * Database configuration for different environments
- */
+// Database configuration for Railway
 const getDbConfig = () => {
-  // Check if we're running in Railway environment
-  const isRailway = process.env.RAILWAY_ENVIRONMENT === 'production' || 
-                   process.env.RAILWAY_SERVICE_NAME !== undefined ||
-                   process.env.MYSQLHOST !== undefined;
+  console.log('Using Railway database configuration');
+  
+  // Log available environment variables for debugging
+  const relevantVars = Object.keys(process.env)
+    .filter(key => key.startsWith('MYSQL') || key.startsWith('RAILWAY_') || key === 'NODE_ENV')
+    .join(', ');
+  console.log('Available environment variables:', relevantVars || 'None found');
 
-  if (isRailway) {
-    // Railway environment - use environment variables with fallbacks
-    console.log('Using Railway database configuration');
-    
-    // Parse MYSQL_URL if available (Railway provides this)
-    let mysqlConfig = {};
-    if (process.env.MYSQL_URL) {
-      try {
-        const url = new URL(process.env.MYSQL_URL);
-        mysqlConfig = {
-          host: url.hostname,
-          port: parseInt(url.port, 10) || 3306,
-          user: url.username,
-          password: url.password,
-          database: url.pathname.replace(/^\//, '')
-        };
-      } catch (error) {
-        console.error('Error parsing MYSQL_URL:', error);
-      }
-    }
-
-    // Log all environment variables for debugging
-    console.log('Available environment variables:', Object.keys(process.env).filter(key => key.startsWith('MYSQL') || key === 'RAILWAY_ENVIRONMENT'));
-    
-    // Use Railway's environment variables with proper defaults
-    const config = {
-      host: process.env.MYSQLHOST || 'mysql.railway.internal',
-      port: parseInt(process.env.MYSQLPORT || '3306', 10),
-      user: process.env.MYSQLUSER || 'root',
-      // Always use the password from environment variables, no default
-      password: process.env.MYSQLPASSWORD,
-      database: process.env.MYSQLDATABASE || 'railway',
-      // Enable SSL for secure connection
-      ssl: process.env.MYSQL_SSL === 'true' ? { rejectUnauthorized: false } : false,
-      connectTimeout: 60000, // Increased timeout to 60 seconds
-      waitForConnections: true,
-      connectionLimit: 10,
-      queueLimit: 0,
-      debug: process.env.NODE_ENV === 'development',
-      timezone: 'Z' // Use UTC timezone
-    };
-    
-    console.log('Database connection config:', {
-      host: config.host,
-      port: config.port,
-      user: config.user,
-      database: config.database,
-      ssl: config.ssl ? 'enabled' : 'disabled',
-      usingMysqlUrl: !!process.env.MYSQL_URL
-    });
-    
-    return config;
-  }
-
-  // Local development environment
-  return {
-    host: process.env.DB_HOST || 'localhost',
-    port: process.env.DB_PORT || 3306,
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || 'root',
-    database: process.env.DB_NAME || 'real-estate-database',
-    connectTimeout: 10000,
+  // Get connection details from environment variables
+  const config = {
+    host: process.env.MYSQLHOST || process.env.RAILWAY_MYSQLHOST || 'mysql.railway.internal',
+    port: parseInt(process.env.MYSQLPORT || process.env.RAILWAY_MYSQLPORT || '3306', 10),
+    user: process.env.MYSQLUSER || process.env.RAILWAY_MYSQLUSER || 'root',
+    password: process.env.MYSQLPASSWORD || process.env.RAILWAY_MYSQLPASSWORD || process.env.RAILWAY_DATABASE_PASSWORD,
+    database: process.env.MYSQLDATABASE || process.env.RAILWAY_MYSQLDATABASE || 'railway',
+    ssl: (process.env.MYSQL_SSL === 'true' || process.env.RAILWAY_ENVIRONMENT === 'production') 
+      ? { rejectUnauthorized: false } 
+      : false,
+    connectTimeout: 60000,
     waitForConnections: true,
     connectionLimit: 10,
-    queueLimit: 0
+    queueLimit: 0,
+    debug: process.env.NODE_ENV === 'development',
+    timezone: 'Z' // Use UTC timezone
   };
+
+  // Log configuration (without password)
+  const { password, ...configWithoutPassword } = config;
+  console.log('Database connection config:', {
+    ...configWithoutPassword,
+    password: password ? '***' : undefined,
+    ssl: config.ssl ? 'enabled' : 'disabled'
+  });
+
+  return config;
 };
 
-// Create a connection pool for better performance
+// Create connection pool
 const pool = mysql.createPool(getDbConfig());
 
 // Test the database connection
 const testConnection = async () => {
   try {
     const connection = await pool.getConnection();
-    console.log('✅ Successfully connected to MySQL database');
+    console.log('✅ Successfully connected to the database');
     connection.release();
     return true;
   } catch (error) {
     console.error('❌ Database connection failed:', error.message);
     console.error('Connection details:', {
-      host: process.env.MYSQLHOST || process.env.DB_HOST || 'localhost',
-      port: process.env.MYSQLPORT || process.env.DB_PORT || 3306,
-      database: process.env.MYSQLDATABASE || process.env.DB_NAME || 'real-estate-database',
-      user: process.env.MYSQLUSER || process.env.DB_USER || 'root',
-      ssl: process.env.MYSQL_SSL ? 'enabled' : 'disabled'
+      host: pool.config.connectionConfig.host,
+      port: pool.config.connectionConfig.port,
+      database: pool.config.connectionConfig.database,
+      user: pool.config.connectionConfig.user,
+      ssl: pool.config.connectionConfig.ssl ? 'enabled' : 'disabled'
     });
     return false;
   }
 };
 
 // Test the connection when this module is loaded
-testConnection().then(success => {
-  if (!success) {
-    console.error('⚠️  Failed to establish database connection. The application may not function correctly.');
-  }
-});
+testConnection().catch(console.error);
 
-// Export the pool for use in the application
 module.exports = pool;
