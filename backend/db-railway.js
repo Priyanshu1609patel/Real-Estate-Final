@@ -30,12 +30,16 @@ const getDbConfig = () => {
       }
     }
 
-    // Use Railway's environment variables
+    // Log all environment variables for debugging
+    console.log('Available environment variables:', Object.keys(process.env).filter(key => key.startsWith('MYSQL') || key === 'RAILWAY_ENVIRONMENT'));
+    
+    // Use Railway's environment variables with proper defaults
     const config = {
       host: process.env.MYSQLHOST || 'mysql.railway.internal',
       port: parseInt(process.env.MYSQLPORT || '3306', 10),
       user: process.env.MYSQLUSER || 'root',
-      password: process.env.MYSQLPASSWORD || '',
+      // Always use the password from environment variables, no default
+      password: process.env.MYSQLPASSWORD,
       database: process.env.MYSQLDATABASE || 'railway',
       // Enable SSL for secure connection
       ssl: process.env.MYSQL_SSL === 'true' ? { rejectUnauthorized: false } : false,
