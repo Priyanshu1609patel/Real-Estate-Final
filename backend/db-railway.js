@@ -6,29 +6,54 @@ const mysql = require('mysql2/promise');
 const getDbConfig = () => {
   // Check if we're running in Railway environment
   const isRailway = process.env.RAILWAY_ENVIRONMENT === 'production' || 
-                   process.env.RAILWAY_SERVICE_NAME !== undefined;
+                   process.env.RAILWAY_SERVICE_NAME !== undefined ||
+                   process.env.MYSQLHOST !== undefined;
 
   if (isRailway) {
-    // Railway environment - use environment variables without defaults
+    // Railway environment - use environment variables with fallbacks
     console.log('Using Railway database configuration');
+    
+    // Parse MYSQL_URL if available (Railway provides this)
+    let mysqlConfig = {};
+    if (process.env.MYSQL_URL) {
+      try {
+        const url = new URL(process.env.MYSQL_URL);
+        mysqlConfig = {
+          host: url.hostname,
+          port: parseInt(url.port, 10) || 3306,
+          user: url.username,
+          password: url.password,
+          database: url.pathname.replace(/^\//, '')
+        };
+      } catch (error) {
+        console.error('Error parsing MYSQL_URL:', error);
+      }
+    }
+
+    // Use Railway's internal hostname and provided credentials
     const config = {
-      host: process.env.MYSQLHOST,
-      port: parseInt(process.env.MYSQLPORT || '3306', 10),
-      user: process.env.MYSQLUSER,
-      password: process.env.MYSQLPASSWORD,
-      database: process.env.MYSQLDATABASE,
-      ssl: process.env.MYSQL_SSL === 'true' ? { rejectUnauthorized: false } : undefined,
-      connectTimeout: 30000, // Increased timeout to 30 seconds
+      host: 'mysql.railway.internal', // Railway's internal hostname
+      port: 3306,
+      user: 'root',
+      password: 'QvxdQQFIHjrBwnolUOpgVCVRHoxCkwbb',
+      database: 'railway',
+      // Disable SSL for internal Railway network
+      ssl: false,
+      connectTimeout: 60000, // Increased timeout to 60 seconds
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0,
-      debug: process.env.NODE_ENV === 'development'
+      debug: process.env.NODE_ENV === 'development',
+      timezone: 'Z' // Use UTC timezone
     };
     
     console.log('Database connection config:', {
-      ...config,
-      password: config.password ? '***' : 'undefined',
-      ssl: config.ssl ? 'enabled' : 'disabled'
+      host: config.host,
+      port: config.port,
+      user: config.user,
+      database: config.database,
+      ssl: config.ssl ? 'enabled' : 'disabled',
+      usingMysqlUrl: !!process.env.MYSQL_URL
     });
     
     return config;
