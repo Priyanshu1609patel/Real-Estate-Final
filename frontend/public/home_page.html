@@ -667,7 +667,7 @@
     async function fetchProperties() {
       try {
         // Use the global apiFetch function from api-fetch.js
-        allProperties = await apiFetch('/properties/full');
+        allProperties = await apiFetch('/properties');
         populateSelects();
         renderComparisonGrid();
       } catch (e) {

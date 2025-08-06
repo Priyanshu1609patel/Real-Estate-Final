@@ -17,7 +17,7 @@ window.apiFetch = async function(endpoint) {
   const normalizedEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
   const url = isLocalDevelopment 
     ? `${API_BASE_URL}${normalizedEndpoint}`
-    : `${normalizedEndpoint}`; // Relative URL for production
+    : normalizedEndpoint; // Relative URL for production
 
   console.log(`API Request: ${url}`);
   
@@ -50,30 +50,15 @@ window.apiFetch = async function(endpoint) {
   }
 };
 
-// Test the API connection on load
-async function testApiConnection() {
-  try {
-    console.log('Testing API connection...');
-    const data = await apiFetch('/health');
-    console.log('API Connection successful:', data);
-    return true;
-  } catch (error) {
-    console.error('API Connection test failed:', error);
-    return false;
-  }
-}
-
-// Run connection test in development or when explicitly enabled
+// Test the API connection on load in development
 if (isLocalDevelopment || window.enableApiDebug) {
-  testApiConnection()
-    .then(success => {
-      if (success) {
-        console.log('API connection test completed successfully');
-      } else {
-        console.warn('API connection test completed with warnings');
-      }
-    })
-    .catch(err => {
-      console.error('API connection test failed:', err);
-    });
+  window.addEventListener('DOMContentLoaded', async () => {
+    try {
+      console.log('Testing API connection...');
+      const testData = await apiFetch('/properties');
+      console.log('API connection successful:', testData);
+    } catch (error) {
+      console.error('API connection test failed:', error);
+    }
+  });
 }
